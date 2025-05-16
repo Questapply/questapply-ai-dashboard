@@ -1,0 +1,134 @@
+
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { 
+  Home, 
+  User, 
+  Heart, 
+  Users, 
+  BarChart2, 
+  FileText, 
+  Headphones, 
+  Gift, 
+  CreditCard,
+  ChevronLeft,
+  ChevronRight
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+
+interface SidebarProps {
+  isOpen: boolean;
+  toggleSidebar: () => void;
+}
+
+type NavItem = {
+  icon: React.ElementType;
+  label: string;
+  href: string;
+  active?: boolean;
+};
+
+const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
+  const navigate = useNavigate();
+  const [activeItem, setActiveItem] = useState("Dashboard");
+
+  const navItems: NavItem[] = [
+    { icon: Home, label: "Dashboard", href: "/dashboard", active: true },
+    { icon: User, label: "My Profile", href: "/profile" },
+    { icon: Heart, label: "Favorite Lists", href: "/favorites" },
+    { icon: Users, label: "My Professors", href: "/professors" },
+    { icon: BarChart2, label: "Track My Applications", href: "/applications" },
+    { icon: FileText, label: "My Documents", href: "/documents" },
+    { icon: Headphones, label: "Support Ticket", href: "/support" },
+    { icon: Gift, label: "Quest Rewards", href: "/rewards" },
+    { icon: CreditCard, label: "My Payments", href: "/payments" }
+  ];
+
+  const handleNavigation = (href: string, label: string) => {
+    setActiveItem(label);
+    navigate(href);
+  };
+
+  return (
+    <aside 
+      className={cn(
+        "relative h-full bg-white dark:bg-gray-800 border-r border-purple-100 dark:border-gray-700 transition-all duration-300 ease-in-out flex flex-col shadow-lg",
+        isOpen ? "w-64" : "w-20"
+      )}
+    >
+      {/* Collapse Button */}
+      <button 
+        className="absolute -right-3 top-20 bg-white dark:bg-gray-800 border border-purple-100 dark:border-gray-700 rounded-full p-1 shadow-md z-10"
+        onClick={toggleSidebar}
+      >
+        {isOpen ? (
+          <ChevronLeft className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+        ) : (
+          <ChevronRight className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+        )}
+      </button>
+      
+      {/* Logo Area */}
+      <div className="flex items-center justify-center h-20 border-b border-purple-100 dark:border-gray-700">
+        {isOpen ? (
+          <div className="font-bold text-xl bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
+            QuestApply
+          </div>
+        ) : (
+          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-purple-400 flex items-center justify-center text-white font-bold text-xl">
+            Q
+          </div>
+        )}
+      </div>
+      
+      {/* Navigation Items */}
+      <div className="flex-1 py-6 overflow-y-auto scrollbar-thin scrollbar-thumb-purple-200 dark:scrollbar-thumb-purple-800">
+        <ul className="space-y-2 px-3">
+          {navItems.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <li key={index}>
+                <button
+                  className={cn(
+                    "w-full flex items-center rounded-lg p-3 transition-all duration-200",
+                    activeItem === item.label
+                      ? "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-900/10"
+                  )}
+                  onClick={() => handleNavigation(item.href, item.label)}
+                >
+                  <Icon className={cn("h-5 w-5", activeItem === item.label ? "text-purple-600 dark:text-purple-400" : "")} />
+                  {isOpen && (
+                    <span className={cn(
+                      "ml-3 font-medium transition-all duration-300",
+                      activeItem === item.label 
+                        ? "text-purple-600 dark:text-purple-400" 
+                        : "text-gray-700 dark:text-gray-300"
+                    )}>
+                      {item.label}
+                    </span>
+                  )}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      
+      {/* User Profile */}
+      <div className="p-4 border-t border-purple-100 dark:border-gray-700 flex items-center">
+        <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-600 to-purple-400 flex items-center justify-center text-white font-bold">
+          U
+        </div>
+        {isOpen && (
+          <div className="ml-3">
+            <div className="font-medium text-gray-800 dark:text-gray-200">User Name</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">user@example.com</div>
+          </div>
+        )}
+      </div>
+    </aside>
+  );
+};
+
+export default Sidebar;
