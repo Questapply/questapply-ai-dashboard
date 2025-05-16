@@ -88,8 +88,8 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
           >
             {valuePrefix}
             <motion.span
-              initial={{ count: 0 }}
-              animate={{ count: displayValue }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.5 }}
             >
               {Math.round(displayValue)}
