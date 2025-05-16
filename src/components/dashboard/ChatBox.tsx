@@ -2,13 +2,26 @@
 import { useState } from "react";
 import { ArrowUp, Search } from "lucide-react";
 
+interface FilterOption {
+  icon: React.ReactNode;
+  label: string;
+}
+
 interface ChatBoxProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   isQuestApplyAI: boolean;
+  isDarkMode: boolean;
+  filterOptions: FilterOption[] | null;
 }
 
-const ChatBox = ({ searchQuery, setSearchQuery, isQuestApplyAI }: ChatBoxProps) => {
+const ChatBox = ({ 
+  searchQuery, 
+  setSearchQuery, 
+  isQuestApplyAI, 
+  isDarkMode,
+  filterOptions 
+}: ChatBoxProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -23,15 +36,17 @@ const ChatBox = ({ searchQuery, setSearchQuery, isQuestApplyAI }: ChatBoxProps) 
         className={`w-full rounded-2xl border ${
           isFocused 
             ? "border-teal-400 shadow-lg shadow-teal-100 dark:shadow-teal-900/20" 
-            : "border-gray-200 dark:border-gray-700"
-        } transition-all duration-300 bg-white dark:bg-gray-800 overflow-hidden`}
+            : isDarkMode ? "border-gray-700" : "border-gray-200"
+        } transition-all duration-300 ${isDarkMode ? "bg-gray-800" : "bg-white"} overflow-hidden`}
       >
-        <form onSubmit={handleSubmit} className="flex items-center">
-          <div className="flex-grow flex items-center px-4 py-3">
-            <Search className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          <div className="flex items-center px-4 py-4 h-16">
+            <Search className={`w-5 h-5 ${isDarkMode ? "text-gray-500" : "text-gray-400"}`} />
             <input
               type="text"
-              className="flex-grow ml-3 outline-none bg-transparent text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500"
+              className={`flex-grow ml-3 outline-none bg-transparent ${
+                isDarkMode ? "text-gray-200 placeholder-gray-500" : "text-gray-800 placeholder-gray-400"
+              }`}
               placeholder={isQuestApplyAI ? "Ask QuestApply AI anything..." : "Search or ask for guidance..."}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -43,27 +58,62 @@ const ChatBox = ({ searchQuery, setSearchQuery, isQuestApplyAI }: ChatBoxProps) 
                 QuestApply AI
               </div>
             )}
+            <button
+              type="submit"
+              className="h-10 w-10 ml-2 bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 transition-colors duration-300 rounded-full flex items-center justify-center"
+            >
+              <ArrowUp className="w-5 h-5" />
+            </button>
           </div>
-          <button
-            type="submit"
-            className="h-full px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 transition-colors duration-300"
-          >
-            <ArrowUp className="w-5 h-5" />
-          </button>
+
+          {/* Filter Options Inside the Chat Box */}
+          {filterOptions && (
+            <div className={`p-3 border-t ${isDarkMode ? "border-gray-700" : "border-gray-200"} animate-fade-in`}>
+              <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                </svg>
+                Filters
+              </div>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {filterOptions.map((filter, index) => (
+                  <button
+                    key={index}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full border ${
+                      isDarkMode 
+                        ? "bg-gray-800 border-gray-700 text-gray-300 hover:bg-teal-900/20 hover:border-teal-700" 
+                        : "bg-white border-gray-200 text-gray-700 hover:bg-teal-50 hover:border-teal-200"
+                    } text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5`}
+                  >
+                    {filter.icon}
+                    {filter.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </form>
       </div>
 
       {isFocused && (
-        <div className="absolute inset-x-0 top-full mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 z-10 animate-fade-in">
-          <div className="text-sm text-gray-500 mb-2">Suggested searches</div>
+        <div className={`absolute inset-x-0 top-full mt-2 ${
+          isDarkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+        } rounded-lg shadow-lg border p-4 z-10 animate-fade-in`}>
+          <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">Suggested searches</div>
           <div className="space-y-2">
-            <div className="cursor-pointer p-2 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-md transition-colors duration-200 text-gray-700 dark:text-gray-300">
+            <div className={`cursor-pointer p-2 ${
+              isDarkMode ? "hover:bg-teal-900/20 text-gray-300" : "hover:bg-teal-50 text-gray-700"
+            } rounded-md transition-colors duration-200`}>
               How to improve my application?
             </div>
-            <div className="cursor-pointer p-2 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-md transition-colors duration-200 text-gray-700 dark:text-gray-300">
+            <div className={`cursor-pointer p-2 ${
+              isDarkMode ? "hover:bg-teal-900/20 text-gray-300" : "hover:bg-teal-50 text-gray-700"
+            } rounded-md transition-colors duration-200`}>
               Top schools for Computer Science
             </div>
-            <div className="cursor-pointer p-2 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-md transition-colors duration-200 text-gray-700 dark:text-gray-300">
+            <div className={`cursor-pointer p-2 ${
+              isDarkMode ? "hover:bg-teal-900/20 text-gray-300" : "hover:bg-teal-50 text-gray-700"
+            } rounded-md transition-colors duration-200`}>
               Resume writing tips for PhD applications
             </div>
           </div>
