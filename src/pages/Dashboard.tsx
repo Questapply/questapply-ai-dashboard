@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   Activity, 
@@ -20,7 +19,12 @@ import {
   Building,
   ArrowUp,
   Moon,
-  Sun
+  Sun,
+  GraduationCap,
+  Calendar,
+  PercentIcon,
+  BarChart,
+  ArrowUpDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -76,56 +80,46 @@ const Dashboard = () => {
 
   // Filter options for each section
   const getFilterOptions = () => {
-    if (isQuestApplyAI) return null;
+    if (isQuestApplyAI || activeSection === "ai-talent-test" || 
+        activeSection === "create-resume" || activeSection === "create-sop" || 
+        activeSection === "create-lor" || activeSection === "apply-now") {
+      return null;
+    }
 
     switch (activeSection) {
       case "find-schools":
         return [
-          { icon: <Trophy className="w-4 h-4" />, label: "Ranking" },
           { icon: <Globe className="w-4 h-4" />, label: "Country" },
           { icon: <Map className="w-4 h-4" />, label: "State" },
-          { icon: <Scroll className="w-4 h-4" />, label: "Program" },
-          { icon: <DollarSign className="w-4 h-4" />, label: "Cost" },
-          { icon: <FileCheck className="w-4 h-4" />, label: "Acceptance Rate" },
-          { icon: <UserCircle className="w-4 h-4" />, label: "Size" },
-          { icon: <Building className="w-4 h-4" />, label: "Campus" },
+          { icon: <GraduationCap className="w-4 h-4" />, label: "Schools" },
+          { icon: <BookOpen className="w-4 h-4" />, label: "Degree Level" },
+          { icon: <FileText className="w-4 h-4" />, label: "Area of Study" },
+          { icon: <Scroll className="w-4 h-4" />, label: "Programs" },
+          { icon: <ArrowUpDown className="w-4 h-4" />, label: "Order By" }
         ];
       case "find-programs":
         return [
-          { icon: <Scroll className="w-4 h-4" />, label: "Field of Study" },
-          { icon: <Trophy className="w-4 h-4" />, label: "Ranking" },
-          { icon: <DollarSign className="w-4 h-4" />, label: "Cost" },
-          { icon: <FileCheck className="w-4 h-4" />, label: "Admission Requirements" },
+          { icon: <Globe className="w-4 h-4" />, label: "Country" },
+          { icon: <Map className="w-4 h-4" />, label: "State" },
+          { icon: <GraduationCap className="w-4 h-4" />, label: "Schools" },
+          { icon: <BookOpen className="w-4 h-4" />, label: "Degree Level" },
+          { icon: <FileText className="w-4 h-4" />, label: "Area of Study" },
+          { icon: <Scroll className="w-4 h-4" />, label: "Programs" },
+          { icon: <Calendar className="w-4 h-4" />, label: "Deadline" },
+          { icon: <FileText className="w-4 h-4" />, label: "English" },
+          { icon: <PercentIcon className="w-4 h-4" />, label: "GPA" },
+          { icon: <BarChart className="w-4 h-4" />, label: "GRE" },
+          { icon: <ArrowUpDown className="w-4 h-4" />, label: "Order By" }
         ];
       case "find-professors":
         return [
-          { icon: <Globe className="w-4 h-4" />, label: "University" },
-          { icon: <Scroll className="w-4 h-4" />, label: "Field" },
-          { icon: <Trophy className="w-4 h-4" />, label: "Research Areas" },
-        ];
-      case "create-resume":
-        return [
-          { icon: <Globe className="w-4 h-4" />, label: "Template" },
-          { icon: <Scroll className="w-4 h-4" />, label: "Experience Level" },
-          { icon: <Trophy className="w-4 h-4" />, label: "Field" },
-        ];
-      case "create-sop":
-        return [
-          { icon: <Globe className="w-4 h-4" />, label: "Program Type" },
-          { icon: <Scroll className="w-4 h-4" />, label: "University" },
-          { icon: <Trophy className="w-4 h-4" />, label: "Field" },
-        ];
-      case "create-lor":
-        return [
-          { icon: <Globe className="w-4 h-4" />, label: "Relationship" },
-          { icon: <Scroll className="w-4 h-4" />, label: "Program Type" },
-          { icon: <Trophy className="w-4 h-4" />, label: "Strength" },
-        ];
-      case "apply-now":
-        return [
-          { icon: <Globe className="w-4 h-4" />, label: "University" },
-          { icon: <Scroll className="w-4 h-4" />, label: "Program" },
-          { icon: <Trophy className="w-4 h-4" />, label: "Deadline" },
+          { icon: <Globe className="w-4 h-4" />, label: "Country" },
+          { icon: <Map className="w-4 h-4" />, label: "State" },
+          { icon: <GraduationCap className="w-4 h-4" />, label: "Schools" },
+          { icon: <FileText className="w-4 h-4" />, label: "Area of Study" },
+          { icon: <Scroll className="w-4 h-4" />, label: "Programs" },
+          { icon: <BookOpen className="w-4 h-4" />, label: "Research Interest" },
+          { icon: <Users className="w-4 h-4" />, label: "Title" }
         ];
       default:
         return null;
@@ -386,4 +380,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

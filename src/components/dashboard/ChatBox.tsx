@@ -1,6 +1,25 @@
 
 import { useState } from "react";
-import { ArrowUp, Search, Trophy, Globe, Map, Scroll, DollarSign, FileCheck, UserCircle, Building } from "lucide-react";
+import { 
+  ArrowUp, 
+  Search, 
+  Trophy, 
+  Globe, 
+  Map, 
+  Scroll, 
+  DollarSign, 
+  FileCheck, 
+  UserCircle, 
+  Building,
+  BookOpen,
+  GraduationCap,
+  Calendar,
+  PercentIcon,
+  BarChart,
+  ArrowUpDown,
+  Users,
+  FileText
+} from "lucide-react";
 
 interface FilterOption {
   icon: React.ReactNode;
