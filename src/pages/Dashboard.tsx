@@ -9,7 +9,15 @@ import {
   Check,
   BookOpen, 
   Users,
-  Search
+  Search,
+  Trophy,
+  Globe,
+  Map,
+  Scroll,
+  DollarSign,
+  FileCheck,
+  UserCircle,
+  Building
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Sidebar from "@/components/dashboard/Sidebar";
@@ -48,6 +56,64 @@ const Dashboard = () => {
     setIsQuestApplyAI(true);
   };
 
+  // Filter options for each section
+  const getFilterOptions = () => {
+    if (isQuestApplyAI) return null;
+
+    switch (activeSection) {
+      case "find-schools":
+        return [
+          { icon: <Trophy className="w-4 h-4" />, label: "Ranking" },
+          { icon: <Globe className="w-4 h-4" />, label: "Country" },
+          { icon: <Map className="w-4 h-4" />, label: "State" },
+          { icon: <Scroll className="w-4 h-4" />, label: "Program" },
+          { icon: <DollarSign className="w-4 h-4" />, label: "Cost" },
+          { icon: <FileCheck className="w-4 h-4" />, label: "Acceptance Rate" },
+          { icon: <UserCircle className="w-4 h-4" />, label: "Size" },
+          { icon: <Building className="w-4 h-4" />, label: "Campus" },
+        ];
+      case "find-programs":
+        return [
+          { icon: <Scroll className="w-4 h-4" />, label: "Field of Study" },
+          { icon: <Trophy className="w-4 h-4" />, label: "Ranking" },
+          { icon: <DollarSign className="w-4 h-4" />, label: "Cost" },
+          { icon: <FileCheck className="w-4 h-4" />, label: "Admission Requirements" },
+        ];
+      case "find-professors":
+        return [
+          { icon: <Globe className="w-4 h-4" />, label: "University" },
+          { icon: <Scroll className="w-4 h-4" />, label: "Field" },
+          { icon: <Trophy className="w-4 h-4" />, label: "Research Areas" },
+        ];
+      case "create-resume":
+        return [
+          { icon: <Globe className="w-4 h-4" />, label: "Template" },
+          { icon: <Scroll className="w-4 h-4" />, label: "Experience Level" },
+          { icon: <Trophy className="w-4 h-4" />, label: "Field" },
+        ];
+      case "create-sop":
+        return [
+          { icon: <Globe className="w-4 h-4" />, label: "Program Type" },
+          { icon: <Scroll className="w-4 h-4" />, label: "University" },
+          { icon: <Trophy className="w-4 h-4" />, label: "Field" },
+        ];
+      case "create-lor":
+        return [
+          { icon: <Globe className="w-4 h-4" />, label: "Relationship" },
+          { icon: <Scroll className="w-4 h-4" />, label: "Program Type" },
+          { icon: <Trophy className="w-4 h-4" />, label: "Strength" },
+        ];
+      case "apply-now":
+        return [
+          { icon: <Globe className="w-4 h-4" />, label: "University" },
+          { icon: <Scroll className="w-4 h-4" />, label: "Program" },
+          { icon: <Trophy className="w-4 h-4" />, label: "Deadline" },
+        ];
+      default:
+        return null;
+    }
+  };
+
   const renderContent = () => {
     if (isQuestApplyAI) {
       return (
@@ -80,15 +146,17 @@ const Dashboard = () => {
     }
   };
 
+  const filterOptions = getFilterOptions();
+
   return (
-    <div className="flex h-screen w-full bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/40 dark:bg-gray-900 overflow-hidden">
+    <div className="flex h-screen w-full bg-gradient-to-br from-blue-50 to-teal-100 dark:from-gray-900 dark:to-gray-800 dark:bg-black overflow-hidden">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
         {/* Top Navigation */}
-        <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-purple-100 dark:border-purple-900/50 p-4">
+        <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-blue-100 dark:border-blue-900/50 p-4">
           <div className="flex justify-between items-center">
             <button
               className="md:hidden text-gray-700 dark:text-gray-200"
@@ -128,11 +196,11 @@ const Dashboard = () => {
                     d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                   />
                 </svg>
-                <span className="absolute -top-1 -right-1 bg-red-500 text-xs text-white rounded-full h-4 w-4 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-teal-500 text-xs text-white rounded-full h-4 w-4 flex items-center justify-center">
                   3
                 </span>
               </button>
-              <div className="h-8 w-8 bg-purple-600 rounded-full flex items-center justify-center text-white">
+              <div className="h-8 w-8 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full flex items-center justify-center text-white">
                 U
               </div>
             </div>
@@ -142,22 +210,15 @@ const Dashboard = () => {
         {/* Chat and Dashboard Content */}
         <div className="px-4 md:px-8 py-6">
           <div className="max-w-7xl mx-auto">
-            {/* Chat Box */}
-            <ChatBox 
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              isQuestApplyAI={isQuestApplyAI}
-            />
-            
-            {/* Navigation Buttons */}
-            <div className="mt-8 flex overflow-x-auto pb-2 scrollbar-hide">
+            {/* Navigation Buttons - Now above the chat box */}
+            <div className="mb-8 flex overflow-x-auto pb-2 scrollbar-hide">
               <div className="flex space-x-2 md:space-x-4">
                 <Button
                   variant={activeSection === "ai-talent-test" ? "default" : "outline"}
                   className={`flex items-center gap-2 min-w-max ${
                     activeSection === "ai-talent-test" 
-                      ? "bg-purple-600 text-white hover:bg-purple-700" 
-                      : "hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600" 
+                      : "hover:bg-teal-100 dark:hover:bg-teal-900/30"
                   } transition-all duration-300`}
                   onClick={() => handleSectionChange("ai-talent-test")}
                 >
@@ -169,8 +230,8 @@ const Dashboard = () => {
                   variant={activeSection === "find-schools" ? "default" : "outline"}
                   className={`flex items-center gap-2 min-w-max ${
                     activeSection === "find-schools" 
-                      ? "bg-purple-600 text-white hover:bg-purple-700" 
-                      : "hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600" 
+                      : "hover:bg-teal-100 dark:hover:bg-teal-900/30"
                   } transition-all duration-300`}
                   onClick={() => handleSectionChange("find-schools")}
                 >
@@ -182,8 +243,8 @@ const Dashboard = () => {
                   variant={activeSection === "find-programs" ? "default" : "outline"}
                   className={`flex items-center gap-2 min-w-max ${
                     activeSection === "find-programs" 
-                      ? "bg-purple-600 text-white hover:bg-purple-700" 
-                      : "hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600" 
+                      : "hover:bg-teal-100 dark:hover:bg-teal-900/30"
                   } transition-all duration-300`}
                   onClick={() => handleSectionChange("find-programs")}
                 >
@@ -195,8 +256,8 @@ const Dashboard = () => {
                   variant={activeSection === "find-professors" ? "default" : "outline"}
                   className={`flex items-center gap-2 min-w-max ${
                     activeSection === "find-professors" 
-                      ? "bg-purple-600 text-white hover:bg-purple-700" 
-                      : "hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600" 
+                      : "hover:bg-teal-100 dark:hover:bg-teal-900/30"
                   } transition-all duration-300`}
                   onClick={() => handleSectionChange("find-professors")}
                 >
@@ -208,8 +269,8 @@ const Dashboard = () => {
                   variant={activeSection === "create-resume" ? "default" : "outline"}
                   className={`flex items-center gap-2 min-w-max ${
                     activeSection === "create-resume" 
-                      ? "bg-purple-600 text-white hover:bg-purple-700" 
-                      : "hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600" 
+                      : "hover:bg-teal-100 dark:hover:bg-teal-900/30"
                   } transition-all duration-300`}
                   onClick={() => handleSectionChange("create-resume")}
                 >
@@ -221,8 +282,8 @@ const Dashboard = () => {
                   variant={activeSection === "create-sop" ? "default" : "outline"}
                   className={`flex items-center gap-2 min-w-max ${
                     activeSection === "create-sop" 
-                      ? "bg-purple-600 text-white hover:bg-purple-700" 
-                      : "hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600" 
+                      : "hover:bg-teal-100 dark:hover:bg-teal-900/30"
                   } transition-all duration-300`}
                   onClick={() => handleSectionChange("create-sop")}
                 >
@@ -234,8 +295,8 @@ const Dashboard = () => {
                   variant={activeSection === "create-lor" ? "default" : "outline"}
                   className={`flex items-center gap-2 min-w-max ${
                     activeSection === "create-lor" 
-                      ? "bg-purple-600 text-white hover:bg-purple-700" 
-                      : "hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600" 
+                      : "hover:bg-teal-100 dark:hover:bg-teal-900/30"
                   } transition-all duration-300`}
                   onClick={() => handleSectionChange("create-lor")}
                 >
@@ -247,8 +308,8 @@ const Dashboard = () => {
                   variant={activeSection === "apply-now" ? "default" : "outline"}
                   className={`flex items-center gap-2 min-w-max ${
                     activeSection === "apply-now" 
-                      ? "bg-purple-600 text-white hover:bg-purple-700" 
-                      : "hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600" 
+                      : "hover:bg-teal-100 dark:hover:bg-teal-900/30"
                   } transition-all duration-300`}
                   onClick={() => handleSectionChange("apply-now")}
                 >
@@ -260,8 +321,8 @@ const Dashboard = () => {
                   variant={isQuestApplyAI ? "default" : "outline"}
                   className={`flex items-center gap-2 min-w-max ${
                     isQuestApplyAI 
-                      ? "bg-purple-600 text-white hover:bg-purple-700" 
-                      : "hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600" 
+                      : "hover:bg-teal-100 dark:hover:bg-teal-900/30"
                   } transition-all duration-300`}
                   onClick={handleQuestApplyAI}
                 >
@@ -270,9 +331,39 @@ const Dashboard = () => {
                 </Button>
               </div>
             </div>
+            
+            {/* Chat Box */}
+            <ChatBox 
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              isQuestApplyAI={isQuestApplyAI}
+            />
+            
+            {/* Filters - Below the chat box */}
+            {filterOptions && (
+              <div className="mt-4 animate-fade-in">
+                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                  </svg>
+                  Filters
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {filterOptions.map((filter, index) => (
+                    <button
+                      key={index}
+                      className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full border border-gray-200 dark:border-gray-700 text-sm text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-all duration-300 hover:border-teal-200 dark:hover:border-teal-700 hover:shadow-sm"
+                    >
+                      {filter.icon}
+                      {filter.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
-            {/* Main Content Area */}
-            <div className="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 animate-fade-in">
+            {/* Main Content Area - With margin from the chat box */}
+            <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 animate-fade-in">
               {renderContent()}
             </div>
           </div>

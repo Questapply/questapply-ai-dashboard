@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { ArrowUp, Search } from "lucide-react";
 
 interface ChatBoxProps {
   searchQuery: string;
@@ -22,7 +22,7 @@ const ChatBox = ({ searchQuery, setSearchQuery, isQuestApplyAI }: ChatBoxProps) 
       <div 
         className={`w-full rounded-2xl border ${
           isFocused 
-            ? "border-purple-400 shadow-lg shadow-purple-100 dark:shadow-purple-900/20" 
+            ? "border-teal-400 shadow-lg shadow-teal-100 dark:shadow-teal-900/20" 
             : "border-gray-200 dark:border-gray-700"
         } transition-all duration-300 bg-white dark:bg-gray-800 overflow-hidden`}
       >
@@ -38,12 +38,17 @@ const ChatBox = ({ searchQuery, setSearchQuery, isQuestApplyAI }: ChatBoxProps) 
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
             />
+            {isQuestApplyAI && (
+              <div className="ml-2 px-3 py-1 text-sm bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-full animate-pulse">
+                QuestApply AI
+              </div>
+            )}
           </div>
           <button
             type="submit"
-            className="h-full px-6 py-3 bg-purple-600 text-white hover:bg-purple-700 transition-colors duration-300"
+            className="h-full px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 transition-colors duration-300"
           >
-            {isQuestApplyAI ? "Ask AI" : "Search"}
+            <ArrowUp className="w-5 h-5" />
           </button>
         </form>
       </div>
@@ -52,13 +57,13 @@ const ChatBox = ({ searchQuery, setSearchQuery, isQuestApplyAI }: ChatBoxProps) 
         <div className="absolute inset-x-0 top-full mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 z-10 animate-fade-in">
           <div className="text-sm text-gray-500 mb-2">Suggested searches</div>
           <div className="space-y-2">
-            <div className="cursor-pointer p-2 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-md transition-colors duration-200 text-gray-700 dark:text-gray-300">
+            <div className="cursor-pointer p-2 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-md transition-colors duration-200 text-gray-700 dark:text-gray-300">
               How to improve my application?
             </div>
-            <div className="cursor-pointer p-2 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-md transition-colors duration-200 text-gray-700 dark:text-gray-300">
+            <div className="cursor-pointer p-2 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-md transition-colors duration-200 text-gray-700 dark:text-gray-300">
               Top schools for Computer Science
             </div>
-            <div className="cursor-pointer p-2 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-md transition-colors duration-200 text-gray-700 dark:text-gray-300">
+            <div className="cursor-pointer p-2 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-md transition-colors duration-200 text-gray-700 dark:text-gray-300">
               Resume writing tips for PhD applications
             </div>
           </div>
