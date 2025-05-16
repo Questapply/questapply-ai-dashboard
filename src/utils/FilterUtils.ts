@@ -11,7 +11,10 @@ import {
   PercentIcon, 
   BarChart, 
   ArrowUpDown,
-  Users
+  Users,
+  Trophy,
+  DollarSign,
+  Building
 } from "lucide-react";
 
 export interface FilterOption {
@@ -39,37 +42,37 @@ export const getFilterOptions = (activeSection: Section, isQuestApplyAI: boolean
   switch (activeSection) {
     case "find-schools":
       return [
-        { icon: <Globe className="w-4 h-4" />, label: "Country" },
-        { icon: <Map className="w-4 h-4" />, label: "State" },
-        { icon: <GraduationCap className="w-4 h-4" />, label: "Schools" },
-        { icon: <BookOpen className="w-4 h-4" />, label: "Degree Level" },
-        { icon: <FileText className="w-4 h-4" />, label: "Area of Study" },
-        { icon: <Scroll className="w-4 h-4" />, label: "Programs" },
-        { icon: <ArrowUpDown className="w-4 h-4" />, label: "Order By" }
+        { icon: <Globe size={16} />, label: "Country" },
+        { icon: <Map size={16} />, label: "State" },
+        { icon: <GraduationCap size={16} />, label: "Schools" },
+        { icon: <BookOpen size={16} />, label: "Degree Level" },
+        { icon: <FileText size={16} />, label: "Area of Study" },
+        { icon: <Scroll size={16} />, label: "Programs" },
+        { icon: <ArrowUpDown size={16} />, label: "Order By" }
       ];
     case "find-programs":
       return [
-        { icon: <Globe className="w-4 h-4" />, label: "Country" },
-        { icon: <Map className="w-4 h-4" />, label: "State" },
-        { icon: <GraduationCap className="w-4 h-4" />, label: "Schools" },
-        { icon: <BookOpen className="w-4 h-4" />, label: "Degree Level" },
-        { icon: <FileText className="w-4 h-4" />, label: "Area of Study" },
-        { icon: <Scroll className="w-4 h-4" />, label: "Programs" },
-        { icon: <Calendar className="w-4 h-4" />, label: "Deadline" },
-        { icon: <FileText className="w-4 h-4" />, label: "English" },
-        { icon: <PercentIcon className="w-4 h-4" />, label: "GPA" },
-        { icon: <BarChart className="w-4 h-4" />, label: "GRE" },
-        { icon: <ArrowUpDown className="w-4 h-4" />, label: "Order By" }
+        { icon: <Globe size={16} />, label: "Country" },
+        { icon: <Map size={16} />, label: "State" },
+        { icon: <GraduationCap size={16} />, label: "Schools" },
+        { icon: <BookOpen size={16} />, label: "Degree Level" },
+        { icon: <FileText size={16} />, label: "Area of Study" },
+        { icon: <Scroll size={16} />, label: "Programs" },
+        { icon: <Calendar size={16} />, label: "Deadline" },
+        { icon: <FileText size={16} />, label: "English" },
+        { icon: <PercentIcon size={16} />, label: "GPA" },
+        { icon: <BarChart size={16} />, label: "GRE" },
+        { icon: <ArrowUpDown size={16} />, label: "Order By" }
       ];
     case "find-professors":
       return [
-        { icon: <Globe className="w-4 h-4" />, label: "Country" },
-        { icon: <Map className="w-4 h-4" />, label: "State" },
-        { icon: <GraduationCap className="w-4 h-4" />, label: "Schools" },
-        { icon: <FileText className="w-4 h-4" />, label: "Area of Study" },
-        { icon: <Scroll className="w-4 h-4" />, label: "Programs" },
-        { icon: <BookOpen className="w-4 h-4" />, label: "Research Interest" },
-        { icon: <Users className="w-4 h-4" />, label: "Title" }
+        { icon: <Globe size={16} />, label: "Country" },
+        { icon: <Map size={16} />, label: "State" },
+        { icon: <GraduationCap size={16} />, label: "Schools" },
+        { icon: <FileText size={16} />, label: "Area of Study" },
+        { icon: <Scroll size={16} />, label: "Programs" },
+        { icon: <BookOpen size={16} />, label: "Research Interest" },
+        { icon: <Users size={16} />, label: "Title" }
       ];
     default:
       return null;

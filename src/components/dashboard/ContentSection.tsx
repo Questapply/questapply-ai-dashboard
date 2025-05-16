@@ -24,6 +24,7 @@ const ContentSection = ({ activeSection, isQuestApplyAI }: ContentSectionProps) 
     );
   }
 
+  // Render the appropriate section based on activeSection
   switch (activeSection) {
     case "ai-talent-test":
       return <AiTalentTest />;

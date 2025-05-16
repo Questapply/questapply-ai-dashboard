@@ -1,30 +1,7 @@
 
 import { useState } from "react";
-import { 
-  ArrowUp, 
-  Search, 
-  Trophy, 
-  Globe, 
-  Map, 
-  Scroll, 
-  DollarSign, 
-  FileCheck, 
-  UserCircle, 
-  Building,
-  BookOpen,
-  GraduationCap,
-  Calendar,
-  PercentIcon,
-  BarChart,
-  ArrowUpDown,
-  Users,
-  FileText
-} from "lucide-react";
-
-interface FilterOption {
-  icon: React.ReactNode;
-  label: string;
-}
+import { ArrowUp, Search } from "lucide-react";
+import { FilterOption } from "@/utils/FilterUtils";
 
 interface ChatBoxProps {
   searchQuery: string;
@@ -56,9 +33,10 @@ const ChatBox = ({
           isFocused 
             ? "border-teal-400 shadow-lg shadow-teal-100 dark:shadow-teal-900/20" 
             : isDarkMode ? "border-gray-700" : "border-gray-200"
-        } transition-all duration-300 ${isDarkMode ? "bg-gray-800" : "bg-white"} overflow-hidden h-16`}
+        } transition-all duration-300 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}
       >
         <form onSubmit={handleSubmit} className="flex flex-col">
+          {/* Search Input Area - Fixed Height */}
           <div className="flex items-center px-4 py-4 h-16">
             {!isQuestApplyAI && (
               <Search className={`w-5 h-5 ${isDarkMode ? "text-gray-500" : "text-gray-400"}`} />
@@ -90,6 +68,11 @@ const ChatBox = ({
           {/* Filter Options Inside the Chat Box */}
           {filterOptions && (
             <div className={`p-3 border-t ${isDarkMode ? "border-gray-700" : "border-gray-200"} animate-fade-in`}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className={`text-sm font-medium ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>
+                  Filters
+                </span>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {filterOptions.map((filter, index) => (
                   <button
