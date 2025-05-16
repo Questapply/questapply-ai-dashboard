@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { ArrowUp, Search } from "lucide-react";
+import { ArrowUp, Search, Trophy, Globe, Map, Scroll, DollarSign, FileCheck, UserCircle, Building } from "lucide-react";
 
 interface FilterOption {
   icon: React.ReactNode;
@@ -37,11 +37,13 @@ const ChatBox = ({
           isFocused 
             ? "border-teal-400 shadow-lg shadow-teal-100 dark:shadow-teal-900/20" 
             : isDarkMode ? "border-gray-700" : "border-gray-200"
-        } transition-all duration-300 ${isDarkMode ? "bg-gray-800" : "bg-white"} overflow-hidden`}
+        } transition-all duration-300 ${isDarkMode ? "bg-gray-800" : "bg-white"} overflow-hidden h-16`}
       >
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="flex items-center px-4 py-4 h-16">
-            <Search className={`w-5 h-5 ${isDarkMode ? "text-gray-500" : "text-gray-400"}`} />
+            {!isQuestApplyAI && (
+              <Search className={`w-5 h-5 ${isDarkMode ? "text-gray-500" : "text-gray-400"}`} />
+            )}
             <input
               type="text"
               className={`flex-grow ml-3 outline-none bg-transparent ${
@@ -69,13 +71,7 @@ const ChatBox = ({
           {/* Filter Options Inside the Chat Box */}
           {filterOptions && (
             <div className={`p-3 border-t ${isDarkMode ? "border-gray-700" : "border-gray-200"} animate-fade-in`}>
-              <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                </svg>
-                Filters
-              </div>
-              <div className="flex flex-wrap gap-2 mt-2">
+              <div className="flex flex-wrap gap-2">
                 {filterOptions.map((filter, index) => (
                   <button
                     key={index}
