@@ -1,7 +1,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Progress } from "@/components/ui/progress";
+import ProgressCircle from "@/components/ui/progress-circle";
 import { School } from "./SchoolsData";
 
 interface SchoolStatisticsProps {
@@ -10,46 +10,36 @@ interface SchoolStatisticsProps {
 
 const SchoolStatistics = ({ school }: SchoolStatisticsProps) => {
   return (
-    <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg shadow-sm">
-      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Key Statistics</h4>
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs">
-            <span className="text-gray-600 dark:text-gray-300 font-medium">Acceptance Rate</span>
-            <span className="font-medium text-gray-700 dark:text-gray-200">{school.acceptance}%</span>
-          </div>
-          <div className="relative">
-            <Progress value={school.acceptance} className="h-2 bg-gray-200 dark:bg-gray-700" />
-            <motion.div
-              className="absolute -top-8 left-0 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs px-2 py-1 rounded shadow-sm"
-              style={{ left: `${school.acceptance}%`, transform: "translateX(-50%)" }}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              {school.acceptance}%
-            </motion.div>
-          </div>
-        </div>
+    <div className="bg-gray-800/60 p-4 rounded-lg">
+      <h4 className="text-sm font-medium text-gray-300 mb-3">Statistics</h4>
+      <div className="flex justify-around items-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="flex flex-col items-center"
+        >
+          <ProgressCircle 
+            value={school.acceptance}
+            size="lg"
+            color="red"
+            label="Acceptance"
+          />
+        </motion.div>
         
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs">
-            <span className="text-gray-600 dark:text-gray-300 font-medium">Graduation Rate</span>
-            <span className="font-medium text-gray-700 dark:text-gray-200">{school.graduation}%</span>
-          </div>
-          <div className="relative">
-            <Progress value={school.graduation} className="h-2 bg-gray-200 dark:bg-gray-700" />
-            <motion.div
-              className="absolute -top-8 right-0 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-2 py-1 rounded shadow-sm"
-              style={{ left: `${school.graduation}%`, transform: "translateX(-50%)" }}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              {school.graduation}%
-            </motion.div>
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="flex flex-col items-center"
+        >
+          <ProgressCircle 
+            value={school.graduation}
+            size="lg"
+            color="green"
+            label="Graduation"
+          />
+        </motion.div>
       </div>
     </div>
   );

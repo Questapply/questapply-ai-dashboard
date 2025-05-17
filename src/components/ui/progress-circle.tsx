@@ -18,7 +18,7 @@ interface ProgressCircleProps {
 export const ProgressCircle: React.FC<ProgressCircleProps> = ({
   value,
   size = "md",
-  strokeWidth = 6,
+  strokeWidth = 4,
   color = "purple",
   showValue = true,
   label,
@@ -29,7 +29,12 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
   const [progress, setProgress] = useState(0);
   
   useEffect(() => {
-    setProgress(value);
+    // Animate the progress
+    setProgress(0);
+    const timer = setTimeout(() => {
+      setProgress(value);
+    }, 100);
+    return () => clearTimeout(timer);
   }, [value]);
   
   // Size configs
@@ -57,34 +62,34 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
   // Color configs
   const colorMap = {
     purple: {
-      stroke: "stroke-purple-600 dark:stroke-purple-400",
-      bg: "stroke-purple-200 dark:stroke-purple-900",
-      text: "text-purple-600 dark:text-purple-400"
+      stroke: "stroke-purple-500",
+      bg: "stroke-purple-900/30",
+      text: "text-purple-400"
     },
     blue: {
-      stroke: "stroke-blue-600 dark:stroke-blue-400",
-      bg: "stroke-blue-200 dark:stroke-blue-900",
-      text: "text-blue-600 dark:text-blue-400"
+      stroke: "stroke-blue-500",
+      bg: "stroke-blue-900/30",
+      text: "text-blue-400"
     },
     green: {
-      stroke: "stroke-green-600 dark:stroke-green-400",
-      bg: "stroke-green-200 dark:stroke-green-900",
-      text: "text-green-600 dark:text-green-400"
+      stroke: "stroke-green-500",
+      bg: "stroke-green-900/30",
+      text: "text-green-400"
     },
     red: {
-      stroke: "stroke-red-600 dark:stroke-red-400",
-      bg: "stroke-red-200 dark:stroke-red-900",
-      text: "text-red-600 dark:text-red-400"
+      stroke: "stroke-red-500",
+      bg: "stroke-red-900/30",
+      text: "text-red-400"
     },
     yellow: {
-      stroke: "stroke-yellow-600 dark:stroke-yellow-400",
-      bg: "stroke-yellow-200 dark:stroke-yellow-900",
-      text: "text-yellow-600 dark:text-yellow-400"
+      stroke: "stroke-yellow-500",
+      bg: "stroke-yellow-900/30",
+      text: "text-yellow-400"
     },
     gray: {
-      stroke: "stroke-gray-600 dark:stroke-gray-400",
-      bg: "stroke-gray-200 dark:stroke-gray-900",
-      text: "text-gray-600 dark:text-gray-400"
+      stroke: "stroke-gray-500",
+      bg: "stroke-gray-900/30",
+      text: "text-gray-400"
     }
   };
   
@@ -125,7 +130,7 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
             className={selectedColor.stroke}
             initial={{ strokeDashoffset: circumference }}
             animate={{ strokeDashoffset }}
-            transition={{ duration: 1, ease: "easeOut" }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
             style={{
               strokeDasharray: circumference
             }}
@@ -148,7 +153,7 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
       </div>
       
       {label && (
-        <span className={cn("mt-2", selectedSize.labelSize, "text-gray-500 dark:text-gray-400", labelClassName)}>
+        <span className={cn("mt-2", selectedSize.labelSize, "text-gray-300", labelClassName)}>
           {label}
         </span>
       )}

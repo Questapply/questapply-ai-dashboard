@@ -60,7 +60,7 @@ const SchoolCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 + index * 0.1 }}
-      className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900 shadow-md hover:shadow-lg transition-all duration-300"
+      className="border border-gray-700 rounded-lg overflow-hidden bg-gray-900 shadow-md hover:shadow-lg transition-all duration-300"
     >
       <div className="p-6">
         <div className="flex flex-col md:flex-row gap-6">
@@ -81,14 +81,14 @@ const SchoolCard = ({
             <div className="flex gap-2 mt-2">
               <Button 
                 variant="outline" 
-                className="flex-1 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 border-purple-300 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-800/30"
+                className="flex-1 bg-purple-900/20 text-purple-400 border-purple-800 hover:bg-purple-800/30"
                 onClick={handleViewDetails}
               >
                 School Details
               </Button>
               <Button 
                 variant="outline"
-                className="flex items-center gap-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-300 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-800/30"
+                className="flex items-center gap-1 bg-blue-900/20 text-blue-400 border-blue-800 hover:bg-blue-800/30"
                 onClick={handleCompare}
               >
                 <GitCompare className="h-4 w-4" />
