@@ -9,7 +9,7 @@ import { getFilterOptions, Section } from "@/utils/FilterUtils";
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState<Section>("ai-talent-test");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Default to closed on mobile
   const [searchQuery, setSearchQuery] = useState("");
   const [isQuestApplyAI, setIsQuestApplyAI] = useState(true); // Default to QuestApply AI
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -85,38 +85,40 @@ const Dashboard = () => {
       sidebarOpen={sidebarOpen}
       setSidebarOpen={setSidebarOpen}
     >
-      <NavigationButtons 
-        activeSection={activeSection}
-        handleSectionChange={handleSectionChange}
-        handleQuestApplyAI={handleQuestApplyAI}
-        isQuestApplyAI={isQuestApplyAI}
-        isDarkMode={isDarkMode}
-      />
-      
-      {/* Chat Box with Filters Inside */}
-      <div className="relative">
-        <ChatBox 
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
+      <div className="w-full max-w-full overflow-x-hidden">
+        <NavigationButtons 
+          activeSection={activeSection}
+          handleSectionChange={handleSectionChange}
+          handleQuestApplyAI={handleQuestApplyAI}
           isQuestApplyAI={isQuestApplyAI}
           isDarkMode={isDarkMode}
-          filterOptions={filterOptions}
         />
-      </div>
+        
+        {/* Chat Box with Filters Inside */}
+        <div className="relative">
+          <ChatBox 
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            isQuestApplyAI={isQuestApplyAI}
+            isDarkMode={isDarkMode}
+            filterOptions={filterOptions}
+          />
+        </div>
 
-      {/* Main Content Area */}
-      <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 animate-fade-in">
-        <ContentSection 
-          activeSection={activeSection} 
-          isQuestApplyAI={isQuestApplyAI} 
+        {/* Main Content Area */}
+        <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 animate-fade-in">
+          <ContentSection 
+            activeSection={activeSection} 
+            isQuestApplyAI={isQuestApplyAI} 
+          />
+        </div>
+        
+        {/* Feedback Prompt */}
+        <FeedbackPrompt 
+          show={showFeedbackPrompt} 
+          onClose={() => setShowFeedbackPrompt(false)}
         />
       </div>
-      
-      {/* Feedback Prompt */}
-      <FeedbackPrompt 
-        show={showFeedbackPrompt} 
-        onClose={() => setShowFeedbackPrompt(false)}
-      />
     </DashboardLayout>
   );
 };
