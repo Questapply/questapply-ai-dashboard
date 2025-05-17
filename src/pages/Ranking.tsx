@@ -123,7 +123,7 @@ const Ranking = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-purple-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-purple-100 dark:border-purple-900/50 sticky top-0 z-10">
+      <header className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-md border-b border-purple-100 dark:border-purple-900/50 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
@@ -161,7 +161,7 @@ const Ranking = () => {
                       Help Center
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-white dark:bg-gray-800 shadow-lg rounded-lg">
                         <li className="row-span-3">
                           <NavigationMenuLink asChild>
                             <a
@@ -228,7 +228,7 @@ const Ranking = () => {
                   1
                 </span>
               </span>
-              <div className="h-8 w-8 bg-purple-600 rounded-full flex items-center justify-center text-white">
+              <div className="h-8 w-8 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full flex items-center justify-center text-white">
                 A
               </div>
             </div>
@@ -246,7 +246,7 @@ const Ranking = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm">
+            <div className="bg-white dark:bg-gray-800/90 p-5 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Filters</h2>
                 <button className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300">
@@ -294,19 +294,19 @@ const Ranking = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
-              <div className="grid grid-cols-6 gap-4 p-4 text-sm text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
-                <div className="col-span-2">Country</div>
+            <div className="bg-white dark:bg-gray-800/90 rounded-lg shadow-sm overflow-hidden border border-gray-100 dark:border-gray-700">
+              <div className="grid grid-cols-6 gap-4 p-4 text-sm text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/80">
+                <div className="col-span-2">University</div>
                 <div className="text-center font-medium text-purple-600 dark:text-purple-400">QS</div>
                 <div className="text-center">US News</div>
                 <div className="text-center">Shanghai</div>
                 <div className="text-center">THE</div>
                 <div className="text-center">Forbes</div>
-                <div className="text-center">Schools details</div>
+                <div className="text-center">Favorite</div>
               </div>
 
               {universities.map((university) => (
-                <div key={university.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-150">
+                <div key={university.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150">
                   <div className="grid grid-cols-6 gap-4 p-4 items-center">
                     <div className="col-span-2 flex items-center space-x-3">
                       <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-md flex items-center justify-center overflow-hidden">
