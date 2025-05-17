@@ -41,6 +41,22 @@ const NavigationButtons = ({
     <div className="mb-8 flex overflow-x-auto pb-2 scrollbar-hide">
       <div className="flex space-x-2 md:space-x-4">
         <Button
+          variant={isQuestApplyAI ? "default" : "outline"}
+          className={`flex items-center gap-2 min-w-max transition-all duration-300 relative ${
+            isQuestApplyAI 
+              ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
+              : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
+          }`}
+          onClick={handleQuestApplyAI}
+        >
+          <Search className="w-4 h-4" />
+          QuestApply AI
+          <span className="absolute -top-2 -right-2 px-1.5 py-0.5 text-[10px] font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full animate-pulse">
+            NEW
+          </span>
+        </Button>
+        
+        <Button
           variant={activeSection === "ai-talent-test" ? "default" : "outline"}
           className={`flex items-center gap-2 min-w-max transition-all duration-300 ${
             activeSection === "ai-talent-test" 

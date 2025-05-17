@@ -11,7 +11,7 @@ const Dashboard = () => {
   const [activeSection, setActiveSection] = useState<Section>("ai-talent-test");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isQuestApplyAI, setIsQuestApplyAI] = useState(false);
+  const [isQuestApplyAI, setIsQuestApplyAI] = useState(true); // Default to QuestApply AI
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedDarkMode = localStorage.getItem("darkMode");
     return savedDarkMode ? JSON.parse(savedDarkMode) : true;
