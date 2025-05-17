@@ -15,6 +15,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -50,34 +51,47 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
   };
 
   return (
-    <aside 
+    <motion.aside 
       className={cn(
         "relative h-full bg-white dark:bg-gray-800 border-r border-purple-100 dark:border-gray-700 transition-all duration-300 ease-in-out flex flex-col shadow-lg",
         isOpen ? "w-64" : "w-20"
       )}
+      initial={{ x: -20, opacity: 0.8 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
     >
       {/* Collapse Button */}
-      <button 
+      <motion.button 
         className="absolute -right-3 top-20 bg-white dark:bg-gray-800 border border-purple-100 dark:border-gray-700 rounded-full p-1 shadow-md z-10"
         onClick={toggleSidebar}
+        whileHover={{ scale: 1.2 }}
+        whileTap={{ scale: 0.95 }}
       >
         {isOpen ? (
           <ChevronLeft className="h-4 w-4 text-purple-600 dark:text-purple-400" />
         ) : (
           <ChevronRight className="h-4 w-4 text-purple-600 dark:text-purple-400" />
         )}
-      </button>
+      </motion.button>
       
       {/* Logo Area */}
       <div className="flex items-center justify-center h-20 border-b border-purple-100 dark:border-gray-700">
         {isOpen ? (
-          <div className="font-bold text-xl bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="font-bold text-xl bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent"
+          >
             QuestApply
-          </div>
+          </motion.div>
         ) : (
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-purple-400 flex items-center justify-center text-white font-bold text-xl">
+          <motion.div 
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-purple-400 flex items-center justify-center text-white font-bold text-xl"
+          >
             Q
-          </div>
+          </motion.div>
         )}
       </div>
       
@@ -87,8 +101,13 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
           {navItems.map((item, index) => {
             const Icon = item.icon;
             return (
-              <li key={index}>
-                <button
+              <motion.li 
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <motion.button
                   className={cn(
                     "w-full flex items-center rounded-lg p-3 transition-all duration-200",
                     activeItem === item.label
@@ -96,20 +115,27 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
                       : "text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-900/10"
                   )}
                   onClick={() => handleNavigation(item.href, item.label)}
+                  whileHover={{ x: isOpen ? 5 : 0 }}
+                  whileTap={{ scale: 0.97 }}
                 >
                   <Icon className={cn("h-5 w-5", activeItem === item.label ? "text-purple-600 dark:text-purple-400" : "")} />
                   {isOpen && (
-                    <span className={cn(
-                      "ml-3 font-medium transition-all duration-300",
-                      activeItem === item.label 
-                        ? "text-purple-600 dark:text-purple-400" 
-                        : "text-gray-700 dark:text-gray-300"
-                    )}>
+                    <motion.span 
+                      className={cn(
+                        "ml-3 font-medium",
+                        activeItem === item.label 
+                          ? "text-purple-600 dark:text-purple-400" 
+                          : "text-gray-700 dark:text-gray-300"
+                      )}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                    >
                       {item.label}
-                    </span>
+                    </motion.span>
                   )}
-                </button>
-              </li>
+                </motion.button>
+              </motion.li>
             );
           })}
         </ul>
@@ -121,13 +147,17 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
           U
         </div>
         {isOpen && (
-          <div className="ml-3">
+          <motion.div 
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="ml-3"
+          >
             <div className="font-medium text-gray-800 dark:text-gray-200">User Name</div>
             <div className="text-xs text-gray-500 dark:text-gray-400">user@example.com</div>
-          </div>
+          </motion.div>
         )}
       </div>
-    </aside>
+    </motion.aside>
   );
 };
 
