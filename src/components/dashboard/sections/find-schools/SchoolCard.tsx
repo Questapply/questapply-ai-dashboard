@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Compare } from "lucide-react";
+import { GitCompare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import SchoolBasicInfo from "./SchoolBasicInfo";
 import SchoolRankings from "./SchoolRankings";
@@ -91,7 +91,7 @@ const SchoolCard = ({
                 className="flex items-center gap-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-300 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-800/30"
                 onClick={handleCompare}
               >
-                <Compare className="h-4 w-4" />
+                <GitCompare className="h-4 w-4" />
                 Compare
               </Button>
             </div>

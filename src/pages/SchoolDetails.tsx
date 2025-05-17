@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -9,7 +8,7 @@ import {
   MapPin, 
   Star, 
   Info, 
-  Compare,
+  GitCompare,
   ArrowUp,
   ArrowDown
 } from "lucide-react";
@@ -110,7 +109,7 @@ const SchoolDetails = () => {
               onClick={handleCompare}
               className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white"
             >
-              <Compare className="h-4 w-4" />
+              <GitCompare className="h-4 w-4" />
               Compare
             </Button>
           </motion.div>
