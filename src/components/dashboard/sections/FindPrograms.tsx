@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import StatCircle from "@/components/ui/stat-circle";
 import { CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 type ProgramFilter = {
   id: string;
@@ -92,6 +92,7 @@ const programs = [
 ];
 
 const FindPrograms = () => {
+  const navigate = useNavigate();
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [favorites, setFavorites] = useState<Record<number, boolean>>(
     programs.reduce((acc, program) => ({...acc, [program.id]: program.favorite}), {})
@@ -144,6 +145,10 @@ const FindPrograms = () => {
           icon: "?",
         };
     }
+  };
+
+  const handleProgramInformation = (programId: number) => {
+    navigate(`/program/${programId}`);
   };
 
   return (
@@ -412,7 +417,11 @@ const FindPrograms = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 }}
                   >
-                    <Button variant="outline" className="text-purple-600 border-purple-300 dark:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                    <Button 
+                      variant="outline" 
+                      className="text-purple-600 border-purple-300 dark:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                      onClick={() => handleProgramInformation(program.id)}
+                    >
                       Program Information
                     </Button>
                   </motion.div>

@@ -18,6 +18,7 @@ import HelpCenter from "@/pages/HelpCenter";
 import PaymentCheckout from "@/pages/PaymentCheckout";
 import CompareSchools from "@/pages/CompareSchools";
 import SchoolDetails from "@/pages/SchoolDetails";
+import ProgramDetails from "@/pages/ProgramDetails";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <Route path="/help-center" element={<HelpCenter />} />
         <Route path="/compare-schools/:schoolIds" element={<CompareSchools />} />
         <Route path="/school/:schoolId" element={<SchoolDetails />} />
+        <Route path="/program/:programId" element={<ProgramDetails />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
