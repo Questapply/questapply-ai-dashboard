@@ -2,7 +2,13 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ListOrdered, Shield } from "lucide-react";
+import { ListOrdered, Shield, HelpCircle } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Index = () => {
   return (
@@ -23,6 +29,31 @@ const Index = () => {
                   <ListOrdered className="h-4 w-4 mr-1" />
                   Ranking
                 </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium flex items-center">
+                      <HelpCircle className="h-4 w-4 mr-1" />
+                      Help Center
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-2">
+                    <DropdownMenuItem className="focus:bg-purple-100 dark:focus:bg-purple-900/30 rounded-md">
+                      <Link to="/help-center?tab=faqs" className="flex items-center w-full px-2 py-1.5">
+                        FAQs
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="focus:bg-purple-100 dark:focus:bg-purple-900/30 rounded-md">
+                      <Link to="/help-center?tab=video-tutorials" className="flex items-center w-full px-2 py-1.5">
+                        Video Tutorials
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="focus:bg-purple-100 dark:focus:bg-purple-900/30 rounded-md">
+                      <Link to="/help-center?tab=support-ticket" className="flex items-center w-full px-2 py-1.5">
+                        Support Ticket
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
             <div className="flex items-center space-x-4">

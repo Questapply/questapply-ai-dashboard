@@ -14,6 +14,7 @@ import Rewards from "@/pages/Rewards";
 import Payments from "@/pages/Payments";
 import Ranking from "@/pages/Ranking";
 import Pro from "@/pages/Pro";
+import HelpCenter from "@/pages/HelpCenter";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="/payments" element={<Payments />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/pro" element={<Pro />} />
+        <Route path="/help-center" element={<HelpCenter />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
