@@ -1,8 +1,9 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import AnimatedCard from "@/components/ui/animated-card";
-import { CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Compare } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import SchoolBasicInfo from "./SchoolBasicInfo";
 import SchoolRankings from "./SchoolRankings";
 import SchoolCost from "./SchoolCost";
@@ -30,19 +31,41 @@ interface SchoolCardProps {
   index: number;
   isFavorite: boolean;
   toggleFavorite: (schoolId: number) => void;
+  onCompare?: (schoolId: number) => void;
 }
 
-const SchoolCard = ({ school, index, isFavorite, toggleFavorite }: SchoolCardProps) => {
+const SchoolCard = ({ 
+  school, 
+  index, 
+  isFavorite, 
+  toggleFavorite,
+  onCompare
+}: SchoolCardProps) => {
+  const navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    navigate(`/school/${school.id}`);
+  };
+
+  const handleCompare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onCompare) {
+      onCompare(school.id);
+    }
+  };
+
   return (
-    <AnimatedCard 
+    <motion.div
       key={school.id}
-      delay={0.2 + index * 0.1}
-      className="border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 + index * 0.1 }}
+      className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900 shadow-md hover:shadow-lg transition-all duration-300"
     >
-      <CardContent className="p-6">
+      <div className="p-6">
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Logo and Basic Info */}
-          <div className="flex flex-col gap-4">
+          {/* Logo, Basic Info and Rankings */}
+          <div className="flex flex-col gap-6 w-full md:w-1/3">
             <SchoolBasicInfo 
               name={school.name}
               location={school.location}
@@ -53,11 +76,30 @@ const SchoolCard = ({ school, index, isFavorite, toggleFavorite }: SchoolCardPro
             
             {/* Rankings */}
             <SchoolRankings rankings={school.ranking} />
+            
+            {/* Actions */}
+            <div className="flex gap-2 mt-2">
+              <Button 
+                variant="outline" 
+                className="flex-1 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 border-purple-300 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-800/30"
+                onClick={handleViewDetails}
+              >
+                School Details
+              </Button>
+              <Button 
+                variant="outline"
+                className="flex items-center gap-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-300 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-800/30"
+                onClick={handleCompare}
+              >
+                <Compare className="h-4 w-4" />
+                Compare
+              </Button>
+            </div>
           </div>
           
           {/* Main Content */}
           <div className="flex-grow">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Cost */}
               <SchoolCost 
                 inState={school.cost.inState}
@@ -70,12 +112,14 @@ const SchoolCard = ({ school, index, isFavorite, toggleFavorite }: SchoolCardPro
               />
               
               {/* Programs */}
-              <SchoolPrograms programs={school.programs} />
+              <div className="lg:col-span-2">
+                <SchoolPrograms programs={school.programs} />
+              </div>
             </div>
           </div>
         </div>
-      </CardContent>
-    </AnimatedCard>
+      </div>
+    </motion.div>
   );
 };
 

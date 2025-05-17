@@ -16,6 +16,8 @@ import Ranking from "@/pages/Ranking";
 import Pro from "@/pages/Pro";
 import HelpCenter from "@/pages/HelpCenter";
 import PaymentCheckout from "@/pages/PaymentCheckout";
+import CompareSchools from "@/pages/CompareSchools";
+import SchoolDetails from "@/pages/SchoolDetails";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
@@ -37,6 +39,8 @@ function App() {
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/pro" element={<Pro />} />
         <Route path="/help-center" element={<HelpCenter />} />
+        <Route path="/compare-schools/:schoolIds" element={<CompareSchools />} />
+        <Route path="/school/:schoolId" element={<SchoolDetails />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>

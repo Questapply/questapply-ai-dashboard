@@ -1,421 +1,340 @@
 
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useToast } from "@/hooks/use-toast";
-import { 
-  CreditCard, 
-  Sun, 
-  Moon, 
-  Lock, 
-  Shield, 
-  CheckCircle2, 
-  ArrowLeft,
-  Calendar,
-  CreditCardIcon
-} from "lucide-react";
+import { Shield, CreditCard, ChevronLeft, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-
-const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  cardNumber: z.string().min(16, "Card number must be 16 digits").max(19, "Card number must be at most 19 digits"),
-  expiryDate: z.string().min(5, "Expiry date must be in MM/YY format"),
-  cvc: z.string().min(3, "CVC must be 3 or 4 digits").max(4, "CVC must be 3 or 4 digits"),
-  country: z.string().min(1, "Country is required"),
-  postalCode: z.string().min(1, "Postal code is required"),
-  saveCard: z.boolean().default(false),
-});
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useToast } from "@/components/ui/use-toast";
 
 const PaymentCheckout = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return document.documentElement.classList.contains("dark");
   });
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const toggleTheme = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-
-    if (newDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      cardNumber: "",
-      expiryDate: "",
-      cvc: "",
-      country: "",
-      postalCode: "",
-      saveCard: true,
-    },
-  });
-
-  const handlePaymentSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    toast({
-      title: "Payment Successful!",
-      description: "You've successfully subscribed to QuestApply Pro!",
-      variant: "success",
-    });
+  const handlePayment = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
     
-    // Simulate processing time
+    // Simulate payment processing
     setTimeout(() => {
-      navigate("/payments");
-    }, 1500);
-  };
-
-  // Format card number with spaces
-  const formatCardNumber = (value: string) => {
-    const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
-    const matches = v.match(/\d{4,16}/g);
-    const match = (matches && matches[0]) || "";
-    const parts = [];
-
-    for (let i = 0; i < match.length; i += 4) {
-      parts.push(match.substring(i, i + 4));
-    }
-
-    if (parts.length) {
-      return parts.join(" ");
-    } else {
-      return value;
-    }
-  };
-
-  // Format expiry date
-  const formatExpiryDate = (value: string) => {
-    const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
-    
-    if (v.length >= 2) {
-      return `${v.substring(0, 2)}/${v.substring(2, 4)}`;
-    }
-    
-    return v;
+      setLoading(false);
+      toast({
+        title: "Payment Successful!",
+        description: "Your subscription has been activated.",
+        variant: "default",
+      });
+      navigate("/dashboard");
+    }, 2000);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/40">
-      {/* Header */}
-      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-purple-100 dark:border-purple-900/50 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center">
-              <Link to="/" className="font-bold text-xl bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
-                QuestApply
-              </Link>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Sun className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-yellow-500'}`} />
-                <Switch 
-                  checked={isDarkMode} 
-                  onCheckedChange={toggleTheme}
-                  className="data-[state=checked]:bg-blue-600"
-                />
-                <Moon className={`w-5 h-5 ${isDarkMode ? 'text-blue-400' : 'text-gray-400'}`} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <div className="flex-grow py-8 px-4 md:px-0">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-6"
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 flex items-center">
+          <Button
+            variant="outline"
+            size="sm"
+            className="mr-4 border-gray-200 dark:border-gray-700"
+            onClick={() => navigate(-1)}
           >
-            <Link to="/pro" className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 mb-4">
-              <ArrowLeft className="h-4 w-4 mr-1" />
-              Back to Pro Plans
-            </Link>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Complete Your Subscription</h1>
-            <p className="text-gray-600 dark:text-gray-300 mt-2">Subscribe to QuestApply Pro to access all premium features</p>
-          </motion.div>
+            <ChevronLeft className="h-4 w-4 mr-1" />
+            Back
+          </Button>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Checkout</h1>
+        </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Payment Form Column */}
-            <div className="lg:col-span-2">
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(handlePaymentSubmit)} className="space-y-6">
-                  <Card>
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-xl font-bold">Payment Information</CardTitle>
-                        <div className="flex space-x-2">
-                          <CreditCard className="h-6 w-6 text-gray-400" />
-                          <Lock className="h-6 w-6 text-gray-400" />
-                        </div>
-                      </div>
-                      <CardDescription>Enter your payment details securely</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                      <div className="space-y-4">
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Name on Card</FormLabel>
-                              <FormControl>
-                                <Input placeholder="John Smith" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {/* Main Content - Payment Form */}
+          <div className="lg:col-span-2">
+            <motion.div
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Payment Details
+                </h2>
+              </div>
 
-                        <FormField
-                          control={form.control}
-                          name="cardNumber"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Card Number</FormLabel>
-                              <FormControl>
-                                <div className="relative">
-                                  <Input
-                                    placeholder="1234 5678 9012 3456"
-                                    {...field}
-                                    onChange={(e) => {
-                                      const value = formatCardNumber(e.target.value);
-                                      field.onChange(value);
-                                    }}
-                                    maxLength={19}
-                                  />
-                                  <CreditCardIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                                </div>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <div className="grid grid-cols-2 gap-4">
-                          <FormField
-                            control={form.control}
-                            name="expiryDate"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Expiry Date</FormLabel>
-                                <FormControl>
-                                  <div className="relative">
-                                    <Input
-                                      placeholder="MM/YY"
-                                      {...field}
-                                      onChange={(e) => {
-                                        const value = formatExpiryDate(e.target.value);
-                                        field.onChange(value);
-                                      }}
-                                      maxLength={5}
-                                    />
-                                    <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                                  </div>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-
-                          <FormField
-                            control={form.control}
-                            name="cvc"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>CVC</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    placeholder="123"
-                                    {...field}
-                                    type="password"
-                                    maxLength={4}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-
-                        <FormField
-                          control={form.control}
-                          name="country"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Country</FormLabel>
-                              <FormControl>
-                                <Input placeholder="United States" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name="postalCode"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Postal Code</FormLabel>
-                              <FormControl>
-                                <Input placeholder="12345" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name="saveCard"
-                          render={({ field }) => (
-                            <FormItem className="flex flex-row items-center justify-between space-x-3 space-y-0 rounded-md border p-4">
-                              <div className="space-y-1 leading-none">
-                                <FormLabel>Save card for future payments</FormLabel>
-                                <FormDescription className="text-sm text-gray-500 dark:text-gray-400">
-                                  Your payment information is secured
-                                </FormDescription>
-                              </div>
-                              <FormControl>
-                                <Switch
-                                  checked={field.value}
-                                  onCheckedChange={field.onChange}
-                                />
-                              </FormControl>
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex-col items-start space-y-4">
-                      <div className="bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 p-4 rounded-md w-full flex items-start space-x-2">
-                        <Shield className="h-5 w-5 mt-0.5 flex-shrink-0" />
-                        <div className="text-sm">
-                          <p className="font-medium">Secure Payment</p>
-                          <p>Your payment information is encrypted and secure. We use industry-standard security measures to protect your data.</p>
-                        </div>
-                      </div>
-
-                      <Button 
-                        type="submit" 
-                        className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white"
-                        size="lg"
+              <form onSubmit={handlePayment} className="p-6 space-y-6">
+                {/* Payment Method Selection */}
+                <div>
+                  <Label className="text-base font-medium mb-3 block">
+                    Payment Method
+                  </Label>
+                  <RadioGroup defaultValue="card" className="grid grid-cols-3 gap-3">
+                    <div>
+                      <RadioGroupItem
+                        value="card"
+                        id="card"
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor="card"
+                        className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                       >
-                        Pay $100.00 and Subscribe
-                      </Button>
+                        <CreditCard className="mb-3 h-6 w-6" />
+                        <span className="text-sm font-medium">Credit Card</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem
+                        value="paypal"
+                        id="paypal"
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor="paypal"
+                        className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                      >
+                        <svg
+                          className="mb-3 h-6 w-6"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M7.5 19.5C3.75 19.5 1 16.5 1 13C1 9.5 3.75 6.5 7.5 6.5C11.25 6.5 14 9.5 14 13C14 16.5 11.25 19.5 7.5 19.5ZM7.5 8.5C4.75 8.5 3 10.5 3 13C3 15.5 4.75 17.5 7.5 17.5C10.25 17.5 12 15.5 12 13C12 10.5 10.25 8.5 7.5 8.5Z"
+                            fill="currentColor"
+                          />
+                          <path
+                            d="M16.5 17.5C12.75 17.5 10 14.5 10 11C10 7.5 12.75 4.5 16.5 4.5C20.25 4.5 23 7.5 23 11C23 14.5 20.25 17.5 16.5 17.5ZM16.5 6.5C13.75 6.5 12 8.5 12 11C12 13.5 13.75 15.5 16.5 15.5C19.25 15.5 21 13.5 21 11C21 8.5 19.25 6.5 16.5 6.5Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                        <span className="text-sm font-medium">PayPal</span>
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem
+                        value="apple"
+                        id="apple"
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor="apple"
+                        className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                      >
+                        <svg
+                          className="mb-3 h-6 w-6"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M17.5 12.5C17.5 8.5 21 7.5 21 7.5C21 7.5 19.5 4 16 4C12.5 4 11 7.5 11 7.5C11 7.5 9.5 4 6 4C2.5 4 1 7.5 1 7.5C1 7.5 4.5 8.5 4.5 12.5C4.5 16.5 1 17.5 1 17.5C1 17.5 2.5 21 6 21C9.5 21 11 17.5 11 17.5C11 17.5 12.5 21 16 21C19.5 21 21 17.5 21 17.5C21 17.5 17.5 16.5 17.5 12.5Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                        <span className="text-sm font-medium">Apple Pay</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
 
-                      <div className="text-xs text-center text-gray-500 dark:text-gray-400 w-full">
-                        By subscribing, you agree to our Terms of Service and Privacy Policy
+                {/* Card Details */}
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Cardholder Name</Label>
+                      <Input id="name" placeholder="John Doe" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="number">Card Number</Label>
+                      <Input
+                        id="number"
+                        placeholder="4242 4242 4242 4242"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="expiry">Expiry Date</Label>
+                      <Input id="expiry" placeholder="MM/YY" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="cvc">CVC</Label>
+                      <Input id="cvc" placeholder="123" required />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Billing Address */}
+                <div className="space-y-4">
+                  <h3 className="text-base font-medium">Billing Address</h3>
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="address">Street Address</Label>
+                      <Input id="address" placeholder="123 Main St" required />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="city">City</Label>
+                      <Input id="city" placeholder="San Francisco" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="state">State</Label>
+                      <Input id="state" placeholder="CA" required />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="zip">Zip Code</Label>
+                      <Input id="zip" placeholder="94103" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="country">Country</Label>
+                      <Input id="country" placeholder="United States" required />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <div className="flex items-center">
+                        <svg
+                          className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Processing...
                       </div>
-                    </CardFooter>
-                  </Card>
-                </form>
-              </Form>
-            </div>
+                    ) : (
+                      "Complete Payment"
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
 
-            {/* Order Summary Column */}
-            <div>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold">Order Summary</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium">QuestApply Pro</span>
-                    <Badge variant="secondary" className="text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/50">Monthly</Badge>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="space-y-2">
-                    <div className="flex items-center text-sm">
-                      <CheckCircle2 className="h-4 w-4 mr-2 text-green-500" />
-                      Professor Access
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <CheckCircle2 className="h-4 w-4 mr-2 text-green-500" />
-                      Resume Creation & Improvement
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <CheckCircle2 className="h-4 w-4 mr-2 text-green-500" />
-                      SOP Creation & Improvement
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <CheckCircle2 className="h-4 w-4 mr-2 text-green-500" />
-                      LOR Creation & Improvement
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <CheckCircle2 className="h-4 w-4 mr-2 text-green-500" />
-                      Unlimited Applications
-                    </div>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span>Subtotal</span>
-                      <span>$100.00</span>
-                    </div>
-                    <div className="flex justify-between font-medium text-lg">
-                      <span>Total (USD)</span>
-                      <span>$100.00</span>
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      Billed monthly. Cancel anytime.
-                    </div>
-                  </div>
-
-                  <div className="mt-4 bg-gray-50 dark:bg-gray-800/50 p-3 rounded-md text-sm">
-                    <p className="font-medium text-gray-700 dark:text-gray-300">Need help?</p>
-                    <p className="text-gray-600 dark:text-gray-400 mt-1">
-                      Contact our support team at{" "}
-                      <Link to="/help-center" className="text-purple-600 dark:text-purple-400 hover:underline">
-                        support@questapply.com
-                      </Link>
+          {/* Order Summary */}
+          <div className="lg:col-span-1">
+            <motion.div
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden sticky top-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Order Summary
+                </h2>
+              </div>
+              <div className="p-6 space-y-4">
+                <div className="flex items-center">
+                  <Shield className="h-10 w-10 text-purple-500 mr-4" />
+                  <div>
+                    <h3 className="font-medium text-gray-900 dark:text-white">
+                      QuestApply Pro
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Annual Subscription
                     </p>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+
+                <Separator className="my-4" />
+
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-500 dark:text-gray-400">
+                      Subscription
+                    </span>
+                    <span className="text-gray-900 dark:text-white">$99.99</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500 dark:text-gray-400">Tax</span>
+                    <span className="text-gray-900 dark:text-white">$8.00</span>
+                  </div>
+                </div>
+
+                <Separator className="my-4" />
+
+                <div className="flex justify-between font-medium text-lg">
+                  <span className="text-gray-900 dark:text-white">Total</span>
+                  <span className="text-gray-900 dark:text-white">$107.99</span>
+                </div>
+
+                <div className="mt-6 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 mr-2" />
+                    <div className="text-sm text-gray-600 dark:text-gray-300">
+                      <p>
+                        You'll be charged $107.99 today. Your subscription will
+                        automatically renew annually.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-center text-sm text-gray-500 dark:text-gray-400">
+                  <svg
+                    className="h-4 w-4 mr-1"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M12 8V13"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M11.995 16H12.005"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <span>Secure payment processing</span>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-purple-100 dark:border-purple-900/50 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="text-center text-gray-500 dark:text-gray-400">
-            <p>&copy; {new Date().getFullYear()} QuestApply. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
