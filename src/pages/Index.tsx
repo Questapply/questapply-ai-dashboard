@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { ListOrdered } from "lucide-react";
 
 const Index = () => {
   return (
@@ -13,6 +14,15 @@ const Index = () => {
             <div className="flex items-center">
               <div className="font-bold text-xl bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
                 QuestApply
+              </div>
+              <div className="hidden md:flex ml-10 space-x-4">
+                <Link to="/dashboard" className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium">
+                  Dashboard
+                </Link>
+                <Link to="/ranking" className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium flex items-center">
+                  <ListOrdered className="h-4 w-4 mr-1" />
+                  Ranking
+                </Link>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -50,6 +60,12 @@ const Index = () => {
               <Link to="/dashboard">
                 <Button size="lg" className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white border-none shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 w-full sm:w-auto">
                   Get Started
+                </Button>
+              </Link>
+              <Link to="/ranking">
+                <Button size="lg" variant="outline" className="border-purple-400 dark:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 w-full sm:w-auto flex items-center">
+                  <ListOrdered className="h-5 w-5 mr-2" />
+                  Explore Rankings
                 </Button>
               </Link>
             </div>
