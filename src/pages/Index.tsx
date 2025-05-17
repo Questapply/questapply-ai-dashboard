@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ListOrdered } from "lucide-react";
+import { ListOrdered, Shield } from "lucide-react";
 
 const Index = () => {
   return (
@@ -26,6 +26,12 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <Link to="/pro">
+                <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2">
+                  <Shield className="h-4 w-4" />
+                  Pro
+                </Button>
+              </Link>
               <Link to="/profile">
                 <Button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white border-none">
                   Profile

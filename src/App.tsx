@@ -13,6 +13,7 @@ import Support from "@/pages/Support";
 import Rewards from "@/pages/Rewards";
 import Payments from "@/pages/Payments";
 import Ranking from "@/pages/Ranking";
+import Pro from "@/pages/Pro";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/rewards" element={<Rewards />} />
         <Route path="/payments" element={<Payments />} />
         <Route path="/ranking" element={<Ranking />} />
+        <Route path="/pro" element={<Pro />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
