@@ -151,7 +151,7 @@ const RequirementsSection: React.FC<RequirementsSectionProps> = ({ program }) =>
                   label="MIN" 
                   color="green"
                   isPercentage={false}
-                  size={80}
+                  size="md"
                 />
               </div>
               
@@ -159,9 +159,9 @@ const RequirementsSection: React.FC<RequirementsSectionProps> = ({ program }) =>
                 <StatCircle 
                   value={program.requirements.gpa.avg} 
                   label="AVG" 
-                  color="teal"
+                  color="green"
                   isPercentage={false}
-                  size={80}
+                  size="md"
                 />
               </div>
             </div>

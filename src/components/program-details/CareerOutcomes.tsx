@@ -102,7 +102,7 @@ const CareerOutcomes: React.FC<CareerOutcomesProps> = ({ program }) => {
                 <XAxis type="number" domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
                 <YAxis type="category" dataKey="name" />
                 <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="value" nameKey="name" fill="#9b87f5" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="value" fill="#9b87f5" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </motion.div>
