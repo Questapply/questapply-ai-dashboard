@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Language, ArrowRight } from "lucide-react";
+import { Languages, ArrowRight } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -90,7 +90,7 @@ const LanguageProficiency: React.FC<LanguageProficiencyProps> = ({ onNext, data 
               variants={iconAnimation}
               className="w-20 h-20 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center"
             >
-              <Language className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
+              <Languages className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
             </motion.div>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Language Proficiency</h1>
@@ -146,7 +146,7 @@ const LanguageProficiency: React.FC<LanguageProficiencyProps> = ({ onNext, data 
           >
             <div className="text-center">
               <span className="inline-block p-3 bg-white dark:bg-gray-800 rounded-full shadow-md mb-4">
-                <Language className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+                <Languages className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
               </span>
               <h3 className="text-xl font-medium text-gray-900 dark:text-white">{selectedTest}</h3>
               {score && (

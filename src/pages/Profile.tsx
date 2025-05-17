@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Sun, Moon, Flag, Home, School, Globe, Language, TestTube, ArrowRight, Check, Circle } from "lucide-react";
+import { Sun, Moon, Flag, Home, School, Globe, Languages, TestTube, ArrowRight, Check, Circle } from "lucide-react";
 import { Toggle } from "@/components/ui/toggle";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -20,7 +19,7 @@ const steps = [
   { id: 'citizenship', title: 'Citizenship & Residency', icon: Flag },
   { id: 'education', title: 'Education', icon: School },
   { id: 'goals', title: 'Study Abroad Goals', icon: Globe },
-  { id: 'language', title: 'Language Proficiency', icon: Language },
+  { id: 'language', title: 'Language Proficiency', icon: Languages },
   { id: 'tests', title: 'Standardized Tests', icon: TestTube },
   { id: 'complete', title: 'Complete', icon: Check },
 ];
