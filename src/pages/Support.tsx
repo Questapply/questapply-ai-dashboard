@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -21,7 +20,7 @@ import {
   Send,
   PlusCircle,
   Search,
-  PaperClip,
+  Paperclip,
   HelpCircle
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -355,7 +354,7 @@ const Support = () => {
                         />
                         <div className="flex justify-between items-center">
                           <Button variant="outline" size="sm" className="flex items-center gap-1">
-                            <PaperClip className="h-4 w-4" />
+                            <Paperclip className="h-4 w-4" />
                             Attach Files
                           </Button>
                           <div className="space-x-2">
