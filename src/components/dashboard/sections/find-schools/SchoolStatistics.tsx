@@ -1,38 +1,56 @@
 
-import ProgressCircle from "@/components/ui/progress-circle";
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import AnimatedCard from "@/components/ui/animated-card";
+import { Progress } from "@/components/ui/progress";
+import { School } from "./SchoolsData";
 
 interface SchoolStatisticsProps {
-  acceptance: number;
-  graduation: number;
+  school: School;
 }
 
-const SchoolStatistics = ({ acceptance, graduation }: SchoolStatisticsProps) => {
+const SchoolStatistics = ({ school }: SchoolStatisticsProps) => {
   return (
-    <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Statistics</h4>
-      <div className="flex justify-around items-center">
-        <div>
-          <ProgressCircle 
-            value={acceptance}
-            size={70}
-            color="rgba(239, 68, 68, 0.7)"
-            bgColor="rgba(239, 68, 68, 0.1)"
-            strokeWidth={6}
-          />
-          <div className="text-xs text-center mt-1 text-gray-500 dark:text-gray-400">Acceptance</div>
-        </div>
-        <div>
-          <ProgressCircle 
-            value={graduation}
-            size={70}
-            color="rgba(34, 197, 94, 0.7)"
-            bgColor="rgba(34, 197, 94, 0.1)"
-            strokeWidth={6}
-          />
-          <div className="text-xs text-center mt-1 text-gray-500 dark:text-gray-400">Graduation</div>
-        </div>
-      </div>
-    </div>
+    <AnimatedCard className="col-span-12 md:col-span-6 lg:col-span-4">
+      <Card className="h-full">
+        <CardHeader>
+          <CardTitle className="text-lg font-bold">School Statistics</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <div className="flex justify-between mb-1">
+              <span className="text-sm font-medium">Acceptance Rate</span>
+              <span className="text-sm font-medium">{school.acceptanceRate}%</span>
+            </div>
+            <Progress value={school.acceptanceRate} className="h-2" color="red" />
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between mb-1">
+              <span className="text-sm font-medium">Graduation Rate</span>
+              <span className="text-sm font-medium">{school.graduationRate}%</span>
+            </div>
+            <Progress value={school.graduationRate} className="h-2" color="green" />
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between mb-1">
+              <span className="text-sm font-medium">Student-Faculty Ratio</span>
+              <span className="text-sm font-medium">{school.studentFacultyRatio}:1</span>
+            </div>
+            <Progress value={school.studentFacultyRatio * 5} max={100} className="h-2" />
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between mb-1">
+              <span className="text-sm font-medium">International Students</span>
+              <span className="text-sm font-medium">{school.internationalStudents}%</span>
+            </div>
+            <Progress value={school.internationalStudents} className="h-2" color="blue" />
+          </div>
+        </CardContent>
+      </Card>
+    </AnimatedCard>
   );
 };
 
