@@ -1,15 +1,14 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { motion } from "framer-motion";
-import { Eye, EyeOff, User, Mail, Lock, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff, User, Mail, Lock, Check, ArrowRight } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 
 // Validation schemas
@@ -17,7 +16,7 @@ const signupSchema = z.object({
   fullName: z.string().min(3, "Name must be at least 3 characters"),
   email: z.string().email("Please enter a valid email"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-  userType: z.string().optional(),
+  userType: z.string().min(1, "Please select who you are"),
   referralCode: z.string().optional(),
   agreeTerms: z.boolean().refine(val => val === true, {
     message: "You must agree to the terms"
@@ -95,73 +94,52 @@ const AuthForm = ({ mode, onToggleMode, isDarkMode }: AuthFormProps) => {
 
   // Animation variants
   const formVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0 },
     visible: { 
-      opacity: 1, 
-      y: 0,
+      opacity: 1,
       transition: { 
-        duration: 0.4,
+        duration: 0.5,
         staggerChildren: 0.1,
         delayChildren: 0.1
       }
+    },
+    exit: { 
+      opacity: 0,
+      transition: { duration: 0.3 }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
+    hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
   };
 
-  const logoVariants = {
-    hidden: { scale: 0.8, opacity: 0 },
-    visible: { 
-      scale: 1, 
-      opacity: 1,
-      transition: { 
-        duration: 0.5,
-        type: "spring",
-        stiffness: 200
-      }
-    }
-  };
-
   return (
-    <Card className={`w-full max-w-md mx-auto overflow-hidden ${isDarkMode ? 'bg-gray-900 text-white border-gray-800' : 'bg-white'} rounded-xl shadow-xl border border-opacity-10`}>
-      <CardContent className="p-0">
-        <motion.div 
-          className="flex flex-col items-center p-8"
+    <div className={`w-full max-w-md mx-auto p-8 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={mode}
           initial="hidden"
           animate="visible"
+          exit="exit"
           variants={formVariants}
+          className="space-y-6"
         >
-          {/* Logo */}
-          <motion.div variants={logoVariants} className="mb-6">
-            <div className="text-4xl font-bold text-center">
-              <span className="text-purple-500">Quest</span>
-              <span className={isDarkMode ? "text-gray-200" : "text-gray-700"}>Apply</span>
-            </div>
+          {/* Logo and Welcome message */}
+          <motion.div variants={itemVariants} className="text-center">
+            <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+              {mode === "login" ? "Welcome back" : "Create account"}
+            </h2>
+            <p className={`mt-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              {mode === "login" 
+                ? "Sign in to continue your journey" 
+                : "Join us and start your academic adventure"}
+            </p>
           </motion.div>
-          
-          {/* Title */}
-          <motion.h1 
-            variants={itemVariants}
-            className={`text-2xl font-bold mb-2 text-center ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
-          >
-            {mode === "login" ? "Hello Again!" : "Welcome!"}
-          </motion.h1>
-          
-          <motion.p 
-            variants={itemVariants}
-            className={`text-center mb-6 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
-          >
-            {mode === "login" 
-              ? "You have more access by logging into your account."
-              : "You have more access by creating an account"}
-          </motion.p>
-          
+
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
-              {/* Sign Up Form Fields */}
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-full">
+              {/* Full Name - Sign Up only */}
               {mode === "signup" && (
                 <motion.div variants={itemVariants}>
                   <FormField
@@ -170,16 +148,20 @@ const AuthForm = ({ mode, onToggleMode, isDarkMode }: AuthFormProps) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <div className="relative">
+                          <div className="relative group">
                             <Input
                               {...field}
-                              placeholder="Full Name *"
-                              className={`h-12 pl-10 pr-4 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50'}`}
+                              placeholder="Full Name"
+                              className={`h-12 pl-11 pr-4 ${isDarkMode 
+                                ? 'bg-gray-800/70 border-gray-700 focus:border-purple-500 text-white' 
+                                : 'bg-gray-50 border-gray-200 focus:border-purple-500'} rounded-lg transition-all duration-200 backdrop-blur-sm`}
                             />
-                            <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                            <User className={`absolute left-3 top-3 h-5 w-5 transition-colors duration-200 ${isDarkMode 
+                              ? 'text-gray-400 group-focus-within:text-purple-400' 
+                              : 'text-gray-400 group-focus-within:text-purple-500'}`} />
                           </div>
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-red-500 text-sm mt-1" />
                       </FormItem>
                     )}
                   />
@@ -194,17 +176,21 @@ const AuthForm = ({ mode, onToggleMode, isDarkMode }: AuthFormProps) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <div className="relative">
+                        <div className="relative group">
                           <Input
                             {...field}
-                            placeholder="Email *"
+                            placeholder="Email address"
                             type="email"
-                            className={`h-12 pl-10 pr-4 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50'}`}
+                            className={`h-12 pl-11 pr-4 ${isDarkMode 
+                              ? 'bg-gray-800/70 border-gray-700 focus:border-purple-500 text-white' 
+                              : 'bg-gray-50 border-gray-200 focus:border-purple-500'} rounded-lg transition-all duration-200 backdrop-blur-sm`}
                           />
-                          <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                          <Mail className={`absolute left-3 top-3 h-5 w-5 transition-colors duration-200 ${isDarkMode 
+                            ? 'text-gray-400 group-focus-within:text-purple-400' 
+                            : 'text-gray-400 group-focus-within:text-purple-500'}`} />
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-500 text-sm mt-1" />
                     </FormItem>
                   )}
                 />
@@ -218,18 +204,24 @@ const AuthForm = ({ mode, onToggleMode, isDarkMode }: AuthFormProps) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <div className="relative">
+                        <div className="relative group">
                           <Input
                             {...field}
                             type={showPassword ? "text" : "password"}
-                            placeholder="Password *"
-                            className={`h-12 pl-10 pr-10 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50'}`}
+                            placeholder="Password"
+                            className={`h-12 pl-11 pr-11 ${isDarkMode 
+                              ? 'bg-gray-800/70 border-gray-700 focus:border-purple-500 text-white' 
+                              : 'bg-gray-50 border-gray-200 focus:border-purple-500'} rounded-lg transition-all duration-200 backdrop-blur-sm`}
                           />
-                          <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                          <Lock className={`absolute left-3 top-3 h-5 w-5 transition-colors duration-200 ${isDarkMode 
+                            ? 'text-gray-400 group-focus-within:text-purple-400' 
+                            : 'text-gray-400 group-focus-within:text-purple-500'}`} />
                           <button
                             type="button"
                             onClick={togglePasswordVisibility}
-                            className="absolute right-3 top-3 text-gray-400 hover:text-gray-500"
+                            className={`absolute right-3 top-3 transition-colors duration-200 ${isDarkMode 
+                              ? 'text-gray-400 hover:text-purple-400' 
+                              : 'text-gray-400 hover:text-purple-500'}`}
                           >
                             {showPassword ? 
                               <EyeOff className="h-5 w-5" /> : 
@@ -238,7 +230,7 @@ const AuthForm = ({ mode, onToggleMode, isDarkMode }: AuthFormProps) => {
                           </button>
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-500 text-sm mt-1" />
                     </FormItem>
                   )}
                 />
@@ -254,21 +246,26 @@ const AuthForm = ({ mode, onToggleMode, isDarkMode }: AuthFormProps) => {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <div className="relative">
+                            <div className="relative group">
                               <select
                                 {...field}
-                                className={`w-full h-12 pl-10 pr-4 rounded-md ${isDarkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-gray-50 text-gray-900'} border border-input`}
+                                className={`w-full h-12 pl-11 pr-4 rounded-lg ${isDarkMode 
+                                  ? 'bg-gray-800/70 border-gray-700 text-white focus:border-purple-500' 
+                                  : 'bg-gray-50 border-gray-200 text-gray-900 focus:border-purple-500'} appearance-none transition-all duration-200 backdrop-blur-sm`}
                               >
-                                <option value="">Who are you? *</option>
-                                <option value="student">Student</option>
-                                <option value="parent">Parent</option>
-                                <option value="counselor">Counselor</option>
-                                <option value="other">Other</option>
+                                <option value="" className={isDarkMode ? 'bg-gray-800' : 'bg-white'}>Who are you?</option>
+                                <option value="student" className={isDarkMode ? 'bg-gray-800' : 'bg-white'}>Student</option>
+                                <option value="parent" className={isDarkMode ? 'bg-gray-800' : 'bg-white'}>Parent</option>
+                                <option value="counselor" className={isDarkMode ? 'bg-gray-800' : 'bg-white'}>Counselor</option>
+                                <option value="other" className={isDarkMode ? 'bg-gray-800' : 'bg-white'}>Other</option>
                               </select>
-                              <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                              <User className={`absolute left-3 top-3 h-5 w-5 transition-colors duration-200 ${isDarkMode 
+                                ? 'text-gray-400 group-focus-within:text-purple-400' 
+                                : 'text-gray-400 group-focus-within:text-purple-500'}`} />
+                              <div className="absolute right-3 top-5 border-l-4 border-t-4 border-r-4 border-transparent border-t-gray-400 pointer-events-none"></div>
                             </div>
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-red-500 text-sm mt-1" />
                         </FormItem>
                       )}
                     />
@@ -281,16 +278,20 @@ const AuthForm = ({ mode, onToggleMode, isDarkMode }: AuthFormProps) => {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <div className="relative">
+                            <div className="relative group">
                               <Input
                                 {...field}
-                                placeholder="Referral Code"
-                                className={`h-12 pl-10 pr-4 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50'}`}
+                                placeholder="Referral Code (optional)"
+                                className={`h-12 pl-11 pr-4 ${isDarkMode 
+                                  ? 'bg-gray-800/70 border-gray-700 focus:border-purple-500 text-white' 
+                                  : 'bg-gray-50 border-gray-200 focus:border-purple-500'} rounded-lg transition-all duration-200 backdrop-blur-sm`}
                               />
-                              <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                              <User className={`absolute left-3 top-3 h-5 w-5 transition-colors duration-200 ${isDarkMode 
+                                ? 'text-gray-400 group-focus-within:text-purple-400' 
+                                : 'text-gray-400 group-focus-within:text-purple-500'}`} />
                             </div>
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-red-500 text-sm mt-1" />
                         </FormItem>
                       )}
                     />
@@ -304,22 +305,27 @@ const AuthForm = ({ mode, onToggleMode, isDarkMode }: AuthFormProps) => {
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0 mt-2">
                           <FormControl>
                             <div className="relative flex items-center">
-                              <input
-                                type="checkbox"
-                                className="h-4 w-4"
-                                checked={field.value}
-                                onChange={field.onChange}
-                                id="terms"
-                              />
+                              <div className="relative">
+                                <input
+                                  type="checkbox"
+                                  className={`h-4 w-4 rounded border ${isDarkMode ? 'border-gray-600' : 'border-gray-300'} appearance-none`}
+                                  checked={field.value}
+                                  onChange={field.onChange}
+                                  id="terms"
+                                />
+                                {field.value && (
+                                  <Check className="h-3 w-3 text-purple-500 absolute top-0.5 left-0.5" />
+                                )}
+                              </div>
                               <label 
                                 htmlFor="terms" 
                                 className={`text-sm ml-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
                               >
-                                I agree to the <span className="text-purple-500 hover:underline cursor-pointer">QA terms</span>
+                                I agree to the <span className="text-purple-500 hover:underline cursor-pointer">Terms & Conditions</span>
                               </label>
                             </div>
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-red-500 text-sm mt-1" />
                         </FormItem>
                       )}
                     />
@@ -337,47 +343,65 @@ const AuthForm = ({ mode, onToggleMode, isDarkMode }: AuthFormProps) => {
                       <FormItem className="flex flex-row items-center space-x-2 space-y-0">
                         <FormControl>
                           <div className="flex items-center">
-                            <input
-                              type="checkbox"
-                              className="h-4 w-4" 
-                              checked={field.value}
-                              onChange={field.onChange}
-                              id="remember"
-                            />
+                            <div className="relative">
+                              <input
+                                type="checkbox"
+                                className={`h-4 w-4 rounded border ${isDarkMode ? 'border-gray-600' : 'border-gray-300'} appearance-none`}
+                                checked={field.value}
+                                onChange={field.onChange}
+                                id="remember"
+                              />
+                              {field.value && (
+                                <Check className="h-3 w-3 text-purple-500 absolute top-0.5 left-0.5" />
+                              )}
+                            </div>
                             <label 
                               htmlFor="remember" 
                               className={`text-sm ml-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
                             >
-                              Remember Me
+                              Remember me
                             </label>
                           </div>
                         </FormControl>
                       </FormItem>
                     )}
                   />
-                  <div className="text-purple-500 text-sm hover:underline cursor-pointer">
-                    Recovery Password
-                  </div>
+                  <motion.div 
+                    variants={itemVariants}
+                    className="text-purple-500 text-sm hover:underline cursor-pointer font-medium"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Forgot password?
+                  </motion.div>
                 </motion.div>
               )}
 
               {/* Submit Button */}
-              <motion.div variants={itemVariants} className="pt-2">
+              <motion.div 
+                variants={itemVariants} 
+                className="pt-3"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full h-12 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-300 rounded-md text-white font-medium text-lg"
+                  className="w-full h-12 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 rounded-lg flex items-center justify-center gap-2 text-white font-medium text-lg shadow-md hover:shadow-lg"
                 >
                   {isLoading ? (
-                    <div className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <>
+                      <svg className="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
                       {mode === "login" ? "Logging in..." : "Signing up..."}
-                    </div>
+                    </>
                   ) : (
-                    mode === "login" ? "Login" : "Sign Up"
+                    <>
+                      {mode === "login" ? "Log in" : "Sign up"} 
+                      <ArrowRight className="h-5 w-5 ml-1" />
+                    </>
                   )}
                 </Button>
               </motion.div>
@@ -385,35 +409,69 @@ const AuthForm = ({ mode, onToggleMode, isDarkMode }: AuthFormProps) => {
               {/* Toggle mode link */}
               <motion.div
                 variants={itemVariants}
-                className="text-center mt-4"
+                className="text-center mt-6"
               >
                 {mode === "login" ? (
                   <p className={isDarkMode ? "text-gray-300" : "text-gray-700"}>
-                    Don't have an account yet?{" "}
-                    <span 
+                    Don't have an account?{" "}
+                    <motion.span 
                       onClick={onToggleMode}
                       className="text-purple-500 font-medium hover:underline cursor-pointer"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
                     >
-                      Sign Up
-                    </span>
+                      Sign up here
+                    </motion.span>
                   </p>
                 ) : (
                   <p className={isDarkMode ? "text-gray-300" : "text-gray-700"}>
                     Already have an account?{" "}
-                    <span 
+                    <motion.span 
                       onClick={onToggleMode}
                       className="text-purple-500 font-medium hover:underline cursor-pointer"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
                     >
-                      Login
-                    </span>
+                      Log in here
+                    </motion.span>
                   </p>
                 )}
+              </motion.div>
+              
+              {/* Social login options */}
+              <motion.div variants={itemVariants} className="mt-6 relative">
+                <div className={`absolute inset-0 flex items-center ${isDarkMode ? 'text-gray-600' : 'text-gray-300'}`}>
+                  <div className="w-full border-t border-current"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className={`px-2 ${isDarkMode ? 'bg-gray-900 text-gray-400' : 'bg-white text-gray-500'}`}>
+                    Or continue with
+                  </span>
+                </div>
+              </motion.div>
+              
+              <motion.div variants={itemVariants} className="mt-6 grid grid-cols-3 gap-3">
+                {['Google', 'Apple', 'Facebook'].map((provider) => (
+                  <motion.button
+                    key={provider}
+                    type="button"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`flex justify-center items-center py-2.5 rounded-lg shadow-sm ${
+                      isDarkMode 
+                        ? 'bg-gray-800 hover:bg-gray-700 border border-gray-700' 
+                        : 'bg-white hover:bg-gray-50 border border-gray-200'
+                    } transition-all duration-200`}
+                  >
+                    <span className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{provider}</span>
+                  </motion.button>
+                ))}
               </motion.div>
             </form>
           </Form>
         </motion.div>
-      </CardContent>
-    </Card>
+      </AnimatePresence>
+    </div>
   );
 };
 
