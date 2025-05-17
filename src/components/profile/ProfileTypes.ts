@@ -31,8 +31,8 @@ export interface LanguageData {
 }
 
 export interface TestData {
-  test: string;
-  score: string;
+  type: string;
+  scores: Record<string, any>;
 }
 
 export interface StepData {
@@ -41,4 +41,9 @@ export interface StepData {
   goals: GoalsData;
   language: LanguageData;
   tests: TestData;
+}
+
+export interface ProfileCompleteProps {
+  onNext: (data: any) => void;
+  profileData: StepData;
 }

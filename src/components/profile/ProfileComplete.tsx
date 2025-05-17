@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Check, ArrowRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import ProgressCircle from "@/components/ui/progress-circle";
+import { StepData } from "./ProfileTypes";
 
 interface ProfileCompleteProps {
   onNext: (data: any) => void;
-  profileData: any;
+  profileData: StepData;
 }
 
 const ProfileComplete: React.FC<ProfileCompleteProps> = ({ onNext, profileData }) => {
@@ -52,7 +53,7 @@ const ProfileComplete: React.FC<ProfileCompleteProps> = ({ onNext, profileData }
     let filledFields = 0;
     
     // Count citizenship fields
-    if (profileData.citizenship.citizenship) filledFields++;
+    if (profileData.citizenship.country) filledFields++;
     if (profileData.citizenship.residence) filledFields++;
     
     // Count education fields
@@ -115,7 +116,7 @@ const ProfileComplete: React.FC<ProfileCompleteProps> = ({ onNext, profileData }
               <div className="font-medium text-gray-700 dark:text-gray-300">Citizenship & Residence</div>
               <div className="mt-2 flex justify-between">
                 <span className="text-gray-500">Citizenship:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{profileData.citizenship.citizenship}</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">{profileData.citizenship.country}</span>
               </div>
               <div className="mt-1 flex justify-between">
                 <span className="text-gray-500">Current Residence:</span>

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -7,13 +6,11 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { standardizedTests } from "@/lib/test-options";
+import { TestData } from "./ProfileTypes";
 
 interface StandardizedTestsProps {
   onNext: (data: any) => void;
-  data: {
-    type: string;
-    scores: Record<string, any>;
-  };
+  data: TestData;
 }
 
 const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) => {

@@ -29,7 +29,7 @@ const StepContent: React.FC<StepContentProps> = ({ currentStep, onNext, data }) 
       case "tests":
         return <StandardizedTests onNext={onNext} data={data.tests} />;
       case "complete":
-        return <ProfileComplete />;
+        return <ProfileComplete onNext={onNext} profileData={data} />;
       default:
         return <CitizenshipResidency onNext={onNext} data={data.citizenship} />;
     }

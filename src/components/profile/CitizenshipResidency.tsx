@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -12,31 +11,29 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { countries } from "@/lib/countries";
+import { CitizenshipData } from "./ProfileTypes";
 
 interface CitizenshipResidencyProps {
   onNext: (data: any) => void;
-  data: {
-    citizenship: string;
-    residence: string;
-  };
+  data: CitizenshipData;
 }
 
 const CitizenshipResidency: React.FC<CitizenshipResidencyProps> = ({ onNext, data }) => {
-  const [citizenship, setCitizenship] = useState(data.citizenship || "");
+  const [country, setCountry] = useState(data.country || "");
   const [residence, setResidence] = useState(data.residence || "");
-  const [errors, setErrors] = useState({ citizenship: false, residence: false });
+  const [errors, setErrors] = useState({ country: false, residence: false });
 
   const handleNext = () => {
     // Validate
     const newErrors = {
-      citizenship: !citizenship,
+      country: !country,
       residence: !residence
     };
 
     setErrors(newErrors);
 
-    if (!newErrors.citizenship && !newErrors.residence) {
-      onNext({ citizenship, residence });
+    if (!newErrors.country && !newErrors.residence) {
+      onNext({ country, residence });
     }
   };
 
@@ -97,10 +94,10 @@ const CitizenshipResidency: React.FC<CitizenshipResidencyProps> = ({ onNext, dat
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <Flag className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-              <Label htmlFor="citizenship">What is your citizenship?</Label>
+              <Label htmlFor="country">What is your citizenship?</Label>
             </div>
-            <Select value={citizenship} onValueChange={setCitizenship}>
-              <SelectTrigger id="citizenship" className={`w-full ${errors.citizenship ? 'border-red-500 dark:border-red-500' : ''}`}>
+            <Select value={country} onValueChange={setCountry}>
+              <SelectTrigger id="country" className={`w-full ${errors.country ? 'border-red-500 dark:border-red-500' : ''}`}>
                 <SelectValue placeholder="Select your country of citizenship" />
               </SelectTrigger>
               <SelectContent className="max-h-80">
@@ -109,7 +106,7 @@ const CitizenshipResidency: React.FC<CitizenshipResidencyProps> = ({ onNext, dat
                 ))}
               </SelectContent>
             </Select>
-            {errors.citizenship && (
+            {errors.country && (
               <p className="text-red-500 text-sm">Please select your citizenship</p>
             )}
           </div>
