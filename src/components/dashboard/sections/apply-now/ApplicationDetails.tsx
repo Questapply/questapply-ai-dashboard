@@ -8,6 +8,7 @@ import { FileX, Eye, School, Clock, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import ProgressCircle from "@/components/ui/progress-circle";
+import StatCircle from "@/components/ui/stat-circle";
 
 interface ApplicationDetailsProps {
   application: any;
@@ -41,7 +42,7 @@ const ApplicationDetails = ({ application, isExpanded }: ApplicationDetailsProps
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                   <h4 className="text-md font-medium mb-3 flex items-center">
                     <School className="h-4 w-4 mr-2 text-purple-500" />
-                    Requirements
+                    Minimum Requirements
                   </h4>
                   <div className="space-y-4">
                     <div>
@@ -54,66 +55,182 @@ const ApplicationDetails = ({ application, isExpanded }: ApplicationDetailsProps
                           </span>
                         </div>
                       </div>
-                      <Progress 
-                        value={Math.min((application.requirements.gpa.student / 4) * 100, 100)} 
-                        className="h-2"
-                      />
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between mb-1 text-sm">
-                        <span>GRE</span>
-                        <div>
-                          <span className="font-medium">Your: {application.requirements.gre.student}</span>
-                          <span className="text-gray-500 dark:text-gray-400 ml-2">
-                            Min: {application.requirements.gre.min}
-                          </span>
+                      <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="absolute left-0 h-full w-full flex items-center">
+                          <div className="h-full bg-gray-300" style={{ width: `${(application.requirements.gpa.min / 4) * 100}%` }}></div>
+                        </div>
+                        <div className="absolute left-0 h-full">
+                          <div 
+                            className={`h-full ${application.requirements.gpa.student >= application.requirements.gpa.min ? 'bg-green-500' : 'bg-red-500'}`} 
+                            style={{ width: `${(application.requirements.gpa.student / 4) * 100}%` }}
+                          ></div>
+                        </div>
+                        <div className="absolute top-0 left-0 px-2 h-full flex items-center justify-between w-full">
+                          <span className="text-xs text-gray-600 dark:text-gray-300">Min</span>
+                          <span className="text-xs text-gray-600 dark:text-gray-300">You</span>
                         </div>
                       </div>
-                      <Progress 
-                        value={Math.min((application.requirements.gre.student / 340) * 100, 100)} 
-                        className="h-2"
-                      />
                     </div>
 
-                    <div>
-                      <div className="flex justify-between mb-1 text-sm">
-                        <span>IELTS</span>
-                        <div>
-                          <span className="font-medium">Your: {application.requirements.ielts.student}</span>
-                          <span className="text-gray-500 dark:text-gray-400 ml-2">
-                            Min: {application.requirements.ielts.min}
-                          </span>
+                    {application.requirements.gre && (
+                      <div>
+                        <div className="flex justify-between mb-1 text-sm">
+                          <span>GRE</span>
+                          <div>
+                            <span className="font-medium">Your: {application.requirements.gre.student}</span>
+                            <span className="text-gray-500 dark:text-gray-400 ml-2">
+                              Min: {application.requirements.gre.min}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden">
+                          <div className="absolute left-0 h-full w-full flex items-center">
+                            <div className="h-full bg-gray-300" style={{ width: `${(application.requirements.gre.min / 340) * 100}%` }}></div>
+                          </div>
+                          <div className="absolute left-0 h-full">
+                            <div 
+                              className={`h-full ${application.requirements.gre.student >= application.requirements.gre.min ? 'bg-green-500' : 'bg-red-500'}`} 
+                              style={{ width: `${(application.requirements.gre.student / 340) * 100}%` }}
+                            ></div>
+                          </div>
+                          <div className="absolute top-0 left-0 px-2 h-full flex items-center justify-between w-full">
+                            <span className="text-xs text-gray-600 dark:text-gray-300">Min</span>
+                            <span className="text-xs text-gray-600 dark:text-gray-300">You</span>
+                          </div>
                         </div>
                       </div>
-                      <Progress 
-                        value={Math.min((application.requirements.ielts.student / 9) * 100, 100)} 
-                        className="h-2"
-                      />
-                    </div>
+                    )}
+
+                    {application.requirements.ielts && (
+                      <div>
+                        <div className="flex justify-between mb-1 text-sm">
+                          <span>IELTS/TOEFL</span>
+                          <div>
+                            <span className="font-medium">Your: {application.requirements.ielts.student}</span>
+                            <span className="text-gray-500 dark:text-gray-400 ml-2">
+                              Min: {application.requirements.ielts.min}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden">
+                          <div className="absolute left-0 h-full w-full flex items-center">
+                            <div className="h-full bg-gray-300" style={{ width: `${(application.requirements.ielts.min / 9) * 100}%` }}></div>
+                          </div>
+                          <div className="absolute left-0 h-full">
+                            <div 
+                              className={`h-full ${application.requirements.ielts.student >= application.requirements.ielts.min ? 'bg-green-500' : 'bg-red-500'}`}
+                              style={{ width: `${(application.requirements.ielts.student / 9) * 100}%` }}
+                            ></div>
+                          </div>
+                          <div className="absolute top-0 left-0 px-2 h-full flex items-center justify-between w-full">
+                            <span className="text-xs text-gray-600 dark:text-gray-300">Min</span>
+                            <span className="text-xs text-gray-600 dark:text-gray-300">You</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Admission Fit Section */}
+                {/* Average & Program Match Section */}
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                  <h4 className="text-md font-medium mb-3">Admission Fit</h4>
-                  <div className="flex justify-center">
-                    <ProgressCircle 
-                      value={application.admissionFitPercentage}
-                      size="md"
-                      color={application.admissionFitPercentage > 70 ? "green" : "yellow"}
-                      showValue
-                      label="Fit Score"
-                    />
-                  </div>
-                  <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                    {application.admissionFitPercentage > 80 ? (
-                      <span className="text-green-600 dark:text-green-400">Excellent match for your profile!</span>
-                    ) : application.admissionFitPercentage > 60 ? (
-                      <span className="text-yellow-600 dark:text-yellow-400">Good match with some areas to improve</span>
-                    ) : (
-                      <span className="text-red-600 dark:text-red-400">Consider strengthening your application</span>
+                  <h4 className="text-md font-medium mb-3">Average & Program Match</h4>
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex justify-between mb-1 text-sm">
+                        <span>GPA</span>
+                        <div>
+                          <span className="font-medium">Your: {application.requirements.gpa.student}</span>
+                          <span className="text-gray-500 dark:text-gray-400 ml-2">
+                            Avg: {application.requirements.gpa.avg || (application.requirements.gpa.min + 0.4).toFixed(1)}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="absolute left-0 h-full w-full flex items-center">
+                          <div className="h-full bg-gray-300" style={{ width: `${((application.requirements.gpa.avg || (application.requirements.gpa.min + 0.4)) / 4) * 100}%` }}></div>
+                        </div>
+                        <div className="absolute left-0 h-full">
+                          <div 
+                            className={`h-full ${application.requirements.gpa.student >= (application.requirements.gpa.avg || (application.requirements.gpa.min + 0.4)) ? 'bg-red-500' : 'bg-yellow-500'}`} 
+                            style={{ width: `${(application.requirements.gpa.student / 4) * 100}%` }}
+                          ></div>
+                        </div>
+                        <div className="absolute top-0 left-0 px-2 h-full flex items-center justify-between w-full">
+                          <span className="text-xs text-gray-600 dark:text-gray-300">Avg</span>
+                          <span className="text-xs text-gray-600 dark:text-gray-300">You</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {application.requirements.gre && (
+                      <div>
+                        <div className="flex justify-between mb-1 text-sm">
+                          <span>GRE</span>
+                          <div>
+                            <span className="font-medium">Your: {application.requirements.gre.student}</span>
+                            <span className="text-gray-500 dark:text-gray-400 ml-2">
+                              Avg: {application.requirements.gre.avg || application.requirements.gre.min + 20}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden">
+                          <div className="absolute left-0 h-full w-full flex items-center">
+                            <div className="h-full bg-gray-300" style={{ width: `${((application.requirements.gre.avg || (application.requirements.gre.min + 20)) / 340) * 100}%` }}></div>
+                          </div>
+                          <div className="absolute left-0 h-full">
+                            <div 
+                              className={`h-full ${application.requirements.gre.student >= (application.requirements.gre.avg || (application.requirements.gre.min + 20)) ? 'bg-red-500' : 'bg-yellow-500'}`} 
+                              style={{ width: `${(application.requirements.gre.student / 340) * 100}%` }}
+                            ></div>
+                          </div>
+                          <div className="absolute top-0 left-0 px-2 h-full flex items-center justify-between w-full">
+                            <span className="text-xs text-gray-600 dark:text-gray-300">Avg</span>
+                            <span className="text-xs text-gray-600 dark:text-gray-300">You</span>
+                          </div>
+                        </div>
+                      </div>
                     )}
+
+                    {application.requirements.ielts && (
+                      <div>
+                        <div className="flex justify-between mb-1 text-sm">
+                          <span>IELTS/TOEFL</span>
+                          <div>
+                            <span className="font-medium">Your: {application.requirements.ielts.student}</span>
+                            <span className="text-gray-500 dark:text-gray-400 ml-2">
+                              Avg: {application.requirements.ielts.avg || application.requirements.ielts.min + 1}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden">
+                          <div className="absolute left-0 h-full w-full flex items-center">
+                            <div className="h-full bg-gray-300" style={{ width: `${((application.requirements.ielts.avg || (application.requirements.ielts.min + 1)) / 9) * 100}%` }}></div>
+                          </div>
+                          <div className="absolute left-0 h-full">
+                            <div 
+                              className={`h-full ${application.requirements.ielts.student >= (application.requirements.ielts.avg || (application.requirements.ielts.min + 1)) ? 'bg-red-500' : 'bg-yellow-500'}`}
+                              style={{ width: `${(application.requirements.ielts.student / 9) * 100}%` }}
+                            ></div>
+                          </div>
+                          <div className="absolute top-0 left-0 px-2 h-full flex items-center justify-between w-full">
+                            <span className="text-xs text-gray-600 dark:text-gray-300">Avg</span>
+                            <span className="text-xs text-gray-600 dark:text-gray-300">You</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex justify-center mt-2">
+                      <StatCircle 
+                        value={application.admissionFitPercentage}
+                        label="Program Match"
+                        color={application.admissionFitPercentage > 70 ? "green" : 
+                               application.admissionFitPercentage > 50 ? "yellow" : "red"}
+                        isPercentage={true}
+                        size="md"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -133,10 +250,10 @@ const ApplicationDetails = ({ application, isExpanded }: ApplicationDetailsProps
                       className="h-2"
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
                     {application.documents.map((doc: any, i: number) => (
-                      <div key={i} className="flex items-center justify-between text-sm">
-                        <span>{doc.name}</span>
+                      <div key={i} className="flex items-center justify-between text-sm py-1 border-b border-gray-100 dark:border-gray-700 last:border-0">
+                        <span className="truncate max-w-[150px]">{doc.name}</span>
                         {doc.status === 'completed' && (
                           <Badge className="bg-green-500">Completed</Badge>
                         )}

@@ -1,14 +1,21 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { User, Send } from "lucide-react";
+import { User, Send, FileX } from "lucide-react";
 
 interface ApplicationActionsProps {
   onApplyYourself: () => void;
   onSubmitWithUs: () => void;
+  onRemove?: () => void;
+  showRemove?: boolean;
 }
 
-const ApplicationActions = ({ onApplyYourself, onSubmitWithUs }: ApplicationActionsProps) => {
+const ApplicationActions = ({ 
+  onApplyYourself, 
+  onSubmitWithUs, 
+  onRemove,
+  showRemove = false
+}: ApplicationActionsProps) => {
   return (
     <div className="flex gap-2">
       <Button 
@@ -29,6 +36,18 @@ const ApplicationActions = ({ onApplyYourself, onSubmitWithUs }: ApplicationActi
         <Send className="h-4 w-4 mr-1" />
         Submit with Us
       </Button>
+      
+      {showRemove && onRemove && (
+        <Button 
+          variant="outline" 
+          size="sm"
+          className="text-red-600 border-red-300 hover:bg-red-50 dark:border-red-700 dark:hover:bg-red-900/20"
+          onClick={onRemove}
+        >
+          <FileX className="h-4 w-4 mr-1" />
+          Remove
+        </Button>
+      )}
     </div>
   );
 };
