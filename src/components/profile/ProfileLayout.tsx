@@ -34,7 +34,7 @@ const ProfileLayout = () => {
     education: { degree: "", university: "", major: "", gpa: "" },
     goals: { country: "", level: "", field: "" },
     language: { test: "", score: "" },
-    tests: { test: "", score: "" }
+    tests: { type: "", scores: {} } // Fixed initialization to match TestData interface
   });
 
   useEffect(() => {
