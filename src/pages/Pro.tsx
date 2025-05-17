@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, Award, Star, BadgeCheck, BadgePlus, BadgePercent, ShieldCheck, BadgeInfo, ShieldPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +15,7 @@ const Pro = () => {
     return false;
   });
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isDarkMode) {
@@ -30,11 +30,7 @@ const Pro = () => {
   };
 
   const handleSubscribe = () => {
-    toast({
-      title: "Subscription Initiated",
-      description: "We'll redirect you to payment shortly.",
-      variant: "default",
-    });
+    navigate('/payment-checkout');
   };
 
   const features = [

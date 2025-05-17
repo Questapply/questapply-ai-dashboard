@@ -15,6 +15,7 @@ import Payments from "@/pages/Payments";
 import Ranking from "@/pages/Ranking";
 import Pro from "@/pages/Pro";
 import HelpCenter from "@/pages/HelpCenter";
+import PaymentCheckout from "@/pages/PaymentCheckout";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route path="/support" element={<Support />} />
         <Route path="/rewards" element={<Rewards />} />
         <Route path="/payments" element={<Payments />} />
+        <Route path="/payment-checkout" element={<PaymentCheckout />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/pro" element={<Pro />} />
         <Route path="/help-center" element={<HelpCenter />} />
