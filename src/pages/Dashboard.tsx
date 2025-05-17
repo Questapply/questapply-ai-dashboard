@@ -1,9 +1,10 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import NavigationButtons from "@/components/dashboard/NavigationButtons";
 import ContentSection from "@/components/dashboard/ContentSection";
 import ChatBox from "@/components/dashboard/ChatBox";
+import FeedbackPrompt from "@/components/feedback/FeedbackPrompt";
 import { getFilterOptions, Section } from "@/utils/FilterUtils";
 
 const Dashboard = () => {
@@ -11,7 +12,45 @@ const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [isQuestApplyAI, setIsQuestApplyAI] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedDarkMode = localStorage.getItem("darkMode");
+    return savedDarkMode ? JSON.parse(savedDarkMode) : true;
+  });
+  const [showFeedbackPrompt, setShowFeedbackPrompt] = useState(false);
+
+  // Initialize dark mode
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    
+    // Save preference to localStorage
+    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
+  }, [isDarkMode]);
+  
+  // Show feedback prompt with a small chance when the dashboard loads
+  useEffect(() => {
+    // Get the last time the feedback was shown
+    const lastFeedbackTime = localStorage.getItem("lastFeedbackTime");
+    const now = Date.now();
+    
+    // If it's been more than 24 hours or never shown before, show it with a 30% chance
+    if (!lastFeedbackTime || (now - parseInt(lastFeedbackTime)) > 24 * 60 * 60 * 1000) {
+      const shouldShow = Math.random() < 0.3;
+      if (shouldShow) {
+        // Wait a bit before showing to allow the page to load
+        const timer = setTimeout(() => {
+          setShowFeedbackPrompt(true);
+          // Update the last feedback time
+          localStorage.setItem("lastFeedbackTime", now.toString());
+        }, 2000);
+        
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
 
   const handleSectionChange = (section: Section) => {
     setActiveSection(section);
@@ -31,6 +70,9 @@ const Dashboard = () => {
     } else {
       document.documentElement.classList.remove('dark');
     }
+    
+    // Save preference to localStorage
+    localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
   };
 
   // Get filter options based on active section
@@ -69,6 +111,12 @@ const Dashboard = () => {
           isQuestApplyAI={isQuestApplyAI} 
         />
       </div>
+      
+      {/* Feedback Prompt */}
+      <FeedbackPrompt 
+        show={showFeedbackPrompt} 
+        onClose={() => setShowFeedbackPrompt(false)}
+      />
     </DashboardLayout>
   );
 };

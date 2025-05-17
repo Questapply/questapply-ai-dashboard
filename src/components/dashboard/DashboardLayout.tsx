@@ -1,8 +1,9 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import Sidebar from "@/components/dashboard/Sidebar";
+import UserAccountMenu from "@/components/dashboard/UserAccountMenu";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -19,6 +20,14 @@ const DashboardLayout = ({
   sidebarOpen,
   setSidebarOpen
 }: DashboardLayoutProps) => {
+  const [showFeedbackPrompt, setShowFeedbackPrompt] = useState(false);
+  
+  useEffect(() => {
+    // Randomly determine if we should show a feedback prompt (20% chance)
+    const shouldShowPrompt = Math.random() < 0.2;
+    setShowFeedbackPrompt(shouldShowPrompt);
+  }, []);
+  
   return (
     <div className={`flex h-screen w-full ${isDarkMode ? 'bg-gradient-to-br from-gray-900 to-black' : 'bg-gradient-to-br from-blue-50 to-teal-100'} overflow-hidden`}>
       {/* Sidebar */}
@@ -63,6 +72,7 @@ const DashboardLayout = ({
                 <Moon className={`w-5 h-5 ${isDarkMode ? 'text-blue-400' : 'text-gray-400'}`} />
               </div>
               
+              {/* Notifications */}
               <button className="relative">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -82,9 +92,9 @@ const DashboardLayout = ({
                   3
                 </span>
               </button>
-              <div className="h-8 w-8 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full flex items-center justify-center text-white">
-                U
-              </div>
+
+              {/* User Account Menu */}
+              <UserAccountMenu />
             </div>
           </div>
         </nav>
