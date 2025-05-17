@@ -66,8 +66,7 @@ const SchoolCard = ({ school, index, isFavorite, toggleFavorite }: SchoolCardPro
               
               {/* Statistics */}
               <SchoolStatistics 
-                acceptance={school.acceptance}
-                graduation={school.graduation}
+                school={school}
               />
               
               {/* Programs */}

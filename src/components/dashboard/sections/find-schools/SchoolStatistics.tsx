@@ -20,34 +20,38 @@ const SchoolStatistics = ({ school }: SchoolStatisticsProps) => {
           <div className="space-y-2">
             <div className="flex justify-between mb-1">
               <span className="text-sm font-medium">Acceptance Rate</span>
-              <span className="text-sm font-medium">{school.acceptanceRate}%</span>
+              <span className="text-sm font-medium">{school.acceptance}%</span>
             </div>
-            <Progress value={school.acceptanceRate} className="h-2" color="red" />
+            <Progress value={school.acceptance} className="h-2" color="red" />
           </div>
 
           <div className="space-y-2">
             <div className="flex justify-between mb-1">
               <span className="text-sm font-medium">Graduation Rate</span>
-              <span className="text-sm font-medium">{school.graduationRate}%</span>
+              <span className="text-sm font-medium">{school.graduation}%</span>
             </div>
-            <Progress value={school.graduationRate} className="h-2" color="green" />
+            <Progress value={school.graduation} className="h-2" color="green" />
           </div>
 
-          <div className="space-y-2">
-            <div className="flex justify-between mb-1">
-              <span className="text-sm font-medium">Student-Faculty Ratio</span>
-              <span className="text-sm font-medium">{school.studentFacultyRatio}:1</span>
+          {school.studentFacultyRatio !== undefined && (
+            <div className="space-y-2">
+              <div className="flex justify-between mb-1">
+                <span className="text-sm font-medium">Student-Faculty Ratio</span>
+                <span className="text-sm font-medium">{school.studentFacultyRatio}:1</span>
+              </div>
+              <Progress value={school.studentFacultyRatio * 5} max={100} className="h-2" />
             </div>
-            <Progress value={school.studentFacultyRatio * 5} max={100} className="h-2" />
-          </div>
+          )}
 
-          <div className="space-y-2">
-            <div className="flex justify-between mb-1">
-              <span className="text-sm font-medium">International Students</span>
-              <span className="text-sm font-medium">{school.internationalStudents}%</span>
+          {school.internationalStudents !== undefined && (
+            <div className="space-y-2">
+              <div className="flex justify-between mb-1">
+                <span className="text-sm font-medium">International Students</span>
+                <span className="text-sm font-medium">{school.internationalStudents}%</span>
+              </div>
+              <Progress value={school.internationalStudents} className="h-2" color="blue" />
             </div>
-            <Progress value={school.internationalStudents} className="h-2" color="blue" />
-          </div>
+          )}
         </CardContent>
       </Card>
     </AnimatedCard>
