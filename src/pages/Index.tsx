@@ -15,12 +15,12 @@ const Index = () => {
                 QuestApply
               </div>
             </div>
-            <nav className="hidden md:flex space-x-8">
-              <a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Features</a>
-              <a href="#testimonials" className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Testimonials</a>
-              <a href="#pricing" className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Pricing</a>
-            </nav>
             <div className="flex items-center space-x-4">
+              <Link to="/profile">
+                <Button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white border-none">
+                  Profile
+                </Button>
+              </Link>
               <Link to="/auth?mode=login">
                 <Button variant="outline" className="border-purple-400 dark:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/50">
                   Login
@@ -47,14 +47,11 @@ const Index = () => {
               QuestApply streamlines your graduate school application process with AI-powered tools to find, apply, and get accepted to top universities worldwide.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link to="/auth?mode=signup">
+              <Link to="/dashboard">
                 <Button size="lg" className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white border-none shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 w-full sm:w-auto">
                   Get Started
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-3 rounded-lg shadow-md transition-all duration-300 w-full sm:w-auto">
-                Learn More
-              </Button>
             </div>
           </div>
         </div>
