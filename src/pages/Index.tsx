@@ -1,8 +1,10 @@
 
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ListOrdered, Shield, HelpCircle } from "lucide-react";
+import { ListOrdered, Shield, HelpCircle, Sun, Moon } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +13,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Index = () => {
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return document.documentElement.classList.contains("dark");
+  });
+
+  const toggleTheme = () => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+
+    if (newDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/40 dark:bg-gray-900">
       {/* Header/Navigation */}
@@ -57,6 +74,17 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              {/* Theme toggle switch */}
+              <div className="flex items-center space-x-2">
+                <Sun className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-yellow-500'}`} />
+                <Switch 
+                  checked={isDarkMode} 
+                  onCheckedChange={toggleTheme}
+                  className="data-[state=checked]:bg-blue-600"
+                />
+                <Moon className={`w-5 h-5 ${isDarkMode ? 'text-blue-400' : 'text-gray-400'}`} />
+              </div>
+            
               <Link to="/pro">
                 <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2">
                   <Shield className="h-4 w-4" />

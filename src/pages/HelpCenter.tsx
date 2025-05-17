@@ -1,6 +1,5 @@
-
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   Accordion,
   AccordionContent,
@@ -9,17 +8,52 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { HelpCircle, Video, MessageSquare, ChevronDown } from "lucide-react";
+import { 
+  HelpCircle, 
+  Video, 
+  MessageSquare, 
+  ChevronDown,
+  Moon,
+  Sun,
+  Play
+} from "lucide-react";
 import { motion } from "framer-motion";
+import { VideoTutorial } from "@/components/help-center/VideoTutorial";
+import { videoTutorialsData } from "@/components/help-center/VideoTutorialsData";
 
 const HelpCenter = () => {
-  const [activeTab, setActiveTab] = useState("faqs");
+  const [searchParams] = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  const [activeTab, setActiveTab] = useState(tabParam || "faqs");
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return document.documentElement.classList.contains("dark");
+  });
+  const [selectedCategory, setSelectedCategory] = useState("profile");
+  const [selectedVideo, setSelectedVideo] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (tabParam) {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
+
+  const toggleTheme = () => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+
+    if (newDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
   // Categories for FAQs
   const faqCategories = [
@@ -77,9 +111,6 @@ const HelpCenter = () => {
     { id: 8, title: "Apply Now", duration: "02:58", thumbnail: "/placeholder.svg" },
   ];
 
-  // State to track selected FAQ category
-  const [selectedCategory, setSelectedCategory] = useState("profile");
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/40 dark:bg-gray-900">
       {/* Header */}
@@ -131,6 +162,17 @@ const HelpCenter = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              {/* Theme toggle switch */}
+              <div className="flex items-center space-x-2">
+                <Sun className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-yellow-500'}`} />
+                <Switch 
+                  checked={isDarkMode} 
+                  onCheckedChange={toggleTheme}
+                  className="data-[state=checked]:bg-blue-600"
+                />
+                <Moon className={`w-5 h-5 ${isDarkMode ? 'text-blue-400' : 'text-gray-400'}`} />
+              </div>
+              
               <Link to="/pro">
                 <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-md hover:shadow-lg transition-all duration-300">
                   Pro
@@ -158,7 +200,7 @@ const HelpCenter = () => {
           </p>
         </motion.div>
 
-        <Tabs defaultValue="faqs" className="w-full">
+        <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="faqs" className="flex items-center justify-center gap-2">
               <HelpCircle className="h-5 w-5" />
@@ -227,59 +269,14 @@ const HelpCenter = () => {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <h2 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-gray-100">Video Tutorials</h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Featured Video */}
-                <div className="col-span-1 md:col-span-2 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg overflow-hidden">
-                  <div className="aspect-w-16 aspect-h-9 relative">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <button className="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center backdrop-blur-sm">
-                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ml-1">
-                          <svg 
-                            viewBox="0 0 24 24" 
-                            className="w-6 h-6 text-purple-600" 
-                            fill="currentColor"
-                          >
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </div>
-                      </button>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                      <h3 className="text-white font-semibold text-lg">Profile Setup</h3>
-                      <div className="flex items-center text-white/80 text-sm">
-                        <span>06:27</span>
-                      </div>
-                    </div>
-                    <div className="absolute bottom-6 left-0 right-0 px-4">
-                      <div className="bg-white/30 h-1 rounded-full w-full overflow-hidden">
-                        <div className="bg-white h-full rounded-full" style={{ width: '60%' }}></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Video List */}
-                {videoTutorials.map((video) => (
-                  <div key={video.id} className="flex gap-4 bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg hover:shadow-md transition-all">
-                    <div className="flex-shrink-0 w-20 h-20 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                      <svg 
-                        viewBox="0 0 24 24" 
-                        className="w-8 h-8 text-purple-600 dark:text-purple-400" 
-                        fill="currentColor"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                    <div className="flex-grow">
-                      <h3 className="font-medium text-gray-800 dark:text-gray-100">{video.title}</h3>
-                      <div className="flex items-center text-gray-500 dark:text-gray-400 mt-1 text-sm">
-                        <span>{video.duration}</span>
-                      </div>
-                      <Button variant="link" className="text-purple-600 dark:text-purple-400 p-0 h-auto mt-1">
-                        Watch Now
-                      </Button>
-                    </div>
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {videoTutorialsData.map((video) => (
+                  <VideoTutorial 
+                    key={video.id}
+                    video={video}
+                    isSelected={selectedVideo === video.id}
+                    onClick={() => setSelectedVideo(video.id === selectedVideo ? null : video.id)}
+                  />
                 ))}
               </div>
             </div>

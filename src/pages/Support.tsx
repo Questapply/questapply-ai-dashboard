@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Button } from "@/components/ui/button";
@@ -21,10 +21,13 @@ import {
   PlusCircle,
   Search,
   Paperclip,
-  HelpCircle
+  HelpCircle,
+  Moon,
+  Sun
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 
 const Support = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -34,6 +37,11 @@ const Support = () => {
   const [activeTicket, setActiveTicket] = useState<number | null>(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [newMessage, setNewMessage] = useState("");
+
+  useEffect(() => {
+    // Initialize dark mode based on document class when component mounts
+    setIsDarkMode(document.documentElement.classList.contains("dark"));
+  }, []);
 
   const toggleTheme = () => {
     const newDarkMode = !isDarkMode;
@@ -184,9 +192,23 @@ const Support = () => {
           transition={{ duration: 0.5 }}
           className="flex flex-col gap-2"
         >
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-            Support Tickets
-          </h1>
+          <div className="flex justify-between items-center">
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+              Support Tickets
+            </h1>
+            <div className="flex items-center space-x-4">
+              {/* Theme toggle switch */}
+              <div className="flex items-center space-x-2">
+                <Sun className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-yellow-500'}`} />
+                <Switch 
+                  checked={isDarkMode} 
+                  onCheckedChange={toggleTheme}
+                  className="data-[state=checked]:bg-blue-600"
+                />
+                <Moon className={`w-5 h-5 ${isDarkMode ? 'text-blue-400' : 'text-gray-400'}`} />
+              </div>
+            </div>
+          </div>
           <p className="text-gray-600 dark:text-gray-300">
             Get help with any issues or questions regarding your applications.
           </p>
