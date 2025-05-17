@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import QuestApplyLogo from "@/components/common/QuestApplyLogo";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -77,21 +78,9 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
       {/* Logo Area */}
       <div className="flex items-center justify-center h-20 border-b border-purple-100 dark:border-gray-700">
         {isOpen ? (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="font-bold text-xl bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent"
-          >
-            QuestApply
-          </motion.div>
+          <QuestApplyLogo variant="full" size="md" />
         ) : (
-          <motion.div 
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-purple-400 flex items-center justify-center text-white font-bold text-xl"
-          >
-            Q
-          </motion.div>
+          <QuestApplyLogo variant="icon" size="md" />
         )}
       </div>
       

@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ListOrdered, Shield, HelpCircle, Sun, Moon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import QuestApplyLogo from "@/components/common/QuestApplyLogo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,9 +35,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
-              <div className="font-bold text-xl bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
-                QuestApply
-              </div>
+              <QuestApplyLogo variant="full" size="md" />
               <div className="hidden md:flex ml-10 space-x-4">
                 <Link to="/dashboard" className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium">
                   Dashboard

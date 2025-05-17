@@ -4,6 +4,7 @@ import { Moon, Sun } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import Sidebar from "@/components/dashboard/Sidebar";
 import UserAccountMenu from "@/components/dashboard/UserAccountMenu";
+import QuestApplyLogo from "@/components/common/QuestApplyLogo";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -58,7 +59,7 @@ const DashboardLayout = ({
               </svg>
             </button>
             <div className="ml-4 md:ml-0 flex-1">
-              <img src="/logo.svg" alt="QuestApply Logo" className="h-10" />
+              <QuestApplyLogo variant="full" size="md" />
             </div>
             <div className="flex items-center gap-4">
               {/* Theme toggle switch */}
