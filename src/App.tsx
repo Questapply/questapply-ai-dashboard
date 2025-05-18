@@ -21,6 +21,8 @@ import SchoolDetails from "@/pages/SchoolDetails";
 import ProgramDetails from "@/pages/ProgramDetails";
 import Devices from "@/pages/Devices";
 import Feedback from "@/pages/Feedback";
+import Blog from "@/pages/Blog";
+import BlogPost from "@/pages/BlogPost";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
@@ -47,6 +49,8 @@ function App() {
         <Route path="/program/:programId" element={<ProgramDetails />} />
         <Route path="/devices" element={<Devices />} />
         <Route path="/feedback" element={<Feedback />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
