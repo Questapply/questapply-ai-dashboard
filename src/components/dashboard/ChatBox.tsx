@@ -1,8 +1,9 @@
 
 import { useState, useEffect } from "react";
-import { ArrowUp, Search } from "lucide-react";
+import { ArrowUp, Search, FileText, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FilterOption } from "@/utils/FilterUtils";
+import DocumentGenerator from "@/components/generation/DocumentGenerator";
 
 interface ChatBoxProps {
   searchQuery: string;
@@ -27,6 +28,7 @@ const ChatBox = ({
   const [isFocused, setIsFocused] = useState(false);
   const [typingEffect, setTypingEffect] = useState("");
   const [typingComplete, setTypingComplete] = useState(false);
+  const [activeGenerator, setActiveGenerator] = useState<"sop" | "cv" | null>(null);
   
   const welcomeMessage = "Hello! I'm here to help with your application. Let's start with Step 1: Find Schools. What would you like to search?";
   
@@ -65,6 +67,18 @@ const ChatBox = ({
     e.preventDefault();
     console.log("Search query:", searchQuery);
     // Handle search logic here
+  };
+
+  const handleGenerateSOP = () => {
+    setActiveGenerator("sop");
+  };
+
+  const handleGenerateCV = () => {
+    setActiveGenerator("cv");
+  };
+
+  const closeGenerator = () => {
+    setActiveGenerator(null);
   };
 
   return (
@@ -138,7 +152,7 @@ const ChatBox = ({
             </button>
           </div>
 
-          {/* Quick Questions */}
+          {/* Quick Questions and Generation Buttons */}
           {isQuestApplyAI && (
             <div className="px-4 pb-4">
               <div className="flex flex-wrap gap-2 mt-2">
@@ -157,6 +171,27 @@ const ChatBox = ({
                     {question.text}
                   </motion.button>
                 ))}
+                
+                {/* Document Generation Buttons */}
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={handleGenerateSOP}
+                  className={`px-4 py-2 rounded-full text-sm border flex items-center gap-1 bg-gradient-to-r from-purple-500 to-violet-500 text-white shadow-sm hover:shadow-md hover:from-purple-600 hover:to-violet-600`}
+                >
+                  <FileText className="h-3.5 w-3.5 mr-1" />
+                  Generate SOP
+                </motion.button>
+                
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={handleGenerateCV}
+                  className={`px-4 py-2 rounded-full text-sm border flex items-center gap-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-sm hover:shadow-md hover:from-blue-600 hover:to-cyan-600`}
+                >
+                  <Download className="h-3.5 w-3.5 mr-1" />
+                  Generate CV
+                </motion.button>
               </div>
             </div>
           )}
@@ -213,6 +248,17 @@ const ChatBox = ({
           </div>
         </div>
       )}
+      
+      {/* Document Generator Dialog */}
+      <AnimatePresence>
+        {activeGenerator && (
+          <DocumentGenerator 
+            documentType={activeGenerator} 
+            onClose={closeGenerator}
+            isDarkMode={isDarkMode}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
