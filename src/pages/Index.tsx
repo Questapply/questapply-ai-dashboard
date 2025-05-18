@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ListOrdered, Shield, HelpCircle, Sun, Moon, FileText, BookOpen, Sparkles, MessageSquare, Layers } from "lucide-react";
@@ -13,13 +13,56 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
+  const [searchParams, useSetSearchParams] = useSearchParams();
+  const { toast } = useToast();
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return document.documentElement.classList.contains("dark");
   });
   const [isGameOpen, setIsGameOpen] = useState(false);
-  const [activeHero, setActiveHero] = useState<"hero1" | "hero2" | "hero3">("hero1");
+  const [activeHero, setActiveHero] = useState<"hero1" | "hero2" | "hero3" | "hero4">("hero1");
+  const [chatMessages, setChatMessages] = useState<{role: string, content: string}[]>([]);
+  const [inputValue, setInputValue] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  // Check URL param for hero selection
+  useEffect(() => {
+    const heroParam = searchParams.get('hero');
+    if (heroParam) {
+      const heroNumber = parseInt(heroParam);
+      if (heroNumber >= 1 && heroNumber <= 4) {
+        setActiveHero(`hero${heroNumber}` as "hero1" | "hero2" | "hero3" | "hero4");
+        
+        // Show toast with hero recommendation if it's the best one
+        if (heroNumber === 2) {
+          setTimeout(() => {
+            toast({
+              title: "Hero Design Recommendation",
+              description: "Hero 2 is our recommended design! It presents the AI chat interface prominently while maintaining clean aesthetics.",
+              duration: 6000,
+            });
+          }, 1000);
+        }
+      }
+    }
+  }, [searchParams]);
+
+  // Auto-scroll to bottom of chat when messages change
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessages]);
+
+  // Initialize chat messages
+  useEffect(() => {
+    if (activeHero === "hero2" || activeHero === "hero3" || activeHero === "hero4") {
+      setChatMessages([
+        { role: "assistant", content: "Hello! I'm QuestApply AI. How can I help with your study abroad journey?" }
+      ]);
+    }
+  }, [activeHero]);
 
   const toggleTheme = () => {
     const newDarkMode = !isDarkMode;
@@ -35,6 +78,44 @@ const Index = () => {
   const openGame = () => {
     setIsGameOpen(true);
   };
+
+  // Simulate sending a message and getting AI response
+  const handleSendMessage = (e: React.FormEvent | null, quickPrompt: string = "") => {
+    if (e) e.preventDefault();
+    
+    const message = quickPrompt || inputValue;
+    if (!message.trim()) return;
+    
+    // Add user message
+    setChatMessages(prev => [...prev, { role: "user", content: message }]);
+    setInputValue("");
+    setIsTyping(true);
+    
+    // Simulate AI typing response with delay
+    setTimeout(() => {
+      let response = "";
+      
+      if (message.toLowerCase().includes("study") || message.toLowerCase().includes("universities") || message.toLowerCase().includes("schools")) {
+        response = "Based on your profile, I recommend considering these top CS programs: MIT, Stanford, Carnegie Mellon, UC Berkeley, and Georgia Tech. Would you like me to analyze your chances for these schools?";
+      } else if (message.toLowerCase().includes("cv") || message.toLowerCase().includes("resume")) {
+        response = "I'd be happy to help generate a CV for your Data Science Master's application. Let me create a template customized to highlight your technical skills, research experience, and academic achievements.";
+      } else if (message.toLowerCase().includes("generate") || message.toLowerCase().includes("sop")) {
+        response = "I can help you craft a compelling Statement of Purpose. What program are you applying to and what are your key accomplishments you'd like to highlight?";
+      } else {
+        response = "I'm here to help with your study abroad journey. I can assist with finding schools, preparing application documents, or understanding the admission process. What specific help do you need?";
+      }
+      
+      setChatMessages(prev => [...prev, { role: "assistant", content: response }]);
+      setIsTyping(false);
+    }, 1500);
+  };
+
+  // Quick prompt buttons
+  const quickPrompts = [
+    "Show me top universities in Canada",
+    "Generate CV for Data Science Master's",
+    "What GRE score do I need?"
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/40 dark:bg-gray-900">
@@ -110,7 +191,7 @@ const Index = () => {
                       onClick={() => setActiveHero("hero1")}
                     >
                       <div className="flex items-center w-full px-2 py-1.5">
-                        HERO 1
+                        HERO 1 (Classic)
                       </div>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
@@ -118,7 +199,7 @@ const Index = () => {
                       onClick={() => setActiveHero("hero2")}
                     >
                       <div className="flex items-center w-full px-2 py-1.5">
-                        HERO 2
+                        HERO 2 (Dashboard Style)
                       </div>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
@@ -126,7 +207,15 @@ const Index = () => {
                       onClick={() => setActiveHero("hero3")}
                     >
                       <div className="flex items-center w-full px-2 py-1.5">
-                        HERO 3
+                        HERO 3 (Fullscreen)
+                      </div>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      className={`focus:bg-purple-100 dark:focus:bg-purple-900/30 rounded-md ${activeHero === "hero4" ? "bg-purple-100 dark:bg-purple-900/30" : ""}`}
+                      onClick={() => setActiveHero("hero4")}
+                    >
+                      <div className="flex items-center w-full px-2 py-1.5">
+                        HERO 4 (Lovable Style)
                       </div>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -282,46 +371,75 @@ const Index = () => {
                     <span className="text-xs text-gray-500 dark:text-gray-400">QuestApply AI</span>
                   </div>
                   
-                  <div className="bg-gray-100 dark:bg-gray-900/70 p-4 rounded-lg mb-4 max-w-[80%]">
-                    <p className="text-gray-700 dark:text-gray-300">I want to study Computer Science. Which universities should I consider?</p>
-                  </div>
-                  
-                  <div className="bg-purple-100 dark:bg-purple-900/30 p-4 rounded-lg ml-auto max-w-[80%] mb-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="h-6 w-6 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
-                        AI
+                  <div className="space-y-4 max-h-64 overflow-y-auto mb-4 scrollbar-thin">
+                    {chatMessages.map((message, index) => (
+                      <div key={index} className={`${
+                        message.role === 'user' 
+                          ? "bg-gray-100 dark:bg-gray-900/70 p-4 rounded-lg max-w-[80%]" 
+                          : "bg-purple-100 dark:bg-purple-900/30 p-4 rounded-lg ml-auto max-w-[80%]"
+                      }`}>
+                        {message.role === 'assistant' && (
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="h-6 w-6 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                              AI
+                            </div>
+                            <span className="text-sm font-medium text-purple-700 dark:text-purple-300">QuestApply Assistant</span>
+                          </div>
+                        )}
+                        <p className={`${message.role === 'user' ? "text-gray-700 dark:text-gray-300" : "text-gray-800 dark:text-gray-200"}`}>
+                          {message.content}
+                        </p>
                       </div>
-                      <span className="text-sm font-medium text-purple-700 dark:text-purple-300">QuestApply Assistant</span>
-                    </div>
-                    <p className="text-gray-800 dark:text-gray-200">
-                      Based on your profile, I recommend considering these top CS programs: MIT, Stanford, Carnegie Mellon, UC Berkeley, and Georgia Tech. Would you like me to analyze your chances for these schools?
-                    </p>
+                    ))}
+                    {isTyping && (
+                      <div className="bg-purple-100 dark:bg-purple-900/30 p-4 rounded-lg ml-auto max-w-[80%]">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="h-6 w-6 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                            AI
+                          </div>
+                          <span className="text-sm font-medium text-purple-700 dark:text-purple-300">QuestApply Assistant</span>
+                        </div>
+                        <div className="flex space-x-2">
+                          <div className="h-2 w-2 rounded-full bg-purple-500 animate-bounce"></div>
+                          <div className="h-2 w-2 rounded-full bg-purple-500 animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+                          <div className="h-2 w-2 rounded-full bg-purple-500 animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+                        </div>
+                      </div>
+                    )}
+                    <div ref={chatEndRef} />
                   </div>
                   
                   <div className="flex gap-2 mt-6 overflow-x-auto pb-2 scrollbar-none">
-                    <Button variant="outline" size="sm" className="whitespace-nowrap border-purple-200 dark:border-purple-800">
-                      <Sparkles className="w-3 h-3 mr-1" />
-                      Analyze my chances
-                    </Button>
-                    <Button variant="outline" size="sm" className="whitespace-nowrap border-purple-200 dark:border-purple-800">
-                      <MessageSquare className="w-3 h-3 mr-1" />
-                      Help with application
-                    </Button>
-                    <Button variant="outline" size="sm" className="whitespace-nowrap border-purple-200 dark:border-purple-800">
-                      Show more schools
-                    </Button>
+                    {quickPrompts.map((prompt, index) => (
+                      <Button 
+                        key={index}
+                        variant="outline" 
+                        size="sm" 
+                        className="whitespace-nowrap border-purple-200 dark:border-purple-800"
+                        onClick={() => handleSendMessage(null, prompt)}
+                      >
+                        {index === 0 && <Sparkles className="w-3 h-3 mr-1" />}
+                        {index === 1 && <MessageSquare className="w-3 h-3 mr-1" />}
+                        {prompt}
+                      </Button>
+                    ))}
                   </div>
                   
-                  <div className="relative mt-4">
+                  <form onSubmit={handleSendMessage} className="relative mt-4">
                     <input 
                       type="text" 
                       placeholder="Ask anything..." 
-                      className="w-full p-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none" 
+                      className="w-full p-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
                     />
-                    <Button className="absolute right-1 top-1 bg-gradient-to-r from-purple-600 to-blue-500 text-white">
+                    <Button 
+                      type="submit"
+                      className="absolute right-1 top-1 bg-gradient-to-r from-purple-600 to-blue-500 text-white"
+                    >
                       Send
                     </Button>
-                  </div>
+                  </form>
                 </motion.div>
                 
                 <div className="mt-4 grid grid-cols-3 gap-4">
@@ -425,62 +543,68 @@ const Index = () => {
                         <div className="text-xs text-gray-400 ml-2">QuestApply AI - Assistant</div>
                       </div>
                       
-                      <div className="space-y-4">
-                        <motion.div 
-                          className="flex items-start gap-3"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 1.2, duration: 0.5 }}
-                        >
-                          <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold">U</div>
-                          <div className="bg-blue-800/50 backdrop-blur px-4 py-3 rounded-xl max-w-[80%]">
-                            <p className="text-blue-100">I want to study abroad but don't know where to start. Can you help me?</p>
-                          </div>
-                        </motion.div>
-                        
-                        <motion.div 
-                          className="flex items-start gap-3"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 1.6, duration: 0.5 }}
-                        >
-                          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white text-sm font-bold">AI</div>
-                          <div className="bg-gray-900/70 backdrop-blur px-4 py-3 rounded-xl max-w-[80%]">
-                            <p className="text-gray-100">
-                              Absolutely! Let's start by understanding your interests, academic background, and career goals. This will help me recommend suitable universities and programs. Would you like me to guide you through the process step by step?
-                            </p>
-                          </div>
-                        </motion.div>
-                        
-                        <motion.div 
-                          className="flex items-start gap-3"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 2, duration: 0.5 }}
-                        >
-                          <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold">U</div>
-                          <div className="bg-blue-800/50 backdrop-blur px-4 py-3 rounded-xl max-w-[80%]">
-                            <p className="text-blue-100">Yes, please! I'm interested in Computer Science programs.</p>
-                          </div>
-                        </motion.div>
-                        
-                        <motion.div 
-                          className="bg-gray-900/50 backdrop-blur rounded-xl border border-gray-700 p-2"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 2.4, duration: 0.5 }}
-                        >
-                          <div className="flex items-center">
-                            <input 
-                              type="text" 
-                              className="bg-transparent flex-1 px-3 py-2 text-white focus:outline-none" 
-                              placeholder="Ask me anything..."
-                              disabled
-                            />
-                            <Button size="sm" disabled className="bg-blue-600 hover:bg-blue-700 text-white">Send</Button>
-                          </div>
-                        </motion.div>
+                      <div className="space-y-4 max-h-[40vh] overflow-y-auto">
+                        {chatMessages.map((message, index) => (
+                          <motion.div 
+                            key={index}
+                            className="flex items-start gap-3"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 * index, duration: 0.5 }}
+                          >
+                            <div className={`h-8 w-8 rounded-full ${message.role === 'user' ? 'bg-blue-600' : 'bg-gradient-to-br from-purple-600 to-blue-600'} flex items-center justify-center text-white text-sm font-bold`}>
+                              {message.role === 'user' ? 'U' : 'AI'}
+                            </div>
+                            <div className={`${
+                              message.role === 'user' 
+                                ? 'bg-blue-800/50 backdrop-blur' 
+                                : 'bg-gray-900/70 backdrop-blur'
+                              } px-4 py-3 rounded-xl max-w-[80%]`}>
+                              <p className={`${message.role === 'user' ? 'text-blue-100' : 'text-gray-100'}`}>
+                                {message.content}
+                              </p>
+                            </div>
+                          </motion.div>
+                        ))}
+                        {isTyping && (
+                          <motion.div 
+                            className="flex items-start gap-3"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                          >
+                            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white text-sm font-bold">
+                              AI
+                            </div>
+                            <div className="bg-gray-900/70 backdrop-blur px-4 py-3 rounded-xl max-w-[80%]">
+                              <div className="flex space-x-2">
+                                <div className="h-2 w-2 rounded-full bg-blue-400 animate-bounce"></div>
+                                <div className="h-2 w-2 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+                                <div className="h-2 w-2 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                        <div ref={chatEndRef} />
                       </div>
+                      
+                      <form onSubmit={handleSendMessage} className="mt-4 bg-gray-900/50 backdrop-blur rounded-xl border border-gray-700 p-2">
+                        <div className="flex items-center">
+                          <input 
+                            type="text" 
+                            className="bg-transparent flex-1 px-3 py-2 text-white focus:outline-none" 
+                            placeholder="Ask me anything..."
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                          />
+                          <Button 
+                            type="submit"
+                            size="sm" 
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                          >
+                            Send
+                          </Button>
+                        </div>
+                      </form>
                     </div>
                   </div>
                   
@@ -500,6 +624,168 @@ const Index = () => {
                 </div>
               </div>
             </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* New Hero 4 - Lovable Style */}
+      {activeHero === "hero4" && (
+        <section className="flex-grow flex items-center bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 overflow-x-hidden">
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-10"
+            >
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400">
+                Build something QuestApply
+              </h1>
+              <p className="mt-4 text-xl text-gray-700 dark:text-gray-300">
+                Idea to app in seconds, with your personal full stack engineer
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 max-w-4xl mx-auto overflow-hidden"
+            >
+              <div className="p-6">
+                <form onSubmit={handleSendMessage}>
+                  <div className="relative">
+                    <textarea
+                      className="w-full p-4 pr-20 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none min-h-[120px] placeholder-gray-400 dark:placeholder-gray-500"
+                      placeholder="Ask QuestApply to help with your study abroad journey..."
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                    ></textarea>
+                    <div className="absolute bottom-4 right-4 flex items-center space-x-2">
+                      <button type="button" className="text-gray-500 dark:text-gray-400 hover:text-purple-500 dark:hover:text-purple-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect width="14" height="14" x="5" y="5" rx="2" />
+                          <path d="M15 2v4" />
+                          <path d="M8 2v4" />
+                          <path d="M2 10h20" />
+                        </svg>
+                      </button>
+                      <button 
+                        type="submit"
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-full hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="m22 2-7 20-4-9-9-4Z" />
+                          <path d="M22 2 11 13" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+                <div className="flex flex-wrap gap-3 mt-5 justify-center">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => handleSendMessage(null, "Find top 5 schools for Computer Science")}
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 10H3" />
+                      <path d="M21 6H3" />
+                      <path d="M21 14H3" />
+                      <path d="M21 18H3" />
+                    </svg>
+                    Find top schools
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => handleSendMessage(null, "Create a CV for grad school")}
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="18" height="18" x="3" y="3" rx="2" />
+                      <path d="M3 9h18" />
+                    </svg>
+                    Create CV
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => handleSendMessage(null, "Analyze my chances for MIT")}
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 8v4l2 2" />
+                    </svg>
+                    Analyze chances
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => handleSendMessage(null, "Write a statement of purpose")}
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                      <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z" />
+                      <path d="M9 9h1" />
+                      <path d="M9 13h6" />
+                      <path d="M9 17h6" />
+                    </svg>
+                    Write SOP
+                  </motion.button>
+                </div>
+              </div>
+
+              <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 flex flex-wrap justify-center gap-6 items-center">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">10,000+ Programs</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Admissions Success</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">24/7 AI Support</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Stats and Features */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 max-w-4xl mx-auto">
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 text-center border border-gray-100 dark:border-gray-700"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+              >
+                <p className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400">5,000+</p>
+                <p className="text-gray-600 dark:text-gray-400 mt-2">Universities Covered</p>
+              </motion.div>
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 text-center border border-gray-100 dark:border-gray-700"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.7 }}
+              >
+                <p className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">98%</p>
+                <p className="text-gray-600 dark:text-gray-400 mt-2">Acceptance Rate</p>
+              </motion.div>
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 text-center border border-gray-100 dark:border-gray-700"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+              >
+                <p className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">24/7</p>
+                <p className="text-gray-600 dark:text-gray-400 mt-2">AI Assistance</p>
+              </motion.div>
+            </div>
           </div>
         </section>
       )}

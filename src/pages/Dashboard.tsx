@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import NavigationButtons from "@/components/dashboard/NavigationButtons";
 import ContentSection from "@/components/dashboard/ContentSection";
@@ -16,6 +17,7 @@ import { Layers } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState<Section>("ai-talent-test");
   const [sidebarOpen, setSidebarOpen] = useState(false); // Default to closed on mobile
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,6 +84,10 @@ const Dashboard = () => {
     // Save preference to localStorage
     localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
   };
+  
+  const navigateToHero = (heroNumber: number) => {
+    navigate(`/?hero=${heroNumber}`);
+  };
 
   // Get filter options based on active section
   const filterOptions = getFilterOptions(activeSection, isQuestApplyAI);
@@ -112,20 +118,25 @@ const Dashboard = () => {
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-2">
-              <DropdownMenuItem>
-                <Link to="/?hero=1" className="flex items-center w-full px-2 py-1.5">
+              <DropdownMenuItem onClick={() => navigateToHero(1)} className="cursor-pointer">
+                <div className="flex items-center w-full px-2 py-1.5">
                   HERO 1 (Classic)
-                </Link>
+                </div>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/?hero=2" className="flex items-center w-full px-2 py-1.5">
+              <DropdownMenuItem onClick={() => navigateToHero(2)} className="cursor-pointer">
+                <div className="flex items-center w-full px-2 py-1.5">
                   HERO 2 (Dashboard Style)
-                </Link>
+                </div>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/?hero=3" className="flex items-center w-full px-2 py-1.5">
+              <DropdownMenuItem onClick={() => navigateToHero(3)} className="cursor-pointer">
+                <div className="flex items-center w-full px-2 py-1.5">
                   HERO 3 (Fullscreen)
-                </Link>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigateToHero(4)} className="cursor-pointer">
+                <div className="flex items-center w-full px-2 py-1.5">
+                  HERO 4 (Lovable Style)
+                </div>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
