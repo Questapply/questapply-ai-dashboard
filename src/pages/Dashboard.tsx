@@ -6,6 +6,14 @@ import ContentSection from "@/components/dashboard/ContentSection";
 import ChatBox from "@/components/dashboard/ChatBox";
 import FeedbackPrompt from "@/components/feedback/FeedbackPrompt";
 import { getFilterOptions, Section } from "@/utils/FilterUtils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Layers } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState<Section>("ai-talent-test");
@@ -86,13 +94,42 @@ const Dashboard = () => {
       setSidebarOpen={setSidebarOpen}
     >
       <div className="w-full max-w-full overflow-x-hidden">
-        <NavigationButtons 
-          activeSection={activeSection}
-          handleSectionChange={handleSectionChange}
-          handleQuestApplyAI={handleQuestApplyAI}
-          isQuestApplyAI={isQuestApplyAI}
-          isDarkMode={isDarkMode}
-        />
+        <div className="flex justify-between items-center mb-4">
+          <NavigationButtons 
+            activeSection={activeSection}
+            handleSectionChange={handleSectionChange}
+            handleQuestApplyAI={handleQuestApplyAI}
+            isQuestApplyAI={isQuestApplyAI}
+            isDarkMode={isDarkMode}
+          />
+          
+          {/* Hero Menu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 bg-white/80 dark:bg-gray-800/80 rounded-lg border border-gray-200 dark:border-gray-700">
+                <Layers className="h-4 w-4 mr-1" />
+                Hero Designs
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-2">
+              <DropdownMenuItem>
+                <Link to="/?hero=1" className="flex items-center w-full px-2 py-1.5">
+                  HERO 1 (Classic)
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/?hero=2" className="flex items-center w-full px-2 py-1.5">
+                  HERO 2 (Dashboard Style)
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/?hero=3" className="flex items-center w-full px-2 py-1.5">
+                  HERO 3 (Fullscreen)
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
         
         {/* Chat Box with Filters Inside */}
         <div className="relative">
