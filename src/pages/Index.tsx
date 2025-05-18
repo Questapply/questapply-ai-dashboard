@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -42,7 +41,6 @@ const Index = () => {
             toast({
               title: "Hero Design Recommendation",
               description: "Hero 2 is our recommended design! It presents the AI chat interface prominently while maintaining clean aesthetics.",
-              duration: 6000,
             });
           }, 1000);
         }
@@ -337,7 +335,7 @@ const Index = () => {
                   <p className="mt-2 text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">
                     Your study abroad journey, <span className="relative">
                       powered by AI
-                      <span className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></span>
+                      <span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-blue-500 rounded"></span>
                     </span>
                   </p>
                   <p className="mt-6 text-gray-600 dark:text-gray-300 text-lg">
@@ -718,7 +716,7 @@ const Index = () => {
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="12" r="10" />
-                      <path d="M12 8v4l2 2" />
+                      <path d="M12 8v4" />
                     </svg>
                     Analyze chances
                   </motion.button>
