@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,13 @@ const Index = () => {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const [autoTypingMessage, setAutoTypingMessage] = useState("");
+  const [currentCharIndex, setCurrentCharIndex] = useState(0);
+  const [currentScenario, setCurrentScenario] = useState(0);
+  const [isAutoTyping, setIsAutoTyping] = useState(false);
+  const [showSchoolCards, setShowSchoolCards] = useState(false);
+  const [showProfessorCards, setShowProfessorCards] = useState(false);
+  const [showSOP, setShowSOP] = useState(false);
 
   // Check URL param for hero selection
   useEffect(() => {
@@ -61,6 +69,62 @@ const Index = () => {
       ]);
     }
   }, [activeHero]);
+
+  // Auto-typing simulation for Hero 3
+  useEffect(() => {
+    if (activeHero === "hero3" && !isAutoTyping) {
+      const scenarioMessages = [
+        "My bachelor is in CS, GPA is 3.7, TOEFL 100, GRE 320. What are the TOP 10 schools in the US for PhD CS?",
+        "Best professors in AI?"
+      ];
+      
+      if (currentScenario < scenarioMessages.length) {
+        const startTyping = setTimeout(() => {
+          setAutoTypingMessage(scenarioMessages[currentScenario]);
+          setCurrentCharIndex(0);
+          setIsAutoTyping(true);
+        }, 2000);
+        
+        return () => clearTimeout(startTyping);
+      }
+    }
+  }, [activeHero, currentScenario, isAutoTyping]);
+
+  // Character-by-character typing effect
+  useEffect(() => {
+    if (isAutoTyping && currentCharIndex < autoTypingMessage.length) {
+      const typingTimer = setTimeout(() => {
+        setCurrentCharIndex(prev => prev + 1);
+      }, 50);
+      
+      return () => clearTimeout(typingTimer);
+    } else if (isAutoTyping && currentCharIndex >= autoTypingMessage.length) {
+      const sendTimer = setTimeout(() => {
+        setChatMessages(prev => [...prev, { role: "user", content: autoTypingMessage }]);
+        setIsAutoTyping(false);
+        setIsTyping(true);
+        
+        // Simulate AI response
+        setTimeout(() => {
+          let response = "";
+          
+          if (currentScenario === 0) {
+            response = "Based on your profile, here are the top 10 schools for PhD in Computer Science in the US:";
+            setShowSchoolCards(true);
+          } else if (currentScenario === 1) {
+            response = "Here are some of the best professors in AI:";
+            setShowProfessorCards(true);
+          }
+          
+          setChatMessages(prev => [...prev, { role: "assistant", content: response }]);
+          setIsTyping(false);
+          setCurrentScenario(prev => prev + 1);
+        }, 1500);
+      }, 500);
+      
+      return () => clearTimeout(sendTimer);
+    }
+  }, [isAutoTyping, currentCharIndex, autoTypingMessage, currentScenario]);
 
   const toggleTheme = () => {
     const newDarkMode = !isDarkMode;
@@ -99,6 +163,7 @@ const Index = () => {
         response = "I'd be happy to help generate a CV for your Data Science Master's application. Let me create a template customized to highlight your technical skills, research experience, and academic achievements.";
       } else if (message.toLowerCase().includes("generate") || message.toLowerCase().includes("sop")) {
         response = "I can help you craft a compelling Statement of Purpose. What program are you applying to and what are your key accomplishments you'd like to highlight?";
+        setShowSOP(true);
       } else {
         response = "I'm here to help with your study abroad journey. I can assist with finding schools, preparing application documents, or understanding the admission process. What specific help do you need?";
       }
@@ -108,11 +173,53 @@ const Index = () => {
     }, 1500);
   };
 
+  // Handle SOP generation
+  const handleSOPGenerate = () => {
+    setChatMessages(prev => [
+      ...prev,
+      { role: "user", content: "Generate SOP for Computer Science PhD" }
+    ]);
+    setIsTyping(true);
+    
+    setTimeout(() => {
+      setChatMessages(prev => [
+        ...prev,
+        { role: "assistant", content: "Here's your Statement of Purpose for Computer Science PhD applications:" }
+      ]);
+      setShowSOP(true);
+      setIsTyping(false);
+    }, 1500);
+  };
+
   // Quick prompt buttons
   const quickPrompts = [
     "Show me top universities in Canada",
     "Generate CV for Data Science Master's",
     "What GRE score do I need?"
+  ];
+
+  // Hero 3 quick prompt buttons
+  const hero3Prompts = [
+    "How to find schools?",
+    "Best programs for CS?",
+    "Best professors in AI?",
+    "Generate CV",
+    "Generate SOP",
+    "How to write a LOR?"
+  ];
+
+  // Mock data for schools
+  const topSchools = [
+    { name: "Massachusetts Institute of Technology (MIT)", logo: "https://via.placeholder.com/50", ranking: "#1", location: "Cambridge, MA" },
+    { name: "Stanford University", logo: "https://via.placeholder.com/50", ranking: "#2", location: "Stanford, CA" },
+    { name: "Carnegie Mellon University", logo: "https://via.placeholder.com/50", ranking: "#3", location: "Pittsburgh, PA" }
+  ];
+
+  // Mock data for professors
+  const topProfessors = [
+    { name: "Dr. Andrew Ng", university: "Stanford University", photo: "https://via.placeholder.com/80", expertise: "Machine Learning" },
+    { name: "Dr. Fei-Fei Li", university: "Stanford University", photo: "https://via.placeholder.com/80", expertise: "Computer Vision" },
+    { name: "Dr. Yoshua Bengio", university: "University of Montreal", photo: "https://via.placeholder.com/80", expertise: "Deep Learning" }
   ];
 
   return (
@@ -531,7 +638,7 @@ const Index = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20"></div>
                   
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-full max-w-2xl p-6 bg-black/30 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl">
+                    <div className="w-full max-w-4xl h-[75vh] p-6 bg-black/30 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl flex flex-col">
                       <div className="flex items-center gap-2 mb-4">
                         <div className="flex gap-1.5">
                           <div className="h-3 w-3 rounded-full bg-red-400"></div>
@@ -541,14 +648,14 @@ const Index = () => {
                         <div className="text-xs text-gray-400 ml-2">QuestApply AI - Assistant</div>
                       </div>
                       
-                      <div className="space-y-4 max-h-[40vh] overflow-y-auto">
+                      <div className="space-y-4 max-h-[60vh] overflow-y-auto flex-grow">
                         {chatMessages.map((message, index) => (
                           <motion.div 
                             key={index}
                             className="flex items-start gap-3"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 0.5 * index, duration: 0.5 }}
+                            transition={{ delay: 0.2 * index, duration: 0.5 }}
                           >
                             <div className={`h-8 w-8 rounded-full ${message.role === 'user' ? 'bg-blue-600' : 'bg-gradient-to-br from-purple-600 to-blue-600'} flex items-center justify-center text-white text-sm font-bold`}>
                               {message.role === 'user' ? 'U' : 'AI'}
@@ -561,9 +668,93 @@ const Index = () => {
                               <p className={`${message.role === 'user' ? 'text-blue-100' : 'text-gray-100'}`}>
                                 {message.content}
                               </p>
+                              
+                              {/* Show school cards after the appropriate message */}
+                              {message.role === "assistant" && message.content.includes("top 10 schools") && showSchoolCards && (
+                                <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+                                  {topSchools.map((school, idx) => (
+                                    <motion.div 
+                                      key={idx}
+                                      className="bg-indigo-800/50 backdrop-blur p-3 rounded-lg border border-white/10 flex items-center gap-3"
+                                      initial={{ opacity: 0, y: 10 }}
+                                      animate={{ opacity: 1, y: 0 }}
+                                      transition={{ delay: 0.2 * idx }}
+                                    >
+                                      <div className="w-12 h-12 rounded-md bg-white/10 flex items-center justify-center text-white font-bold">
+                                        {school.ranking}
+                                      </div>
+                                      <div>
+                                        <h4 className="text-white text-sm font-semibold">{school.name}</h4>
+                                        <p className="text-blue-200 text-xs">{school.location}</p>
+                                      </div>
+                                    </motion.div>
+                                  ))}
+                                </div>
+                              )}
+                              
+                              {/* Show professor cards after the appropriate message */}
+                              {message.role === "assistant" && message.content.includes("best professors") && showProfessorCards && (
+                                <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+                                  {topProfessors.map((prof, idx) => (
+                                    <motion.div 
+                                      key={idx}
+                                      className="bg-indigo-800/50 backdrop-blur p-3 rounded-lg border border-white/10 flex flex-col items-center gap-2"
+                                      initial={{ opacity: 0, y: 10 }}
+                                      animate={{ opacity: 1, y: 0 }}
+                                      transition={{ delay: 0.2 * idx }}
+                                    >
+                                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                                        {prof.name.split(" ").map(n => n[0]).join("")}
+                                      </div>
+                                      <div className="text-center">
+                                        <h4 className="text-white text-sm font-semibold">{prof.name}</h4>
+                                        <p className="text-blue-200 text-xs">{prof.university}</p>
+                                        <p className="text-purple-300 text-xs mt-1">{prof.expertise}</p>
+                                      </div>
+                                    </motion.div>
+                                  ))}
+                                </div>
+                              )}
+                              
+                              {/* Show SOP after the appropriate message */}
+                              {message.role === "assistant" && message.content.includes("Statement of Purpose") && showSOP && (
+                                <motion.div 
+                                  className="mt-4 bg-indigo-800/50 backdrop-blur p-4 rounded-lg border border-white/10"
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                >
+                                  <h4 className="text-white font-semibold mb-2">Statement of Purpose - Computer Science PhD</h4>
+                                  <p className="text-blue-200 text-sm mb-2">
+                                    My journey in computer science began during my undergraduate studies at [University Name], where I developed a deep fascination with artificial intelligence and machine learning...
+                                  </p>
+                                  <p className="text-blue-200 text-sm">
+                                    Through rigorous coursework and research experiences, I've developed expertise in [specific areas]... My goal is to contribute to the cutting-edge research in [specific field] at your institution...
+                                  </p>
+                                </motion.div>
+                              )}
                             </div>
                           </motion.div>
                         ))}
+                        
+                        {/* Auto typing effect */}
+                        {isAutoTyping && (
+                          <motion.div 
+                            className="flex items-start gap-3"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                          >
+                            <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold">
+                              U
+                            </div>
+                            <div className="bg-blue-800/50 backdrop-blur px-4 py-3 rounded-xl max-w-[80%]">
+                              <p className="text-blue-100">
+                                {autoTypingMessage.substring(0, currentCharIndex)}
+                                <span className="inline-block w-2 h-4 bg-blue-300 ml-0.5 animate-pulse"></span>
+                              </p>
+                            </div>
+                          </motion.div>
+                        )}
+                        
                         {isTyping && (
                           <motion.div 
                             className="flex items-start gap-3"
@@ -585,24 +776,46 @@ const Index = () => {
                         <div ref={chatEndRef} />
                       </div>
                       
-                      <form onSubmit={handleSendMessage} className="mt-4 bg-gray-900/50 backdrop-blur rounded-xl border border-gray-700 p-2">
-                        <div className="flex items-center">
-                          <input 
-                            type="text" 
-                            className="bg-transparent flex-1 px-3 py-2 text-white focus:outline-none" 
-                            placeholder="Ask me anything..."
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                          />
-                          <Button 
-                            type="submit"
-                            size="sm" 
-                            className="bg-blue-600 hover:bg-blue-700 text-white"
-                          >
-                            Send
-                          </Button>
+                      <div className="mt-auto pt-4">
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {hero3Prompts.map((prompt, idx) => (
+                            <motion.button
+                              key={idx}
+                              className={`px-3 py-1.5 rounded-full text-xs font-medium ${
+                                idx === 4 ? 'bg-green-500 hover:bg-green-600 text-white' :
+                                idx === 3 ? 'bg-blue-500 hover:bg-blue-600 text-white' :
+                                'bg-white/10 hover:bg-white/20 text-white'
+                              } transition-colors`}
+                              onClick={() => idx === 4 ? handleSOPGenerate() : handleSendMessage(null, prompt)}
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              {prompt}
+                            </motion.button>
+                          ))}
                         </div>
-                      </form>
+                        
+                        <form onSubmit={handleSendMessage} className="bg-gray-900/50 backdrop-blur rounded-xl border border-gray-700 p-2 relative">
+                          <div className="flex items-center">
+                            <input 
+                              type="text" 
+                              className="bg-transparent flex-1 px-3 py-2 text-white focus:outline-none" 
+                              placeholder="Ask me anything..."
+                              value={inputValue}
+                              onChange={(e) => setInputValue(e.target.value)}
+                            />
+                            <button 
+                              type="submit"
+                              className="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                                <path d="m22 2-7 20-4-9-9-4Z" />
+                                <path d="M22 2 11 13" />
+                              </svg>
+                            </button>
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
                   
@@ -626,7 +839,7 @@ const Index = () => {
         </section>
       )}
 
-      {/* New Hero 4 - Lovable Style */}
+      {/* Hero 4 - Lovable Style */}
       {activeHero === "hero4" && (
         <section className="flex-grow flex items-center bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 overflow-x-hidden">
           <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -804,3 +1017,4 @@ const Index = () => {
 };
 
 export default Index;
+
