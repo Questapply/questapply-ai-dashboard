@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { ArrowUp, Search, FileText, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FilterOption } from "@/utils/FilterUtils";
-import DocumentGenerator from "@/components/generation/DocumentGenerator";
+import ConversationalDocumentGenerator from "@/components/generation/ConversationalDocumentGenerator";
 
 interface ChatBoxProps {
   searchQuery: string;
@@ -249,10 +249,10 @@ const ChatBox = ({
         </div>
       )}
       
-      {/* Document Generator Dialog */}
+      {/* Conversational Document Generator Dialog */}
       <AnimatePresence>
         {activeGenerator && (
-          <DocumentGenerator 
+          <ConversationalDocumentGenerator 
             documentType={activeGenerator} 
             onClose={closeGenerator}
             isDarkMode={isDarkMode}

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, FileText, BookOpen, Download, FileOutput, Send, Save } from "lucide-react";
+import { Loader2, FileText, BookOpen, Download, Send, Save } from "lucide-react";
 import { DocumentType, FormField, useGenerationProcess } from "@/utils/GenerationUtils";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
