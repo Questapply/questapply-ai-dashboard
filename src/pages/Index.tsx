@@ -1,8 +1,9 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ListOrdered, Shield, HelpCircle, Sun, Moon } from "lucide-react";
+import { ListOrdered, Shield, HelpCircle, Sun, Moon, FileText } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import QuestApplyLogo from "@/components/common/QuestApplyLogo";
 import {
@@ -43,6 +44,10 @@ const Index = () => {
                 <Link to="/ranking" className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium flex items-center">
                   <ListOrdered className="h-4 w-4 mr-1" />
                   Ranking
+                </Link>
+                <Link to="/blog" className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium flex items-center">
+                  <FileText className="h-4 w-4 mr-1" />
+                  Blog
                 </Link>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
