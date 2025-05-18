@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -50,13 +50,13 @@ const Index = () => {
           setTimeout(() => {
             toast({
               title: "Hero Design Recommendation",
-              description: "Hero 2 is our recommended design! It presents the AI chat interface prominently while maintaining clean aesthetics.",
+              description: "Hero 2 is our recommended design! It presents the AI chat interface prominently while maintaining clean aesthetics."
             });
           }, 1000);
         }
       }
     }
-  }, [searchParams]);
+  }, [searchParams, toast]);
 
   // Auto-scroll to bottom of chat when messages change
   useEffect(() => {
@@ -83,20 +83,25 @@ const Index = () => {
 
   // Mock data for schools
   const topSchools = [
-    { id: 1, name: "Massachusetts Institute of Technology (MIT)", ranking: "#1", location: "Cambridge, MA" },
-    { id: 2, name: "Stanford University", ranking: "#2", location: "Stanford, CA" },
-    { id: 3, name: "Carnegie Mellon University", ranking: "#3", location: "Pittsburgh, PA" },
-    { id: 4, name: "University of California, Berkeley", ranking: "#4", location: "Berkeley, CA" },
-    { id: 5, name: "Cornell University", ranking: "#5", location: "Ithaca, NY" }
+    { id: 1, name: "Massachusetts Institute of Technology (MIT)", ranking: "#1", location: "Cambridge, MA", icon: <University className="w-8 h-8 text-blue-300" /> },
+    { id: 2, name: "Stanford University", ranking: "#2", location: "Stanford, CA", icon: <GraduationCap className="w-8 h-8 text-purple-300" /> },
+    { id: 3, name: "Carnegie Mellon University", ranking: "#3", location: "Pittsburgh, PA", icon: <Landmark className="w-8 h-8 text-teal-300" /> },
+    { id: 4, name: "University of California, Berkeley", ranking: "#4", location: "Berkeley, CA", icon: <University className="w-8 h-8 text-blue-300" /> },
+    { id: 5, name: "Cornell University", ranking: "#5", location: "Ithaca, NY", icon: <Landmark className="w-8 h-8 text-teal-300" /> }
   ];
 
-  // Mock data for professors
+  // Mock data for professors with profile images
   const topProfessors = [
-    { id: 1, name: "Dr. Andrew Ng", university: "Stanford University", expertise: "Machine Learning", initial: "AN" },
-    { id: 2, name: "Dr. Fei-Fei Li", university: "Stanford University", expertise: "Computer Vision", initial: "FL" },
-    { id: 3, name: "Dr. Yoshua Bengio", university: "University of Montreal", expertise: "Deep Learning", initial: "YB" },
-    { id: 4, name: "Dr. Sebastian Thrun", university: "Stanford University", expertise: "Robotics & AI", initial: "ST" },
-    { id: 5, name: "Dr. Geoffrey Hinton", university: "University of Toronto", expertise: "Neural Networks", initial: "GH" }
+    { id: 1, name: "Dr. Andrew Ng", university: "Stanford University", expertise: "Machine Learning", initial: "AN", imgUrl: "https://randomuser.me/api/portraits/men/32.jpg" },
+    { id: 2, name: "Dr. Fei-Fei Li", university: "Stanford University", expertise: "Computer Vision", initial: "FL", imgUrl: "https://randomuser.me/api/portraits/women/44.jpg" },
+    { id: 3, name: "Dr. Yoshua Bengio", university: "University of Montreal", expertise: "Deep Learning", initial: "YB", imgUrl: "https://randomuser.me/api/portraits/men/46.jpg" },
+    { id: 4, name: "Dr. Sebastian Thrun", university: "Stanford University", expertise: "Robotics & AI", initial: "ST", imgUrl: "https://randomuser.me/api/portraits/men/22.jpg" },
+    { id: 5, name: "Dr. Geoffrey Hinton", university: "University of Toronto", expertise: "Neural Networks", initial: "GH", imgUrl: "https://randomuser.me/api/portraits/men/86.jpg" },
+    { id: 6, name: "Dr. Emma Johnson", university: "MIT", expertise: "Natural Language Processing", initial: "EJ", imgUrl: "https://randomuser.me/api/portraits/women/28.jpg" },
+    { id: 7, name: "Dr. David Lee", university: "UC Berkeley", expertise: "Reinforcement Learning", initial: "DL", imgUrl: "https://randomuser.me/api/portraits/men/57.jpg" },
+    { id: 8, name: "Dr. Sarah Chen", university: "CMU", expertise: "Computer Vision", initial: "SC", imgUrl: "https://randomuser.me/api/portraits/women/63.jpg" },
+    { id: 9, name: "Dr. Michael Brown", university: "Harvard", expertise: "AI Ethics", initial: "MB", imgUrl: "https://randomuser.me/api/portraits/men/37.jpg" },
+    { id: 10, name: "Dr. Lisa Park", university: "Princeton", expertise: "Quantum Computing", initial: "LP", imgUrl: "https://randomuser.me/api/portraits/women/90.jpg" }
   ];
 
   // Auto-typing simulation for Hero 3
@@ -168,11 +173,17 @@ const Index = () => {
           } else if (currentScenario === 1) {
             response = "Here are some of the best professors in AI:";
             setShowProfessorCards(true);
+            // Auto-trigger SOP after showing professors
+            setTimeout(() => {
+              setCurrentScenario(2);
+            }, 3000);
           }
           
           setChatMessages(prev => [...prev, { role: "assistant", content: response }]);
           setIsTyping(false);
-          setCurrentScenario(prev => prev + 1);
+          if (currentScenario < 2) {
+            setCurrentScenario(prev => prev + 1);
+          }
         }, 1500);
       }, 500);
       
@@ -582,7 +593,10 @@ const Index = () => {
                       type="submit"
                       className="absolute right-1 top-1 bg-gradient-to-r from-purple-600 to-blue-500 text-white"
                     >
-                      Send
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m22 2-7 20-4-9-9-4Z" />
+                        <path d="M22 2 11 13" />
+                      </svg>
                     </Button>
                   </form>
                 </motion.div>
@@ -618,262 +632,6 @@ const Index = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-      )}
-
-      {activeHero === "hero3" && (
-        <section className="flex-grow flex flex-col">
-          <div className="flex-grow flex flex-col items-center justify-center px-4 py-12 sm:py-20 bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-800 text-white overflow-hidden">
-            <motion.h1 
-              className="text-5xl md:text-7xl font-bold text-center max-w-5xl mx-auto leading-tight"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-teal-300 to-cyan-400 font-extrabold">
-                AI Transforms Education
-              </span>
-            </motion.h1>
-            
-            <motion.p 
-              className="mt-6 text-xl md:text-2xl text-blue-100 max-w-3xl text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              QuestApply harnesses cutting-edge artificial intelligence to transform how students discover and apply to their ideal graduate programs worldwide.
-            </motion.p>
-            
-            <motion.div 
-              className="mt-10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white border-none shadow-lg shadow-blue-900/50 hover:shadow-xl hover:shadow-blue-900/50 transition-all duration-300 transform hover:-translate-y-0.5 px-8 py-6 text-lg">
-                Begin Your Journey
-              </Button>
-            </motion.div>
-            
-            <motion.div 
-              className="mt-24 w-full max-w-6xl rounded-lg shadow-2xl overflow-hidden"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1 }}
-            >
-              <div className="relative">
-                <div className="aspect-[16/9] bg-gradient-to-br from-blue-900/30 via-purple-900/30 to-pink-900/30 backdrop-blur rounded-lg overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20"></div>
-                  
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-full max-w-4xl h-[75vh] p-6 bg-black/30 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl flex flex-col">
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="flex gap-1.5">
-                          <div className="h-3 w-3 rounded-full bg-red-400"></div>
-                          <div className="h-3 w-3 rounded-full bg-yellow-400"></div>
-                          <div className="h-3 w-3 rounded-full bg-green-400"></div>
-                        </div>
-                        <div className="text-xs text-gray-400 ml-2">QuestApply AI - Assistant</div>
-                      </div>
-                      
-                      <ScrollArea className="space-y-4 max-h-[60vh] overflow-y-auto flex-grow pr-4">
-                        <div className="space-y-4">
-                          {chatMessages.map((message, index) => (
-                            <motion.div 
-                              key={index}
-                              className="flex items-start gap-3"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              transition={{ delay: 0.2 * index, duration: 0.5 }}
-                            >
-                              <div className={`h-8 w-8 rounded-full ${message.role === 'user' ? 'bg-blue-600' : 'bg-gradient-to-br from-purple-600 to-blue-600'} flex items-center justify-center text-white text-sm font-bold`}>
-                                {message.role === 'user' ? 'U' : 'AI'}
-                              </div>
-                              <div className={`${
-                                message.role === 'user' 
-                                  ? 'bg-blue-800/50 backdrop-blur' 
-                                  : 'bg-gray-900/70 backdrop-blur'
-                                } px-4 py-3 rounded-xl max-w-[80%]`}>
-                                <p className={`${message.role === 'user' ? 'text-blue-100' : 'text-gray-100'}`}>
-                                  {message.content}
-                                </p>
-                                
-                                {/* Show school cards after the appropriate message */}
-                                {message.role === "assistant" && message.content.includes("top schools") && showSchoolCards && (
-                                  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-                                    {topSchools.map((school, idx) => (
-                                      <motion.div 
-                                        key={idx}
-                                        className="bg-indigo-800/50 backdrop-blur p-3 rounded-lg border border-white/10 flex items-center gap-3"
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.2 * idx }}
-                                      >
-                                        <div className="flex shrink-0 items-center justify-center w-10 h-10">
-                                          {idx % 3 === 0 && <University className="w-8 h-8 text-blue-300" />}
-                                          {idx % 3 === 1 && <GraduationCap className="w-8 h-8 text-purple-300" />}
-                                          {idx % 3 === 2 && <Landmark className="w-8 h-8 text-teal-300" />}
-                                        </div>
-                                        <div>
-                                          <h4 className="text-white text-sm font-semibold">{school.name}</h4>
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-blue-200 text-xs">{school.ranking}</span>
-                                            <span className="text-xs text-gray-400">•</span>
-                                            <span className="text-blue-200 text-xs">{school.location}</span>
-                                          </div>
-                                        </div>
-                                      </motion.div>
-                                    ))}
-                                  </div>
-                                )}
-                                
-                                {/* Show professor cards after the appropriate message */}
-                                {message.role === "assistant" && message.content.includes("best professors") && showProfessorCards && (
-                                  <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    {topProfessors.map((prof, idx) => (
-                                      <motion.div 
-                                        key={idx}
-                                        className="bg-indigo-800/50 backdrop-blur p-4 rounded-lg border border-white/10 flex flex-col items-center gap-3"
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.2 * idx }}
-                                      >
-                                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold shadow-lg shadow-purple-900/30">
-                                          {prof.initial}
-                                        </div>
-                                        <div className="text-center">
-                                          <h4 className="text-white text-sm font-semibold">{prof.name}</h4>
-                                          <p className="text-blue-200 text-xs">{prof.university}</p>
-                                          <div className="mt-1.5 px-3 py-1 bg-blue-900/40 rounded-full inline-block">
-                                            <p className="text-purple-300 text-xs">{prof.expertise}</p>
-                                          </div>
-                                        </div>
-                                      </motion.div>
-                                    ))}
-                                  </div>
-                                )}
-                                
-                                {/* Show SOP after the appropriate message */}
-                                {message.role === "assistant" && message.content.includes("Statement of Purpose") && showSOP && (
-                                  <motion.div 
-                                    className="mt-4 bg-indigo-800/50 backdrop-blur p-4 rounded-lg border border-white/10"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                  >
-                                    <h4 className="text-white font-semibold mb-2">Statement of Purpose - Computer Science PhD</h4>
-                                    <p className="text-blue-200 text-sm mb-2">
-                                      My journey in computer science began during my undergraduate studies at [University Name], where I developed a deep fascination with artificial intelligence and machine learning...
-                                    </p>
-                                    <p className="text-blue-200 text-sm">
-                                      Through rigorous coursework and research experiences, I've developed expertise in [specific areas]... My goal is to contribute to the cutting-edge research in [specific field] at your institution...
-                                    </p>
-                                  </motion.div>
-                                )}
-                              </div>
-                            </motion.div>
-                          ))}
-                          
-                          {/* Auto typing effect */}
-                          {isAutoTyping && (
-                            <motion.div 
-                              className="flex items-start gap-3"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                            >
-                              <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold">
-                                U
-                              </div>
-                              <div className="bg-blue-800/50 backdrop-blur px-4 py-3 rounded-xl max-w-[80%]">
-                                <p className="text-blue-100">
-                                  {autoTypingMessage.substring(0, currentCharIndex)}
-                                  <span className="inline-block w-2 h-4 bg-blue-300 ml-0.5 animate-pulse"></span>
-                                </p>
-                              </div>
-                            </motion.div>
-                          )}
-                          
-                          {isTyping && (
-                            <motion.div 
-                              className="flex items-start gap-3"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                            >
-                              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white text-sm font-bold">
-                                AI
-                              </div>
-                              <div className="bg-gray-900/70 backdrop-blur px-4 py-3 rounded-xl max-w-[80%]">
-                                <div className="flex space-x-2">
-                                  <div className="h-2 w-2 rounded-full bg-blue-400 animate-bounce"></div>
-                                  <div className="h-2 w-2 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-                                  <div className="h-2 w-2 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "0.4s" }}></div>
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                          <div ref={chatEndRef} />
-                        </div>
-                      </ScrollArea>
-                      
-                      <div className="mt-auto pt-4">
-                        <div className="flex flex-wrap gap-2 mb-3">
-                          {hero3Prompts.map((prompt, idx) => (
-                            <motion.button
-                              key={idx}
-                              className={`px-3 py-1.5 rounded-full text-xs font-medium ${
-                                idx === 4 ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white' :
-                                idx === 3 ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white' :
-                                'bg-white/10 hover:bg-white/20 text-white'
-                              } transition-colors shadow-md`}
-                              onClick={() => idx === 4 ? handleSOPGenerate() : handleSendMessage(null, prompt)}
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                            >
-                              {prompt}
-                            </motion.button>
-                          ))}
-                        </div>
-                        
-                        <form onSubmit={handleSendMessage} className="bg-gray-900/50 backdrop-blur rounded-xl border border-gray-700 p-2 relative">
-                          <div className="flex items-center">
-                            <input 
-                              type="text" 
-                              className="bg-transparent flex-1 px-3 py-2 text-white focus:outline-none" 
-                              placeholder="Ask me anything..."
-                              value={inputValue}
-                              onChange={(e) => setInputValue(e.target.value)}
-                            />
-                            <button 
-                              type="submit"
-                              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md shadow-green-900/20 hover:shadow-lg hover:shadow-green-900/30"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-                                <path d="m22 2-7 20-4-9-9-4Z" />
-                                <path d="M22 2 11 13" />
-                              </svg>
-                            </button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute bottom-4 left-4">
-                    <div className="flex gap-2">
-                      <div className="px-2 py-1 bg-white/10 backdrop-blur-md rounded-md text-xs text-white">
-                        AI-powered advisor
-                      </div>
-                      <div className="px-2 py-1 bg-white/10 backdrop-blur-md rounded-md text-xs text-white">
-                        5,000+ universities
-                      </div>
-                      <div className="px-2 py-1 bg-white/10 backdrop-blur-md rounded-md text-xs text-white">
-                        Live application status
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </section>
       )}
@@ -1004,37 +762,6 @@ const Index = () => {
                 </div>
               </div>
             </motion.div>
-
-            {/* Stats and Features */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 max-w-4xl mx-auto">
-              <motion.div 
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 text-center border border-gray-100 dark:border-gray-700"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-              >
-                <p className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400">5,000+</p>
-                <p className="text-gray-600 dark:text-gray-400 mt-2">Universities Covered</p>
-              </motion.div>
-              <motion.div 
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 text-center border border-gray-100 dark:border-gray-700"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.7 }}
-              >
-                <p className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">98%</p>
-                <p className="text-gray-600 dark:text-gray-400 mt-2">Acceptance Rate</p>
-              </motion.div>
-              <motion.div 
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 text-center border border-gray-100 dark:border-gray-700"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-              >
-                <p className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">24/7</p>
-                <p className="text-gray-600 dark:text-gray-400 mt-2">AI Assistance</p>
-              </motion.div>
-            </div>
           </div>
         </section>
       )}
