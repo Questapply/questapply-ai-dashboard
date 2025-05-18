@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle, XCircle, Award, Volume2, Rocket, Star, Moon, Planet } from "lucide-react";
+import { CheckCircle, XCircle, Award, Volume2, Rocket, Star, Moon, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -310,7 +309,7 @@ const WordQuestGame = ({ open, onOpenChange }: WordQuestGameProps) => {
                 {/* Planet label */}
                 <div className="absolute top-2 left-2">
                   <Badge variant="outline" className="bg-white/80 dark:bg-black/50 border-purple-300 dark:border-purple-700">
-                    <Planet className="w-3 h-3 mr-1 text-purple-500" />
+                    <Globe className="w-3 h-3 mr-1 text-purple-500" />
                     {getCurrentPlanet()}
                   </Badge>
                 </div>
