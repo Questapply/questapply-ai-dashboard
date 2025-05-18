@@ -6,8 +6,8 @@
   }
   
   .game-character {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 100%;
+    padding: 0.75rem;
   }
   
   .game-environment {
@@ -17,8 +17,8 @@
 
 @media (min-width: 641px) and (max-width: 1024px) {
   .game-character {
-    width: 3rem;
-    height: 3rem;
+    width: 100%;
+    padding: 1rem;
   }
 }
 
@@ -37,4 +37,121 @@
 
 .floating-animation {
   animation: float 3s ease-in-out infinite;
+}
+
+/* Crystal animation */
+@keyframes crystal-glow {
+  0% {
+    filter: drop-shadow(0 0 2px rgba(147, 51, 234, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(147, 51, 234, 0.8));
+  }
+  100% {
+    filter: drop-shadow(0 0 2px rgba(147, 51, 234, 0.5));
+  }
+}
+
+.crystal-glow {
+  animation: crystal-glow 2s ease-in-out infinite;
+}
+
+/* Speech bubble styling */
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 20px;
+  border-width: 8px 8px 0;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.9) transparent;
+}
+
+.dark .speech-bubble::after {
+  border-color: rgba(31, 41, 55, 0.9) transparent;
+}
+
+/* Planet surface styling */
+.planet-surface {
+  background-image: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.1) 50%);
+  background-size: 20px 20px;
+}
+
+/* Character hover effect */
+.character-hover:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+}
+
+/* Nebula companion pulse effect */
+@keyframes nebula-pulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+
+.nebula-pulse {
+  animation: nebula-pulse 3s ease-in-out infinite;
+}
+
+/* Crystal collection animation */
+@keyframes collect {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.collect-animation {
+  animation: collect 0.6s forwards;
+}
+
+/* Star twinkle animation for space background */
+@keyframes twinkle {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.twinkle-1 {
+  animation: twinkle 3s infinite ease-in-out;
+}
+
+.twinkle-2 {
+  animation: twinkle 4s infinite ease-in-out 1s;
+}
+
+.twinkle-3 {
+  animation: twinkle 5s infinite ease-in-out 2s;
 }
