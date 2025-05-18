@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -7,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, FileText, BookOpen, Download, FileWord, Send, Save } from "lucide-react";
+import { Loader2, FileText, BookOpen, Download, FileOutput, Send, Save } from "lucide-react";
 import { DocumentType, FormField, useGenerationProcess } from "@/utils/GenerationUtils";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -228,7 +227,7 @@ const DocumentGenerator: React.FC<DocumentGeneratorProps> = ({ documentType, onC
                       PDF
                     </Button>
                     <Button variant="outline">
-                      <FileWord className="mr-2 h-4 w-4" />
+                      <FileText className="mr-2 h-4 w-4" />
                       Word
                     </Button>
                     <Button variant="outline">
