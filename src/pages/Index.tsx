@@ -3,9 +3,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ListOrdered, Shield, HelpCircle, Sun, Moon, FileText } from "lucide-react";
+import { ListOrdered, Shield, HelpCircle, Sun, Moon, FileText, BookOpen } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import QuestApplyLogo from "@/components/common/QuestApplyLogo";
+import WordQuestGame from "@/components/game/WordQuestGame";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +18,7 @@ const Index = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return document.documentElement.classList.contains("dark");
   });
+  const [isGameOpen, setIsGameOpen] = useState(false);
 
   const toggleTheme = () => {
     const newDarkMode = !isDarkMode;
@@ -27,6 +29,10 @@ const Index = () => {
     } else {
       document.documentElement.classList.remove("dark");
     }
+  };
+
+  const openGame = () => {
+    setIsGameOpen(true);
   };
 
   return (
@@ -49,6 +55,21 @@ const Index = () => {
                   <FileText className="h-4 w-4 mr-1" />
                   Blog
                 </Link>
+                <button 
+                  onClick={openGame}
+                  className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium flex items-center group"
+                >
+                  <BookOpen className="h-4 w-4 mr-1 group-hover:animate-pulse" />
+                  <span>TOEFL Game</span>
+                  <motion.span 
+                    className="ml-1 inline-block text-xs bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full px-2"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1, duration: 0.5 }}
+                  >
+                    New!
+                  </motion.span>
+                </button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium flex items-center">
@@ -137,6 +158,23 @@ const Index = () => {
                 </Button>
               </Link>
             </div>
+            
+            {/* TOEFL Game Call to Action */}
+            <motion.div 
+              className="mt-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+            >
+              <Button 
+                onClick={openGame}
+                size="lg" 
+                className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white border-none shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+              >
+                <BookOpen className="h-5 w-5 mr-2" />
+                Try Our TOEFL Vocabulary Game
+              </Button>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -149,6 +187,9 @@ const Index = () => {
           </div>
         </div>
       </footer>
+      
+      {/* TOEFL Game Dialog */}
+      <WordQuestGame open={isGameOpen} onOpenChange={setIsGameOpen} />
     </div>
   );
 };

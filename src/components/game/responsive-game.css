@@ -1,0 +1,40 @@
+
+/* These styles will enhance the game's responsiveness on different devices */
+@media (max-width: 640px) {
+  .game-options-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .game-character {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .game-environment {
+    height: 6rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .game-character {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+/* Animations for the game elements */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.floating-animation {
+  animation: float 3s ease-in-out infinite;
+}
