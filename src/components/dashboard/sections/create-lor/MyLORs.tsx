@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FileText, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import { FileText, ChevronLeft, ChevronRight, Calendar, Send, Upload, Archive } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 const MyLORs = () => {
@@ -122,9 +122,7 @@ const MyLORs = () => {
                   }`}
                 >
                   <div className="flex justify-center mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
+                    <Send className="h-8 w-8 text-teal-500" />
                   </div>
                   <h4 className="font-medium">Email</h4>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Direct email to program</p>
@@ -137,9 +135,7 @@ const MyLORs = () => {
                   }`}
                 >
                   <div className="flex justify-center mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
+                    <Upload className="h-8 w-8 text-blue-500" />
                   </div>
                   <h4 className="font-medium">Upload</h4>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Upload to application portal</p>
@@ -152,9 +148,7 @@ const MyLORs = () => {
                   }`}
                 >
                   <div className="flex justify-center mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
-                    </svg>
+                    <Archive className="h-8 w-8 text-purple-500" />
                   </div>
                   <h4 className="font-medium">Sealed Envelope</h4>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Physical copy</p>
@@ -492,7 +486,7 @@ const MyLORs = () => {
                 </Button>
                 <Button 
                   onClick={handleSubmit}
-                  className="bg-teal-500 hover:bg-teal-600"
+                  className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white"
                 >
                   Complete LOR
                 </Button>
@@ -504,7 +498,10 @@ const MyLORs = () => {
         <>
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">Your Saved LORs</h2>
-            <Button onClick={() => setIsCreatingNew(true)}>
+            <Button 
+              onClick={() => setIsCreatingNew(true)}
+              className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white"
+            >
               Create New Letter
             </Button>
           </div>
