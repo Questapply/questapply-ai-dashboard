@@ -4,6 +4,9 @@ import { ArrowUp, Search, FileText, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FilterOption } from "@/utils/FilterUtils";
 import ConversationalDocumentGenerator from "@/components/generation/ConversationalDocumentGenerator";
+import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar } from "@/components/ui/avatar";
 
 interface ChatBoxProps {
   searchQuery: string;
@@ -16,6 +19,23 @@ interface ChatBoxProps {
 interface QuickQuestion {
   id: string;
   text: string;
+}
+
+interface School {
+  id: number;
+  name: string;
+  ranking: string;
+  location: string;
+  icon: React.ReactNode;
+}
+
+interface Professor {
+  id: number;
+  name: string;
+  university: string;
+  expertise: string;
+  initial: string;
+  imgUrl: string;
 }
 
 const ChatBox = ({ 

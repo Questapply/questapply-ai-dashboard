@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import Hero3 from "@/components/hero/Hero3";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -63,9 +64,9 @@ const Index = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessages]);
 
-  // Initialize chat messages
+  // Initialize chat messages for Hero 2 and Hero 4
   useEffect(() => {
-    if (activeHero === "hero2" || activeHero === "hero3" || activeHero === "hero4") {
+    if (activeHero === "hero2" || activeHero === "hero4") {
       setChatMessages([
         { role: "assistant", content: "Hello! I'm QuestApply AI. How can I help with your study abroad journey?" }
       ]);
@@ -104,9 +105,9 @@ const Index = () => {
     { id: 10, name: "Dr. Lisa Park", university: "Princeton", expertise: "Quantum Computing", initial: "LP", imgUrl: "https://randomuser.me/api/portraits/women/90.jpg" }
   ];
 
-  // Auto-typing simulation for Hero 3
+  // Auto-typing simulation for Hero 2 (normal heroes)
   useEffect(() => {
-    if (activeHero === "hero3" && !isAutoTyping && !isTyping && chatMessages.length <= 1) {
+    if (activeHero === "hero2" && !isAutoTyping && !isTyping && chatMessages.length <= 1) {
       const scenarioMessages = [
         "My bachelor is in CS, GPA is 3.7, TOEFL 100, GRE 320. What are the TOP 10 schools in the US for PhD CS?",
         "Best professors in AI?"
@@ -149,7 +150,7 @@ const Index = () => {
     }
   }, [activeHero, currentScenario, isAutoTyping, isTyping, chatMessages.length]);
 
-  // Character-by-character typing effect
+  // Character-by-character typing effect for Hero 2
   useEffect(() => {
     if (isAutoTyping && currentCharIndex < autoTypingMessage.length) {
       const typingTimer = setTimeout(() => {
@@ -261,16 +262,6 @@ const Index = () => {
     "Show me top universities in Canada",
     "Generate CV for Data Science Master's",
     "What GRE score do I need?"
-  ];
-
-  // Hero 3 quick prompt buttons
-  const hero3Prompts = [
-    "How to find schools?",
-    "Best programs for CS?",
-    "Best professors in AI?",
-    "Generate CV",
-    "Generate SOP",
-    "How to write a LOR?"
   ];
 
   return (
@@ -632,6 +623,14 @@ const Index = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+      )}
+
+      {activeHero === "hero3" && (
+        <section className="flex-grow flex items-center bg-gradient-to-br from-purple-900/20 to-blue-900/30 dark:from-purple-950/30 dark:to-blue-950/40">
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <Hero3 isDarkMode={isDarkMode} />
           </div>
         </section>
       )}
