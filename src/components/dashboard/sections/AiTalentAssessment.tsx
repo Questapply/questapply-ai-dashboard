@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -5,84 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Check } from "lucide-react";
 
-// Questions for the talent assessment
-const talentQuestions = [
-  {
-    id: 1,
-    question: "When faced with a complex problem, you prefer to:",
-    options: [
-      "Break it down into smaller parts and analyze methodically",
-      "Brainstorm creative solutions with others",
-      "Look for patterns based on past experiences",
-      "Find innovative approaches no one has tried"
-    ],
-  },
-  {
-    id: 2,
-    question: "In a group project, you naturally take on the role of:",
-    options: [
-      "The leader who organizes and delegates tasks",
-      "The creative who comes up with unique ideas",
-      "The analyst who evaluates different approaches",
-      "The communicator who ensures everyone is aligned"
-    ],
-  },
-  {
-    id: 3,
-    question: "When learning something new, you prefer:",
-    options: [
-      "Hands-on practice and experimentation",
-      "Reading comprehensive materials and research",
-      "Visual demonstrations and diagrams",
-      "Discussion and verbal explanation"
-    ],
-  },
-  {
-    id: 4,
-    question: "Your approach to deadlines is typically:",
-    options: [
-      "Creating detailed schedules well in advance",
-      "Working intensely as the deadline approaches",
-      "Breaking the work into smaller milestones",
-      "Adapting your timeline as the project evolves"
-    ],
-  },
-  {
-    id: 5,
-    question: "You find the most satisfaction in:",
-    options: [
-      "Solving complex technical challenges",
-      "Creating something innovative and unique",
-      "Leading a team to successful outcomes",
-      "Helping others achieve their goals"
-    ],
-  },
-];
-
-// Talent areas with descriptions
-const talentAreas = [
-  { name: "Analytical Thinking", score: 85, color: "from-blue-400 to-cyan-400" },
-  { name: "Creative Problem Solving", score: 72, color: "from-purple-400 to-blue-400" },
-  { name: "Communication Skills", score: 68, color: "from-purple-400 to-pink-400" },
-  { name: "Leadership Potential", score: 79, color: "from-blue-400 to-purple-400" },
-];
-
-// Recommended programs based on talents
-const recommendedPrograms = [
-  { name: "Data Science", match: "95%" },
-  { name: "Business Analytics", match: "92%" },
-  { name: "Artificial Intelligence", match: "88%" },
-  { name: "Technology Leadership", match: "85%" },
-];
-
-// Top universities for these programs
-const topUniversities = [
-  { name: "Massachusetts Institute of Technology", location: "Cambridge, MA" },
-  { name: "Stanford University", location: "Stanford, CA" },
-  { name: "Carnegie Mellon University", location: "Pittsburgh, PA" },
-  { name: "University of California, Berkeley", location: "Berkeley, CA" },
-];
-
+// Questions for the talent assessment - moved inside the main component to avoid being accessed outside
 const AiTalentAssessment = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -93,6 +17,84 @@ const AiTalentAssessment = () => {
   const [assessmentStarted, setAssessmentStarted] = useState(false);
   const animationTimer = useRef<NodeJS.Timeout | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Questions for the talent assessment
+  const talentQuestions = [
+    {
+      id: 1,
+      question: "When faced with a complex problem, you prefer to:",
+      options: [
+        "Break it down into smaller parts and analyze methodically",
+        "Brainstorm creative solutions with others",
+        "Look for patterns based on past experiences",
+        "Find innovative approaches no one has tried"
+      ],
+    },
+    {
+      id: 2,
+      question: "In a group project, you naturally take on the role of:",
+      options: [
+        "The leader who organizes and delegates tasks",
+        "The creative who comes up with unique ideas",
+        "The analyst who evaluates different approaches",
+        "The communicator who ensures everyone is aligned"
+      ],
+    },
+    {
+      id: 3,
+      question: "When learning something new, you prefer:",
+      options: [
+        "Hands-on practice and experimentation",
+        "Reading comprehensive materials and research",
+        "Visual demonstrations and diagrams",
+        "Discussion and verbal explanation"
+      ],
+    },
+    {
+      id: 4,
+      question: "Your approach to deadlines is typically:",
+      options: [
+        "Creating detailed schedules well in advance",
+        "Working intensely as the deadline approaches",
+        "Breaking the work into smaller milestones",
+        "Adapting your timeline as the project evolves"
+      ],
+    },
+    {
+      id: 5,
+      question: "You find the most satisfaction in:",
+      options: [
+        "Solving complex technical challenges",
+        "Creating something innovative and unique",
+        "Leading a team to successful outcomes",
+        "Helping others achieve their goals"
+      ],
+    },
+  ];
+
+  // Talent areas with descriptions
+  const talentAreas = [
+    { name: "Analytical Thinking", score: 85, color: "from-blue-400 to-cyan-400" },
+    { name: "Creative Problem Solving", score: 72, color: "from-purple-400 to-blue-400" },
+    { name: "Communication Skills", score: 68, color: "from-purple-400 to-pink-400" },
+    { name: "Leadership Potential", score: 79, color: "from-blue-400 to-purple-400" },
+  ];
+
+  // Recommended programs based on talents
+  const recommendedPrograms = [
+    { name: "Data Science", match: "95%" },
+    { name: "Business Analytics", match: "92%" },
+    { name: "Artificial Intelligence", match: "88%" },
+    { name: "Technology Leadership", match: "85%" },
+  ];
+
+  // Top universities for these programs
+  const topUniversities = [
+    { name: "Massachusetts Institute of Technology", location: "Cambridge, MA" },
+    { name: "Stanford University", location: "Stanford, CA" },
+    { name: "Carnegie Mellon University", location: "Pittsburgh, PA" },
+    { name: "University of California, Berkeley", location: "Berkeley, CA" },
+  ];
 
   // Effect to automatically click the start button after component mounts
   useEffect(() => {
@@ -173,7 +175,7 @@ const AiTalentAssessment = () => {
         clearTimeout(animationTimer.current);
       }
     };
-  }, [currentQuestion, restartAnimation, assessmentStarted]);
+  }, [currentQuestion, restartAnimation, assessmentStarted, talentQuestions.length]);
 
   const handleStartAssessment = () => {
     setAssessmentStarted(true);
@@ -234,6 +236,15 @@ const AiTalentAssessment = () => {
                 <p className="text-gray-300 mb-8 text-center">
                   Click the button below to start your talent assessment and discover your strengths.
                 </p>
+                <div className="mt-auto pt-4">
+                  <Button 
+                    ref={buttonRef}
+                    onClick={handleStartAssessment}
+                    className="w-full bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white px-6 py-2.5 h-auto text-lg rounded-md"
+                  >
+                    Discover Your Talents
+                  </Button>
+                </div>
               </div>
             ) : !showResults ? (
               <div className="min-h-[400px]">
@@ -326,19 +337,6 @@ const AiTalentAssessment = () => {
                     </p>
                   </motion.div>
                 )}
-              </div>
-            )}
-            
-            {/* Button placed at the bottom of the assessment box */}
-            {!assessmentStarted && (
-              <div className="mt-auto pt-4">
-                <Button 
-                  ref={buttonRef}
-                  onClick={handleStartAssessment}
-                  className="w-full bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white px-6 py-2.5 h-auto text-lg rounded-md"
-                >
-                  Discover Your Talents
-                </Button>
               </div>
             )}
           </motion.div>

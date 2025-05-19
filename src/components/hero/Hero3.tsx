@@ -1,11 +1,10 @@
-
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Landmark, University, FileText, Download, Check } from "lucide-react";
+import { GraduationCap, Landmark, University, FileText, Download } from "lucide-react";
 import { SOP_TEMPLATE } from "./SOPTemplate";
 
 interface School {
@@ -24,6 +23,60 @@ interface Professor {
   initial: string;
   imgUrl: string;
 }
+
+// Questions for the talent assessment
+const talentQuestions = [
+  {
+    id: 1,
+    question: "When faced with a complex problem, you prefer to:",
+    options: [
+      "Break it down into smaller parts and analyze methodically",
+      "Brainstorm creative solutions with others",
+      "Look for patterns based on past experiences",
+      "Find innovative approaches no one has tried"
+    ],
+  },
+  {
+    id: 2,
+    question: "In a group project, you naturally take on the role of:",
+    options: [
+      "The leader who organizes and delegates tasks",
+      "The creative who comes up with unique ideas",
+      "The analyst who evaluates different approaches",
+      "The communicator who ensures everyone is aligned"
+    ],
+  },
+  {
+    id: 3,
+    question: "When learning something new, you prefer:",
+    options: [
+      "Hands-on practice and experimentation",
+      "Reading comprehensive materials and research",
+      "Visual demonstrations and diagrams",
+      "Discussion and verbal explanation"
+    ],
+  },
+  {
+    id: 4,
+    question: "Your approach to deadlines is typically:",
+    options: [
+      "Creating detailed schedules well in advance",
+      "Working intensely as the deadline approaches",
+      "Breaking the work into smaller milestones",
+      "Adapting your timeline as the project evolves"
+    ],
+  },
+  {
+    id: 5,
+    question: "You find the most satisfaction in:",
+    options: [
+      "Solving complex technical challenges",
+      "Creating something innovative and unique",
+      "Leading a team to successful outcomes",
+      "Helping others achieve their goals"
+    ],
+  },
+];
 
 const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [chatMessages, setChatMessages] = useState<{role: string, content: string, type?: string, data?: any}[]>([
@@ -484,7 +537,7 @@ const TalentAssessmentFlow = ({ started, onStart }: { started: boolean, onStart:
   const [restartAnimation, setRestartAnimation] = useState(false);
   const animationTimer = useRef<NodeJS.Timeout | null>(null);
 
-  // Questions for the talent assessment
+  // Declare talentQuestions within this component to fix the error
   const talentQuestions = [
     {
       id: 1,
