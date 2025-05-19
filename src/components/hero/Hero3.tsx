@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -212,11 +213,11 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
         transition={{ duration: 0.6 }}
         className="text-center mb-8"
       >
-        <h1 className="text-4xl md:text-5xl font-bold">
-          <span className="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">AI</span> <span className="text-white">Transforms Education</span>
+        <h1 className="text-4xl md:text-5xl font-bold text-white">
+          <span className="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">AI</span> Meets Your Talent. You Meet Top Universities
         </h1>
-        <p className="mt-4 text-4xl md:text-5xl font-bold text-white/90 max-w-3xl mx-auto">
-          AI Meets Your Talent
+        <p className="mt-4 text-lg text-white/90 max-w-3xl mx-auto">
+          The first AI platform that identifies your unique talents and connects you to top universities with incredible speed and accuracy.
         </p>
         <Button 
           className="mt-6 px-10 py-2.5 h-auto text-lg text-white bg-cyan-500 hover:bg-cyan-600 rounded-md"
@@ -426,8 +427,29 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
         </div>
       </motion.div>
 
-      {/* AI Talent Assessment Section - Redesigned as requested */}
+      {/* NEW: AI Talent Assessment Section - Redesigned as requested */}
       <div className="w-full pt-16">
+        {/* Title and subtitle - now outside the box */}
+        <div className="text-center mb-8">
+          <motion.h2 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-cyan-300 to-blue-300"
+          >
+            Discover Your Hidden Talents with AI
+          </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-4 text-lg text-white/90 max-w-3xl mx-auto"
+          >
+            Our advanced AI algorithms analyze your skills, interests, and achievements to identify your unique talents and potential.
+          </motion.p>
+        </div>
+        
         {/* Full-width assessment box with same styling as chat */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
