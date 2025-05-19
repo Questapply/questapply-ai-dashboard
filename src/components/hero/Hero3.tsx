@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -36,6 +37,10 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [currentScenario, setCurrentScenario] = useState(0);
   const [isAutoTyping, setIsAutoTyping] = useState(false);
   const autoResetTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // States for talent assessment
+  const [talentAssessmentActive, setTalentAssessmentActive] = useState(false);
+  const [talentAssessmentStarted, setTalentAssessmentStarted] = useState(false);
 
   // Mock data for schools
   const topSchools: School[] = [
@@ -163,6 +168,22 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
       return () => clearTimeout(sendTimer);
     }
   }, [isAutoTyping, currentCharIndex, autoTypingMessage, currentScenario, topSchools, topProfessors]);
+
+  // Auto start talent assessment after component loads
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTalentAssessmentActive(true);
+      
+      // Auto click the discover talents button after a short delay
+      const startTimer = setTimeout(() => {
+        setTalentAssessmentStarted(true);
+      }, 1000);
+      
+      return () => clearTimeout(startTimer);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Cleanup timers on unmount
   useEffect(() => {
@@ -406,94 +427,70 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
         </div>
       </motion.div>
 
-      {/* NEW: AI Talent Assessment Section */}
-      <div className="w-full py-16 bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-block bg-purple-800/40 backdrop-blur-sm rounded-full px-4 py-1 mb-4 border border-purple-500/30"
-            >
-              <span className="text-purple-300 text-sm font-medium">AI-Powered Analysis</span>
-            </motion.div>
-            
-            <motion.h2 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-cyan-300 to-blue-300"
-            >
-              Discover Your Hidden Talents with AI
-            </motion.h2>
-            
-            <motion.p
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-4 text-lg text-white/90 max-w-3xl mx-auto"
-            >
-              Our advanced AI algorithms analyze your skills, interests, and achievements to identify your unique talents and potential. Go beyond traditional assessments and discover what makes you special.
-            </motion.p>
-            
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-4 space-y-3 max-w-md mx-auto text-left"
-            >
-              {[
-                "Personalized talent assessments",
-                "Skills and personality analysis",
-                "Career path recommendations",
-                "Strengths and growth opportunities"
-              ].map((item, index) => (
-                <div key={index} className="flex items-center">
-                  <div className="flex-shrink-0 h-5 w-5 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 flex items-center justify-center">
-                    <Check className="h-3 w-3 text-white" />
-                  </div>
-                  <span className="ml-2 text-gray-200">{item}</span>
-                </div>
-              ))}
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-8"
-            >
-              <Button 
-                className="bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white px-6 py-2.5 h-auto text-lg rounded-md"
-              >
-                Discover Your Talents
-              </Button>
-            </motion.div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
-            {/* Animated Assessment Flow */}
-            <TalentAssessmentAnimation />
-            
-            {/* Results and Recommendations */}
-            <TalentResults />
-          </div>
+      {/* NEW: AI Talent Assessment Section - Redesigned as requested */}
+      <div className="w-full pt-16">
+        {/* Title and subtitle - now outside the box */}
+        <div className="text-center mb-8">
+          <motion.h2 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-cyan-300 to-blue-300"
+          >
+            Discover Your Hidden Talents with AI
+          </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-4 text-lg text-white/90 max-w-3xl mx-auto"
+          >
+            Our advanced AI algorithms analyze your skills, interests, and achievements to identify your unique talents and potential.
+          </motion.p>
         </div>
+        
+        {/* Full-width assessment box with same styling as chat */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg flex flex-col overflow-hidden min-h-[600px]"
+        >
+          <div className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 p-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
+            <div className="h-3 w-3 rounded-full bg-red-500"></div>
+            <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+            <div className="h-3 w-3 rounded-full bg-green-500"></div>
+            <span className="ml-2 text-xs font-medium text-gray-500 dark:text-gray-400">AI Talent Assessment</span>
+          </div>
+          
+          {/* Assessment Content */}
+          <div className="flex-grow p-6">
+            {talentAssessmentActive && (
+              <div className="w-full h-full">
+                <TalentAssessmentFlow 
+                  started={talentAssessmentStarted} 
+                  onStart={() => setTalentAssessmentStarted(true)} 
+                />
+              </div>
+            )}
+          </div>
+        </motion.div>
       </div>
     </div>
   );
 };
 
-// Talent Assessment Animation Component
-const TalentAssessmentAnimation = () => {
+// Talent Assessment Flow Component (refactored to include all steps)
+const TalentAssessmentFlow = ({ started, onStart }: { started: boolean, onStart: () => void }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showResults, setShowResults] = useState(false);
-  const [aiAnalysisVisible, setAiAnalysisVisible] = useState(false);
+  const [showRecommendations, setShowRecommendations] = useState(false);
+  const [showUniversities, setShowUniversities] = useState(false);
   const [restartAnimation, setRestartAnimation] = useState(false);
   const animationTimer = useRef<NodeJS.Timeout | null>(null);
-  
+
   // Questions for the talent assessment
   const talentQuestions = [
     {
@@ -556,15 +553,34 @@ const TalentAssessmentAnimation = () => {
     { name: "Leadership Potential", score: 79, color: "from-blue-400 to-purple-400" },
   ];
 
+  // Recommended programs based on talents
+  const recommendedPrograms = [
+    { name: "Data Science", match: "95%" },
+    { name: "Business Analytics", match: "92%" },
+    { name: "Artificial Intelligence", match: "88%" },
+    { name: "Technology Leadership", match: "85%" },
+  ];
+
+  // Top universities for these programs
+  const topUniversities = [
+    { name: "Massachusetts Institute of Technology", location: "Cambridge, MA" },
+    { name: "Stanford University", location: "Stanford, CA" },
+    { name: "Carnegie Mellon University", location: "Pittsburgh, PA" },
+    { name: "University of California, Berkeley", location: "Berkeley, CA" },
+  ];
+
   // Progress through the questions and show results
   useEffect(() => {
+    if (!started) return;
+    
     // Function to handle the automated flow
     const automateAssessment = () => {
       if (restartAnimation) {
         setCurrentQuestion(0);
         setSelectedOption(null);
         setShowResults(false);
-        setAiAnalysisVisible(false);
+        setShowRecommendations(false);
+        setShowUniversities(false);
         setRestartAnimation(false);
         return;
       }
@@ -582,19 +598,26 @@ const TalentAssessmentAnimation = () => {
             } else {
               setShowResults(true);
               
-              // Show AI analysis after results
-              const analysisTimer = setTimeout(() => {
-                setAiAnalysisVisible(true);
+              // Show recommended programs after results
+              const recommendationsTimer = setTimeout(() => {
+                setShowRecommendations(true);
                 
-                // Restart the animation after completing full cycle
-                const restartTimer = setTimeout(() => {
-                  setRestartAnimation(true);
-                }, 6000);
+                // Show universities after recommended programs
+                const universitiesTimer = setTimeout(() => {
+                  setShowUniversities(true);
+                  
+                  // Restart the animation after completing full cycle
+                  const restartTimer = setTimeout(() => {
+                    setRestartAnimation(true);
+                  }, 6000);
+                  
+                  return () => clearTimeout(restartTimer);
+                }, 3000);
                 
-                return () => clearTimeout(restartTimer);
+                return () => clearTimeout(universitiesTimer);
               }, 3000);
               
-              return () => clearTimeout(analysisTimer);
+              return () => clearTimeout(recommendationsTimer);
             }
           }, 1500);
           
@@ -612,103 +635,106 @@ const TalentAssessmentAnimation = () => {
         clearTimeout(animationTimer.current);
       }
     };
-  }, [currentQuestion, restartAnimation, talentQuestions.length]);
+  }, [currentQuestion, restartAnimation, started, talentQuestions.length]);
+  
+  // If not started yet, show a button to start the test
+  if (!started) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full">
+        <Button 
+          onClick={onStart}
+          className="bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white px-6 py-2.5 h-auto text-lg rounded-md"
+        >
+          Discover Your Talents
+        </Button>
+      </div>
+    );
+  }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.7 }}
-      className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 rounded-2xl border border-gray-700/50 p-6 shadow-xl"
-    >
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold text-white">AI Talent Assessment</h3>
-        <div className="flex items-center space-x-1">
-          <div className="h-2 w-2 rounded-full bg-red-500"></div>
-          <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
-          <div className="h-2 w-2 rounded-full bg-green-500"></div>
-          <span className="ml-2 text-xs text-green-400">Live Analysis</span>
-        </div>
-      </div>
-
-      {!showResults ? (
-        <div className="min-h-[400px]">
-          <div className="mb-8">
-            <div className="h-1.5 w-full bg-gray-700 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-300"
-                style={{ width: `${(currentQuestion + (selectedOption !== null ? 0.5 : 0)) / talentQuestions.length * 100}%` }}
-              ></div>
+    <div className="w-full h-full flex flex-col md:flex-row gap-10">
+      {/* Left column: Assessment or Results */}
+      <div className="w-full md:w-1/2 h-full">
+        {!showResults ? (
+          <div className="min-h-[400px]">
+            <div className="mb-8">
+              <div className="h-1.5 w-full bg-gray-700 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-300"
+                  style={{ width: `${(currentQuestion + (selectedOption !== null ? 0.5 : 0)) / talentQuestions.length * 100}%` }}
+                ></div>
+              </div>
+              <div className="mt-2 text-xs text-gray-400 text-right">
+                Question {currentQuestion + 1} of {talentQuestions.length}
+              </div>
             </div>
-            <div className="mt-2 text-xs text-gray-400 text-right">
-              Question {currentQuestion + 1} of {talentQuestions.length}
-            </div>
-          </div>
 
-          <div className="mb-8">
-            <h4 className="text-lg font-medium text-white mb-4">
-              {talentQuestions[currentQuestion].question}
-            </h4>
-            <div className="space-y-3">
-              {talentQuestions[currentQuestion].options.map((option, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: idx * 0.1 }}
-                  className={`p-3 rounded-lg border cursor-pointer transition-all ${
-                    selectedOption === idx 
-                      ? "border-blue-500 bg-blue-500/20" 
-                      : "border-gray-700 bg-gray-800/50 hover:bg-gray-700/50"
-                  }`}
-                >
-                  <div className="flex items-center">
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center mr-3 ${
+            <div className="mb-8">
+              <h4 className="text-lg font-medium text-white mb-4">
+                {talentQuestions[currentQuestion].question}
+              </h4>
+              <div className="space-y-3">
+                {talentQuestions[currentQuestion].options.map((option, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: idx * 0.1 }}
+                    className={`p-3 rounded-lg border cursor-pointer transition-all ${
                       selectedOption === idx 
-                        ? "bg-blue-500" 
-                        : "bg-gray-700"
-                    }`}>
-                      {selectedOption === idx && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-white"></div>
-                      )}
+                        ? "border-blue-500 bg-blue-500/20" 
+                        : "border-gray-700 bg-gray-800/50 hover:bg-gray-700/50"
+                    }`}
+                  >
+                    <div className="flex items-center">
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center mr-3 ${
+                        selectedOption === idx 
+                          ? "bg-blue-500" 
+                          : "bg-gray-700"
+                      }`}>
+                        {selectedOption === idx && (
+                          <div className="w-2.5 h-2.5 rounded-full bg-white"></div>
+                        )}
+                      </div>
+                      <span className="text-gray-200">{option}</span>
                     </div>
-                    <span className="text-gray-200">{option}</span>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="min-h-[400px]">
-          {talentAreas.map((talent, idx) => (
-            <motion.div 
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="mb-6"
-            >
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-white font-medium">{talent.name}</span>
-                <span className="text-purple-300 font-semibold">{talent.score}%</span>
-              </div>
-              <div className="h-2.5 bg-gray-700 rounded-full overflow-hidden">
-                <motion.div 
-                  initial={{ width: 0 }}
-                  animate={{ width: `${talent.score}%` }}
-                  transition={{ duration: 1, delay: idx * 0.1 }}
-                  className={`h-full rounded-full bg-gradient-to-r ${talent.color}`}
-                ></motion.div>
-              </div>
-            </motion.div>
-          ))}
+        ) : (
+          <div className="min-h-[400px]">
+            <h3 className="text-xl font-semibold text-white mb-6">Your Talent Profile</h3>
+            
+            {/* Talent Areas with Bars */}
+            {talentAreas.map((talent, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="mb-6"
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-white font-medium">{talent.name}</span>
+                  <span className="text-purple-300 font-semibold">{talent.score}%</span>
+                </div>
+                <div className="h-2.5 bg-gray-700 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${talent.score}%` }}
+                    transition={{ duration: 1, delay: idx * 0.1 }}
+                    className={`h-full rounded-full bg-gradient-to-r ${talent.color}`}
+                  ></motion.div>
+                </div>
+              </motion.div>
+            ))}
 
-          {aiAnalysisVisible && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
               className="mt-8 p-4 bg-gray-800/70 border border-gray-700 rounded-lg"
             >
               <div className="flex items-center gap-3 mb-3">
@@ -721,101 +747,77 @@ const TalentAssessmentAnimation = () => {
                 Based on your assessment, you show exceptional talent in analytical thinking and leadership. These skills are highly sought after in fields like Data Science and Business Analytics.
               </p>
             </motion.div>
-          )}
-        </div>
-      )}
-    </motion.div>
-  );
-};
+          </div>
+        )}
+      </div>
 
-// Talent Results Component
-const TalentResults = () => {
-  const [showUniversities, setShowUniversities] = useState(false);
-  
-  // Recommended programs based on talents
-  const recommendedPrograms = [
-    { name: "Data Science", match: "95%" },
-    { name: "Business Analytics", match: "92%" },
-    { name: "Artificial Intelligence", match: "88%" },
-    { name: "Technology Leadership", match: "85%" },
-  ];
-
-  // Top universities for these programs
-  const topUniversities = [
-    { name: "Massachusetts Institute of Technology", location: "Cambridge, MA" },
-    { name: "Stanford University", location: "Stanford, CA" },
-    { name: "Carnegie Mellon University", location: "Pittsburgh, PA" },
-    { name: "University of California, Berkeley", location: "Berkeley, CA" },
-  ];
-
-  // Show universities after a delay
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowUniversities(true);
-    }, 5000);
-    
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.7, delay: 0.2 }}
-      className="flex flex-col gap-6"
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="bg-gradient-to-br from-purple-900/80 to-indigo-900/80 rounded-2xl border border-purple-700/50 p-6 shadow-xl"
-      >
-        <h3 className="text-xl font-semibold text-white mb-4">Recommended Programs</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {recommendedPrograms.map((program, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: idx * 0.1 }}
-              className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 p-3 rounded-lg border border-gray-700/50 hover:border-purple-500/50 transition-all"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-white font-medium">{program.name}</span>
-                <span className="text-green-400 text-sm font-semibold">{program.match} Match</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      {showUniversities && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-gradient-to-br from-indigo-900/80 to-blue-900/80 rounded-2xl border border-indigo-700/50 p-6 shadow-xl"
-        >
-          <h3 className="text-xl font-semibold text-white mb-4">Top Universities</h3>
-          <div className="space-y-3">
-            {topUniversities.map((university, idx) => (
+      {/* Right column: Results and recommendations (only shown after questions are done) */}
+      <AnimatePresence>
+        {showResults && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="w-full md:w-1/2 flex flex-col gap-6"
+          >
+            {showRecommendations && (
               <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: idx * 0.1 }}
-                className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 p-3 rounded-lg border border-gray-700/50 hover:border-blue-500/50 transition-all"
+                transition={{ duration: 0.5 }}
+                className="bg-gradient-to-br from-purple-900/80 to-indigo-900/80 rounded-2xl border border-purple-700/50 p-6 shadow-xl"
               >
-                <div className="flex flex-col">
-                  <span className="text-white font-medium">{university.name}</span>
-                  <span className="text-gray-400 text-sm">{university.location}</span>
+                <h3 className="text-xl font-semibold text-white mb-4">Recommended Programs</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {recommendedPrograms.map((program, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: idx * 0.1 }}
+                      className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 p-3 rounded-lg border border-gray-700/50 hover:border-purple-500/50 transition-all"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-white font-medium">{program.name}</span>
+                        <span className="text-green-400 text-sm font-semibold">{program.match} Match</span>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
               </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      )}
-    </motion.div>
+            )}
+
+            {showUniversities && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="bg-gradient-to-br from-indigo-900/80 to-blue-900/80 rounded-2xl border border-indigo-700/50 p-6 shadow-xl"
+              >
+                <h3 className="text-xl font-semibold text-white mb-4">Top Universities</h3>
+                <div className="space-y-3">
+                  {topUniversities.map((university, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: idx * 0.1 }}
+                      className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 p-3 rounded-lg border border-gray-700/50 hover:border-blue-500/50 transition-all"
+                    >
+                      <div className="flex flex-col">
+                        <span className="text-white font-medium">{university.name}</span>
+                        <span className="text-gray-400 text-sm">{university.location}</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 
