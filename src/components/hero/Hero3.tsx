@@ -191,7 +191,7 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-10"
+        className="text-center mb-8" // Reduced margin to match image
       >
         <h1 className="text-4xl md:text-5xl font-bold text-white">
           <span className="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">AI</span> Meets Your Talent. You Meet Top Universities
@@ -200,7 +200,7 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
           QuestApply harnesses cutting-edge artificial intelligence to transform how students discover and apply to their ideal graduate programs worldwide.
         </p>
         <Button 
-          className="mt-6 px-8 py-3 h-auto text-lg text-white bg-cyan-500 hover:bg-cyan-600 rounded-md"
+          className="mt-6 px-10 py-2.5 h-auto text-lg text-white bg-cyan-500 hover:bg-cyan-600 rounded-md"
           size="lg"
         >
           Begin Your Journey
@@ -212,7 +212,7 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="flex-grow rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg flex flex-col overflow-hidden max-h-[600px]" // Added max-height
+        className="flex-grow rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg flex flex-col overflow-hidden max-h-[600px] mt-6" // Added margin-top to match image
       >
         <div className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 p-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
           <div className="h-3 w-3 rounded-full bg-red-500"></div>
@@ -222,7 +222,7 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
         </div>
         
         {/* Chat Messages - using ScrollArea for custom scrollbar */}
-        <ScrollArea className="flex-grow p-4 h-[500px]">
+        <ScrollArea className="flex-grow p-4 h-[500px] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
           <div className="space-y-4">
             {chatMessages.map((message, index) => (
               <div key={index}>
@@ -411,3 +411,4 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
 };
 
 export default Hero3;
+
