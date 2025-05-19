@@ -20,6 +20,7 @@ interface EmailCompositionDialogProps {
   professorEmail: string;
   defaultTemplate?: string;
   isReminder?: boolean;
+  onCreateByExpert?: () => void;
 }
 
 const EmailCompositionDialog = ({
@@ -28,7 +29,8 @@ const EmailCompositionDialog = ({
   professorName,
   professorEmail,
   defaultTemplate,
-  isReminder = false
+  isReminder = false,
+  onCreateByExpert
 }: EmailCompositionDialogProps) => {
   const [emailContent, setEmailContent] = useState(defaultTemplate || generateDefaultTemplate(professorName, isReminder));
   const [isGeneratingEmail, setIsGeneratingEmail] = useState(false);
@@ -45,7 +47,9 @@ const EmailCompositionDialog = ({
   };
 
   const handleCreateByExpert = () => {
-    // This will be handled by the parent component
+    if (onCreateByExpert) {
+      onCreateByExpert();
+    }
   };
 
   return (

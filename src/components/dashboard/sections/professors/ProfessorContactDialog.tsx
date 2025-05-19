@@ -101,6 +101,7 @@ const ProfessorContactDialog = ({
         professorName={professor.name}
         professorEmail={professorEmail}
         defaultTemplate={emailTemplate || undefined}
+        onCreateByExpert={handleCreateByExpert}
       />
       
       {/* Reminder Dialog */}
