@@ -1,29 +1,35 @@
+
 import { useState } from "react";
-import { Filter } from "lucide-react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import AnimatedCard from "@/components/ui/animated-card";
 import StatCircle from "@/components/ui/stat-circle";
 import { CardContent } from "@/components/ui/card";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import FilterDropdown from "../filters/FilterDropdown";
+import {
+  countryOptions,
+  usStatesOptions,
+  schoolsOptions,
+  degreeLevelOptions,
+  areaOfStudyOptions,
+  programOptions,
+  deadlineOptions,
+  englishTestOptions,
+  greOptions,
+  orderByProgramOptions,
+  filterIcons
+} from "./FilterData";
+
+// GPA options as a range from 0.0 to 4.0
+const gpaOptions = Array.from({ length: 41 }, (_, i) => (i / 10).toFixed(1));
 
 type ProgramFilter = {
   id: string;
   name: string;
   icon: string;
 };
-
-const filters: ProgramFilter[] = [
-  { id: "field", name: "Field of Study", icon: "📚" },
-  { id: "degree", name: "Degree Level", icon: "🎓" },
-  { id: "school", name: "School", icon: "🏫" },
-  { id: "location", name: "Location", icon: "🌎" },
-  { id: "duration", name: "Duration", icon: "⏱️" },
-  { id: "language", name: "Language", icon: "🗣️" },
-  { id: "format", name: "Format", icon: "💻" },
-  { id: "deadline", name: "Application Deadline", icon: "📆" }
-];
 
 const programs = [
   {
@@ -93,17 +99,16 @@ const programs = [
 
 const FindPrograms = () => {
   const navigate = useNavigate();
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({});
   const [favorites, setFavorites] = useState<Record<number, boolean>>(
     programs.reduce((acc, program) => ({...acc, [program.id]: program.favorite}), {})
   );
 
-  const toggleFilter = (filterId: string) => {
-    setActiveFilters(prev => 
-      prev.includes(filterId) 
-        ? prev.filter(id => id !== filterId) 
-        : [...prev, filterId]
-    );
+  const handleFilterSelect = (filterName: string, value: string) => {
+    setSelectedFilters(prev => ({
+      ...prev,
+      [filterName]: value
+    }));
   };
 
   const toggleFavorite = (programId: number) => {
@@ -172,7 +177,7 @@ const FindPrograms = () => {
         </motion.div>
       </div>
 
-      {/* Filters */}
+      {/* Filters - replaced with dropdown filters */}
       <motion.div 
         className="mb-8"
         initial={{ y: 20, opacity: 0 }}
@@ -180,35 +185,100 @@ const FindPrograms = () => {
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <div className="flex items-center gap-2 mb-4">
-          <Filter className="h-4 w-4 text-gray-500" />
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-500">
+            <path d="M3 4.5h18M7 12h10M11 19.5h2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
           <h2 className="font-semibold text-gray-700 dark:text-gray-200">Filters</h2>
         </div>
+        
         <div className="flex flex-wrap gap-2">
-          {filters.map((filter, index) => (
-            <motion.button
-              key={filter.id}
-              className={`
-                flex items-center gap-2 px-4 py-2 rounded-full text-sm
-                ${
-                  activeFilters.includes(filter.id)
-                    ? "bg-purple-600 text-white shadow-md shadow-purple-500/20"
-                    : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:shadow-sm"
-                }
-                transition-all duration-300 ease-in-out
-              `}
-              onClick={() => toggleFilter(filter.id)}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, delay: 0.1 * index }}
-              whileHover={{ 
-                y: -3, 
-                boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" 
-              }}
-            >
-              <span>{filter.icon}</span>
-              <span>{filter.name}</span>
-            </motion.button>
-          ))}
+          <FilterDropdown 
+            label="Country" 
+            icon={<span>{filterIcons.country}</span>}
+            options={countryOptions}
+            onSelect={(value) => handleFilterSelect("country", value)}
+            selectedValue={selectedFilters.country}
+          />
+          
+          <FilterDropdown 
+            label="State" 
+            icon={<span>{filterIcons.state}</span>}
+            options={usStatesOptions}
+            onSelect={(value) => handleFilterSelect("state", value)}
+            selectedValue={selectedFilters.state}
+          />
+          
+          <FilterDropdown 
+            label="Schools" 
+            icon={<span>{filterIcons.schools}</span>}
+            options={schoolsOptions}
+            onSelect={(value) => handleFilterSelect("school", value)}
+            selectedValue={selectedFilters.school}
+          />
+          
+          <FilterDropdown 
+            label="Degree Level" 
+            icon={<span>{filterIcons.degreeLevel}</span>}
+            options={degreeLevelOptions}
+            onSelect={(value) => handleFilterSelect("degreeLevel", value)}
+            selectedValue={selectedFilters.degreeLevel}
+          />
+          
+          <FilterDropdown 
+            label="Area of Study" 
+            icon={<span>{filterIcons.areaOfStudy}</span>}
+            options={areaOfStudyOptions}
+            onSelect={(value) => handleFilterSelect("areaOfStudy", value)}
+            selectedValue={selectedFilters.areaOfStudy}
+          />
+          
+          <FilterDropdown 
+            label="Programs" 
+            icon={<span>{filterIcons.programs}</span>}
+            options={programOptions}
+            onSelect={(value) => handleFilterSelect("program", value)}
+            selectedValue={selectedFilters.program}
+          />
+          
+          <FilterDropdown 
+            label="Deadline" 
+            icon={<span>{filterIcons.deadline}</span>}
+            options={deadlineOptions}
+            onSelect={(value) => handleFilterSelect("deadline", value)}
+            selectedValue={selectedFilters.deadline}
+          />
+          
+          <FilterDropdown 
+            label="English" 
+            icon={<span>{filterIcons.english}</span>}
+            options={englishTestOptions}
+            onSelect={(value) => handleFilterSelect("english", value)}
+            selectedValue={selectedFilters.english}
+          />
+          
+          <FilterDropdown 
+            label="GPA" 
+            icon={<span>{filterIcons.gpa}</span>}
+            options={gpaOptions}
+            onSelect={(value) => handleFilterSelect("gpa", value)}
+            selectedValue={selectedFilters.gpa}
+          />
+          
+          <FilterDropdown 
+            label="GRE" 
+            icon={<span>{filterIcons.gre}</span>}
+            options={greOptions}
+            onSelect={(value) => handleFilterSelect("gre", value)}
+            selectedValue={selectedFilters.gre}
+          />
+          
+          <FilterDropdown 
+            label="Order By" 
+            icon={<span>{filterIcons.orderBy}</span>}
+            options={orderByProgramOptions}
+            onSelect={(value) => handleFilterSelect("orderBy", value)}
+            selectedValue={selectedFilters.orderBy}
+          />
         </div>
       </motion.div>
 

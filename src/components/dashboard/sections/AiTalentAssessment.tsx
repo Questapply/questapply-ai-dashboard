@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -91,10 +90,25 @@ const AiTalentAssessment = () => {
   const [showUniversities, setShowUniversities] = useState(false);
   const [aiAnalysisVisible, setAiAnalysisVisible] = useState(false);
   const [restartAnimation, setRestartAnimation] = useState(false);
+  const [assessmentStarted, setAssessmentStarted] = useState(false);
   const animationTimer = useRef<NodeJS.Timeout | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Effect to automatically click the start button after component mounts
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (buttonRef.current && !assessmentStarted) {
+        buttonRef.current.click();
+      }
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, [assessmentStarted]);
 
   // Progress through the questions and show results
   useEffect(() => {
+    if (!assessmentStarted) return;
+    
     // Function to handle the automated flow
     const automateAssessment = () => {
       if (restartAnimation) {
@@ -150,14 +164,20 @@ const AiTalentAssessment = () => {
       }
     };
 
-    animationTimer.current = setTimeout(automateAssessment, 1000);
+    if (assessmentStarted) {
+      animationTimer.current = setTimeout(automateAssessment, 1000);
+    }
     
     return () => {
       if (animationTimer.current) {
         clearTimeout(animationTimer.current);
       }
     };
-  }, [currentQuestion, restartAnimation]);
+  }, [currentQuestion, restartAnimation, assessmentStarted]);
+
+  const handleStartAssessment = () => {
+    setAssessmentStarted(true);
+  };
 
   return (
     <div className="w-full py-16 bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-900">
@@ -187,42 +207,8 @@ const AiTalentAssessment = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mt-4 text-lg text-white/90 max-w-3xl mx-auto"
           >
-            Our advanced AI algorithms analyze your skills, interests, and achievements to identify your unique talents and potential. Go beyond traditional assessments and discover what makes you special.
+            Our advanced AI algorithms analyze your skills, interests, and achievements to identify your unique talents and potential.
           </motion.p>
-          
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-4 space-y-3 max-w-md mx-auto text-left"
-          >
-            {[
-              "Personalized talent assessments",
-              "Skills and personality analysis",
-              "Career path recommendations",
-              "Strengths and growth opportunities"
-            ].map((item, index) => (
-              <div key={index} className="flex items-center">
-                <div className="flex-shrink-0 h-5 w-5 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 flex items-center justify-center">
-                  <Check className="h-3 w-3 text-white" />
-                </div>
-                <span className="ml-2 text-gray-200">{item}</span>
-              </div>
-            ))}
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-8"
-          >
-            <Button 
-              className="bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white px-6 py-2.5 h-auto text-lg rounded-md"
-            >
-              Discover Your Talents
-            </Button>
-          </motion.div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
@@ -243,7 +229,13 @@ const AiTalentAssessment = () => {
               </div>
             </div>
 
-            {!showResults ? (
+            {!assessmentStarted ? (
+              <div className="min-h-[400px] flex flex-col items-center justify-center">
+                <p className="text-gray-300 mb-8 text-center">
+                  Click the button below to start your talent assessment and discover your strengths.
+                </p>
+              </div>
+            ) : !showResults ? (
               <div className="min-h-[400px]">
                 <div className="mb-8">
                   <div className="h-1.5 w-full bg-gray-700 rounded-full overflow-hidden">
@@ -334,6 +326,19 @@ const AiTalentAssessment = () => {
                     </p>
                   </motion.div>
                 )}
+              </div>
+            )}
+            
+            {/* Button placed at the bottom of the assessment box */}
+            {!assessmentStarted && (
+              <div className="mt-auto pt-4">
+                <Button 
+                  ref={buttonRef}
+                  onClick={handleStartAssessment}
+                  className="w-full bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white px-6 py-2.5 h-auto text-lg rounded-md"
+                >
+                  Discover Your Talents
+                </Button>
               </div>
             )}
           </motion.div>
