@@ -11,7 +11,8 @@ import {
   Clock, 
   CheckCircle2, 
   XCircle, 
-  Send
+  Send,
+  Heart
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -48,7 +49,8 @@ const Professors = () => {
       email: "sjohnson@mit.edu",
       image: "/placeholder.svg",
       responseStatus: "responded", // responded, pending, declined
-      lastContacted: "2023-11-15"
+      lastContacted: "2023-11-15",
+      favorite: true
     },
     {
       id: 2,
@@ -59,7 +61,8 @@ const Professors = () => {
       email: "mchen@stanford.edu",
       image: "/placeholder.svg",
       responseStatus: "pending",
-      lastContacted: "2023-11-20"
+      lastContacted: "2023-11-20",
+      favorite: true
     },
     {
       id: 3,
@@ -70,7 +73,8 @@ const Professors = () => {
       email: "rwilliams@harvard.edu",
       image: "/placeholder.svg",
       responseStatus: "declined",
-      lastContacted: "2023-11-05"
+      lastContacted: "2023-11-05",
+      favorite: true
     },
     {
       id: 4,
@@ -81,7 +85,8 @@ const Professors = () => {
       email: "dmartinez@berkeley.edu",
       image: "/placeholder.svg",
       responseStatus: "pending",
-      lastContacted: "2023-11-18"
+      lastContacted: "2023-11-18",
+      favorite: true
     }
   ];
   
@@ -96,6 +101,12 @@ const Professors = () => {
       default:
         return null;
     }
+  };
+  
+  // Function to handle removing professor from favorites
+  const handleRemoveFromFavorites = (professorId: number) => {
+    // In a real app, this would update state and possibly a database
+    console.log(`Professor ${professorId} removed from favorites`);
   };
 
   return (
@@ -128,12 +139,19 @@ const Professors = () => {
               className="overflow-hidden"
             >
               <div className="flex flex-col md:flex-row h-full">
-                <div className="w-full md:w-28 md:h-auto flex items-center justify-center p-4 md:p-0">
+                <div className="w-full md:w-28 md:h-auto flex items-center justify-center p-4 md:p-0 relative">
                   <img 
                     src={professor.image} 
                     alt={professor.name} 
                     className="w-24 h-24 md:w-full md:h-full rounded-full md:rounded-none object-cover"
                   />
+                  <button
+                    className="absolute top-2 right-2 md:top-2 md:right-2 p-1 bg-white dark:bg-gray-800 rounded-full shadow-sm"
+                    onClick={() => handleRemoveFromFavorites(professor.id)}
+                    aria-label="Remove from favorites"
+                  >
+                    <Heart className="h-4 w-4 text-red-500 fill-red-500" />
+                  </button>
                 </div>
                 <div className="flex-1 p-5">
                   <div className="flex justify-between items-start">
@@ -153,7 +171,10 @@ const Professors = () => {
                           View Profile
                         </DropdownMenuItem>
                         <DropdownMenuItem className="cursor-pointer">
-                          Send Email
+                          Create Email
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer">
+                          Send Reminder
                         </DropdownMenuItem>
                         <DropdownMenuItem className="cursor-pointer">
                           Remove from List

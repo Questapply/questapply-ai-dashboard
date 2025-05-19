@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { CardContent } from "@/components/ui/card";
 import AnimatedCard from "@/components/ui/animated-card";
-import { Search, MapPin, Mail, Globe } from "lucide-react";
+import { Search, MapPin, Mail, Globe, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FilterDropdown from "../filters/FilterDropdown";
 import {
@@ -17,6 +17,8 @@ import {
   professorTitleOptions,
   filterIcons
 } from "./FilterData";
+import ProfessorContactDialog from "./professors/ProfessorContactDialog";
+import { toast } from "sonner";
 
 const professors = [
   {
@@ -28,6 +30,7 @@ const professors = [
     universityLogo: "/placeholder.svg",
     location: "New Jersey, United States of America (USA)",
     country: "United States",
+    email: "ran.raz@princeton.edu",
     research: [
       "Computational Complexity",
       "Complexity Theory",
@@ -49,6 +52,7 @@ const professors = [
     universityLogo: "/placeholder.svg",
     location: "New Jersey, United States of America (USA)",
     country: "United States",
+    email: "olga@princeton.edu",
     research: [
       "Computer Vision",
       "Machine Learning",
@@ -69,6 +73,8 @@ const FindProfessors = () => {
     professors.reduce((acc, professor) => ({...acc, [professor.id]: professor.favorite}), {})
   );
   const [searchTerm, setSearchTerm] = useState("");
+  const [contactDialogOpen, setContactDialogOpen] = useState(false);
+  const [selectedProfessor, setSelectedProfessor] = useState<typeof professors[0] | null>(null);
 
   const handleFilterSelect = (filterName: string, value: string) => {
     setSelectedFilters(prev => ({
@@ -78,10 +84,23 @@ const FindProfessors = () => {
   };
 
   const toggleFavorite = (professorId: number) => {
-    setFavorites(prev => ({
-      ...prev,
-      [professorId]: !prev[professorId]
-    }));
+    setFavorites(prev => {
+      const newState = {
+        ...prev,
+        [professorId]: !prev[professorId]
+      };
+      
+      const professor = professors.find(p => p.id === professorId);
+      if (professor) {
+        if (newState[professorId]) {
+          toast.success(`${professor.name} added to My Professors`);
+        } else {
+          toast.info(`${professor.name} removed from My Professors`);
+        }
+      }
+      
+      return newState;
+    });
   };
 
   const containerVariants = {
@@ -103,6 +122,11 @@ const FindProfessors = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real app, this would filter professors based on search
+  };
+
+  const handleContactClick = (professor: typeof professors[0]) => {
+    setSelectedProfessor(professor);
+    setContactDialogOpen(true);
   };
 
   return (
@@ -256,6 +280,27 @@ const FindProfessors = () => {
                     >
                       {professor.title}
                     </motion.div>
+                    
+                    {/* Favorite Button */}
+                    <motion.button
+                      className="absolute -top-2 -right-2 bg-white dark:bg-gray-800 rounded-full p-2 shadow-md border border-gray-200 dark:border-gray-700"
+                      onClick={() => toggleFavorite(professor.id)}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 0.3, type: "spring" }}
+                      aria-label={favorites[professor.id] ? "Remove from favorites" : "Add to favorites"}
+                    >
+                      <Heart 
+                        className={cn(
+                          "h-5 w-5 transition-colors duration-300", 
+                          favorites[professor.id] 
+                            ? "text-red-500 fill-red-500" 
+                            : "text-gray-400 dark:text-gray-500"
+                        )} 
+                      />
+                    </motion.button>
                   </div>
                   
                   <div className="text-center md:text-left">
@@ -282,7 +327,12 @@ const FindProfessors = () => {
                   </div>
                   
                   <div className="flex flex-wrap gap-2 w-full">
-                    <Button variant="outline" size="sm" className="flex-1 transition-all hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex-1 transition-all hover:bg-gray-100 dark:hover:bg-gray-700"
+                      onClick={() => handleContactClick(professor)}
+                    >
                       <Mail className="h-4 w-4 mr-1" />
                       Contact
                     </Button>
@@ -431,6 +481,15 @@ const FindProfessors = () => {
           </AnimatedCard>
         ))}
       </motion.div>
+
+      {/* Professor Contact Dialog */}
+      {selectedProfessor && (
+        <ProfessorContactDialog 
+          open={contactDialogOpen}
+          onOpenChange={setContactDialogOpen}
+          professor={selectedProfessor}
+        />
+      )}
     </div>
   );
 };
