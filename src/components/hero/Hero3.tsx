@@ -194,13 +194,13 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
         className="text-center mb-10"
       >
         <h1 className="text-4xl md:text-5xl font-bold text-white">
-          Unlock Your Talents, Conquer Top Universities with <span className="text-emerald-400">AI</span>
+          <span className="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">AI</span> Meets Your Talent. You Meet Top Universities
         </h1>
         <p className="mt-4 text-lg text-white/90 max-w-3xl mx-auto">
-          The first AI platform that identifies your unique talents and connects you to top universities with incredible speed and accuracy
+          QuestApply harnesses cutting-edge artificial intelligence to transform how students discover and apply to their ideal graduate programs worldwide.
         </p>
         <Button 
-          className="mt-6 px-6 py-6 h-auto text-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 rounded-md"
+          className="mt-6 px-8 py-3 h-auto text-lg text-white bg-cyan-500 hover:bg-cyan-600 rounded-md"
           size="lg"
         >
           Begin Your Journey
