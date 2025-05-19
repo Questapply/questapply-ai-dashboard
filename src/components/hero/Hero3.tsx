@@ -205,7 +205,7 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
   ];
 
   return (
-    <div className="flex flex-col w-full h-full space-y-16">
+    <div className="flex flex-col w-full h-full space-y-16 overflow-x-hidden">
       {/* Hero Header with updated text and styling */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -213,14 +213,14 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
         transition={{ duration: 0.6 }}
         className="text-center mb-8"
       >
-        <h1 className="text-4xl md:text-5xl font-bold text-white">
-          <span className="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">AI</span> Meets Your Talent. You Meet Top Universities
+        <h1 className="text-5xl md:text-7xl font-bold text-cyan-300">
+          AI <span className="text-white">Transforms Education</span>
         </h1>
-        <p className="mt-4 text-lg text-white/90 max-w-3xl mx-auto">
+        <p className="mt-6 text-lg text-white/90 max-w-3xl mx-auto">
           The first AI platform that identifies your unique talents and connects you to top universities with incredible speed and accuracy.
         </p>
         <Button 
-          className="mt-6 px-10 py-2.5 h-auto text-lg text-white bg-cyan-500 hover:bg-cyan-600 rounded-md"
+          className="mt-10 px-10 py-2.5 h-auto text-lg text-white bg-cyan-500 hover:bg-cyan-600 rounded-md"
           size="lg"
         >
           Begin Your Journey
@@ -232,7 +232,8 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="flex-grow rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg flex flex-col overflow-hidden max-h-[600px] mt-6"
+        className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg flex flex-col overflow-hidden max-h-[600px] mt-6"
+        style={{ height: 600 }} // Fixed height to prevent jumping
       >
         <div className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 p-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
           <div className="h-3 w-3 rounded-full bg-red-500"></div>
@@ -435,19 +436,10 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-cyan-300 to-blue-300"
+            className="text-5xl md:text-7xl font-bold text-cyan-300"
           >
-            Discover Your Hidden Talents with AI
+            AI <span className="text-white">Meets Your Talent</span>
           </motion.h2>
-          
-          <motion.p
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-4 text-lg text-white/90 max-w-3xl mx-auto"
-          >
-            Our advanced AI algorithms analyze your skills, interests, and achievements to identify your unique talents and potential.
-          </motion.p>
         </div>
         
         {/* Full-width assessment box with same styling as chat */}
@@ -455,7 +447,8 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg flex flex-col overflow-hidden min-h-[600px]"
+          className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg flex flex-col overflow-hidden"
+          style={{ height: 600 }} // Fixed height to prevent jumping
         >
           <div className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 p-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
             <div className="h-3 w-3 rounded-full bg-red-500"></div>
