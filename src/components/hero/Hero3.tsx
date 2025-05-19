@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -493,6 +494,9 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
           >
             AI <span className="text-white">Meets Your Talent</span>
           </motion.h2>
+          <p className="mt-6 text-lg text-white/90 max-w-3xl mx-auto">
+            Our advanced AI algorithms analyze your skills, interests, and achievements to identify your unique talents and potential.
+          </p>
         </div>
         
         {/* Full-width assessment box with same styling as chat */}

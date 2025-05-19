@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -321,49 +322,6 @@ const Index = () => {
                       <Link to="/help-center?tab=support-ticket" className="flex items-center w-full px-2 py-1.5">
                         Support Ticket
                       </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                {/* Hero Menu */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium flex items-center">
-                      <Layers className="h-4 w-4 mr-1" />
-                      Hero
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-2">
-                    <DropdownMenuItem 
-                      className={`focus:bg-purple-100 dark:focus:bg-purple-900/30 rounded-md ${activeHero === "hero1" ? "bg-purple-100 dark:bg-purple-900/30" : ""}`}
-                      onClick={() => setActiveHero("hero1")}
-                    >
-                      <div className="flex items-center w-full px-2 py-1.5">
-                        HERO 1 (Classic)
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      className={`focus:bg-purple-100 dark:focus:bg-purple-900/30 rounded-md ${activeHero === "hero2" ? "bg-purple-100 dark:bg-purple-900/30" : ""}`}
-                      onClick={() => setActiveHero("hero2")}
-                    >
-                      <div className="flex items-center w-full px-2 py-1.5">
-                        HERO 2 (Dashboard Style)
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      className={`focus:bg-purple-100 dark:focus:bg-purple-900/30 rounded-md ${activeHero === "hero3" ? "bg-purple-100 dark:bg-purple-900/30" : ""}`}
-                      onClick={() => setActiveHero("hero3")}
-                    >
-                      <div className="flex items-center w-full px-2 py-1.5">
-                        HERO 3 (Fullscreen)
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      className={`focus:bg-purple-100 dark:focus:bg-purple-900/30 rounded-md ${activeHero === "hero4" ? "bg-purple-100 dark:bg-purple-900/30" : ""}`}
-                      onClick={() => setActiveHero("hero4")}
-                    >
-                      <div className="flex items-center w-full px-2 py-1.5">
-                        HERO 4 (Lovable Style)
-                      </div>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
