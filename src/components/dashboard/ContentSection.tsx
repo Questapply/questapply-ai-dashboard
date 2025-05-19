@@ -1,5 +1,5 @@
 
-import AiTalentTest from "@/components/dashboard/sections/AiTalentTest";
+import AiTalentAssessment from "@/components/dashboard/sections/AiTalentAssessment";
 import FindSchools from "@/components/dashboard/sections/FindSchools";
 import FindPrograms from "@/components/dashboard/sections/FindPrograms";
 import FindProfessors from "@/components/dashboard/sections/FindProfessors";
@@ -52,7 +52,7 @@ const ContentSection = ({ activeSection, isQuestApplyAI }: ContentSectionProps) 
   // Render the appropriate section based on activeSection
   switch (activeSection) {
     case "ai-talent-test":
-      return <AiTalentTest />;
+      return <AiTalentAssessment />;
     case "find-schools":
       return <FindSchools />;
     case "find-programs":
@@ -68,7 +68,7 @@ const ContentSection = ({ activeSection, isQuestApplyAI }: ContentSectionProps) 
     case "apply-now":
       return <ApplyNow />;
     default:
-      return <AiTalentTest />;
+      return <AiTalentAssessment />;
   }
 };
 

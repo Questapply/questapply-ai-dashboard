@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -197,7 +196,7 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
           <span className="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">AI</span> Meets Your Talent. You Meet Top Universities
         </h1>
         <p className="mt-4 text-lg text-white/90 max-w-3xl mx-auto">
-          QuestApply harnesses cutting-edge artificial intelligence to transform how students discover and apply to their ideal graduate programs worldwide.
+          The first AI platform that identifies your unique talents and connects you to top universities with incredible speed and accuracy.
         </p>
         <Button 
           className="mt-6 px-10 py-2.5 h-auto text-lg text-white bg-cyan-500 hover:bg-cyan-600 rounded-md"
@@ -411,4 +410,3 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
 };
 
 export default Hero3;
-
