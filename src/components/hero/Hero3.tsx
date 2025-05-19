@@ -66,7 +66,9 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
     if (!isAutoTyping && !isTyping) {
       const scenarioMessages = [
         "My bachelor is in CS, GPA is 3.7, TOEFL 100, GRE 320. What are the TOP 10 schools in the US for PhD CS?",
-        "Best professors in AI?"
+        "Best professors in AI?",
+        "Generate CV for Computer Science PhD",
+        "Generate SOP for Computer Science PhD"
       ];
       
       if (currentScenario < scenarioMessages.length) {
@@ -77,15 +79,7 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
         }, 2000);
         
         return () => clearTimeout(startTyping);
-      } else if (currentScenario === 2) {
-        // Auto-trigger SOP generation after professors list
-        const triggerSOPTimer = setTimeout(() => {
-          handleSOPGenerate();
-          setCurrentScenario(3);
-        }, 1000);
-        
-        return () => clearTimeout(triggerSOPTimer);
-      } else if (currentScenario === 3) {
+      } else if (currentScenario === 4) {
         // Reset the entire flow to create a loop
         const resetTimer = setTimeout(() => {
           setChatMessages([
@@ -100,12 +94,12 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
     }
   }, [currentScenario, isAutoTyping, isTyping]);
 
-  // Character-by-character typing effect
+  // Character-by-character typing effect - slowed down
   useEffect(() => {
     if (isAutoTyping && currentCharIndex < autoTypingMessage.length) {
       const typingTimer = setTimeout(() => {
         setCurrentCharIndex(prev => prev + 1);
-      }, 50);
+      }, 80); // Slowed down typing speed from 50ms to 80ms
       
       return () => clearTimeout(typingTimer);
     } else if (isAutoTyping && currentCharIndex >= autoTypingMessage.length) {
@@ -114,7 +108,7 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
         setIsAutoTyping(false);
         setIsTyping(true);
         
-        // Simulate AI response
+        // Simulate AI response - with slower timing
         setTimeout(() => {
           let response = "";
           
@@ -134,19 +128,38 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
               type: "professors",
               data: topProfessors
             }]);
+          } else if (currentScenario === 2) {
+            response = "Here's your CV for Computer Science PhD applications:";
+            setChatMessages(prev => [...prev, { 
+              role: "assistant", 
+              content: response,
+              type: "cv"
+            }]);
+          } else if (currentScenario === 3) {
+            response = "Here's your Statement of Purpose for Computer Science PhD applications:";
+            setChatMessages(prev => [...prev, { 
+              role: "assistant", 
+              content: response,
+              type: "sop",
+              data: SOP_TEMPLATE
+            }]);
             
-            // Auto-trigger SOP after showing professors
+            // After SOP is shown, prepare to reset the loop
             setTimeout(() => {
-              setCurrentScenario(2);
-            }, 3000);
+              setCurrentScenario(4);
+            }, 5000);
+            
+            setCurrentScenario(prev => prev + 1);
+            setIsTyping(false);
+            return;
           }
           
           setIsTyping(false);
-          if (currentScenario < 2) {
+          if (currentScenario < 3) {
             setCurrentScenario(prev => prev + 1);
           }
-        }, 1500);
-      }, 500);
+        }, 2500); // Slowed down response time from 1500ms to 2500ms
+      }, 800); // Slowed down send timer from 500ms to 800ms
       
       return () => clearTimeout(sendTimer);
     }
@@ -161,31 +174,6 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
     };
   }, []);
 
-  // Handle SOP generation
-  const handleSOPGenerate = () => {
-    setChatMessages(prev => [
-      ...prev,
-      { role: "user", content: "Generate SOP for Computer Science PhD" }
-    ]);
-    setIsTyping(true);
-    
-    setTimeout(() => {
-      setChatMessages(prev => [
-        ...prev,
-        { 
-          role: "assistant", 
-          content: "Here's your Statement of Purpose for Computer Science PhD applications:",
-          type: "sop",
-          data: SOP_TEMPLATE
-        }
-      ]);
-      setIsTyping(false);
-      
-      // After SOP is shown, prepare to reset the loop
-      setCurrentScenario(3);
-    }, 1500);
-  };
-
   // Hero 3 quick prompt buttons
   const hero3Prompts = [
     "How to find schools?",
@@ -198,27 +186,43 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
 
   return (
     <div className="flex flex-col w-full h-full">
-      {/* Hero Header */}
+      {/* Hero Header with updated text and styling */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-6"
+        className="text-center mb-10"
       >
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
-          Elevating Education Through AI
+        <h1 className="text-4xl md:text-5xl font-bold text-white">
+          Unlock Your Talents, Conquer Top Universities with <span className="text-emerald-400">AI</span>
         </h1>
+        <p className="mt-4 text-lg text-white/90 max-w-3xl mx-auto">
+          The first AI platform that identifies your unique talents and connects you to top universities with incredible speed and accuracy
+        </p>
+        <Button 
+          className="mt-6 px-6 py-6 h-auto text-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 rounded-md"
+          size="lg"
+        >
+          Begin Your Journey
+        </Button>
       </motion.div>
 
-      {/* Chat Interface */}
+      {/* Chat Interface with fixed container height */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="flex-grow rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg flex flex-col overflow-hidden"
+        className="flex-grow rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg flex flex-col overflow-hidden max-h-[600px]" // Added max-height
       >
-        {/* Chat Messages */}
-        <ScrollArea className="flex-grow p-4">
+        <div className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 p-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
+          <div className="h-3 w-3 rounded-full bg-red-500"></div>
+          <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+          <div className="h-3 w-3 rounded-full bg-green-500"></div>
+          <span className="ml-2 text-xs font-medium text-gray-500 dark:text-gray-400">QuestApply AI Assistant</span>
+        </div>
+        
+        {/* Chat Messages - using ScrollArea for custom scrollbar */}
+        <ScrollArea className="flex-grow p-4 h-[500px]">
           <div className="space-y-4">
             {chatMessages.map((message, index) => (
               <div key={index}>
@@ -287,6 +291,21 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
                           </div>
                         </Card>
                       ))}
+                    </div>
+                  )}
+
+                  {/* CV Template */}
+                  {message.type === "cv" && (
+                    <div className="mt-3 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Download className="h-5 w-5 text-blue-500" />
+                        <h4 className="font-medium text-blue-600 dark:text-blue-400">Curriculum Vitae</h4>
+                      </div>
+                      <div className="prose dark:prose-invert max-w-none text-sm">
+                        <p className="text-gray-700 dark:text-gray-300">
+                          A comprehensive, well-structured CV tailored for your Computer Science PhD application has been created, highlighting your academic achievements, research experience, technical skills, and relevant projects.
+                        </p>
+                      </div>
                     </div>
                   )}
 
