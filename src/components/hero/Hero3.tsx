@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Landmark, University, FileText } from "lucide-react";
+import { GraduationCap, Landmark, University, FileText, Download } from "lucide-react";
 import { SOP_TEMPLATE } from "./SOPTemplate";
 
 interface School {
