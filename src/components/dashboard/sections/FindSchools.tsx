@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import SchoolCard from "./find-schools/SchoolCard";
 import { schools } from "./find-schools/SchoolsData";
 import FilterDropdown from "../filters/FilterDropdown";
+import FindSchoolsTourGuide from "./find-schools/FindSchoolsTourGuide";
 import {
   countryOptions,
   usStatesOptions,
@@ -77,6 +78,9 @@ const FindSchools = () => {
 
   return (
     <div className="p-6 animate-fade-in">
+      {/* Tour Guide Component */}
+      <FindSchoolsTourGuide />
+      
       <div className="flex justify-between items-center mb-6">
         <motion.h1 
           className="text-2xl font-bold text-gray-900 dark:text-white"
