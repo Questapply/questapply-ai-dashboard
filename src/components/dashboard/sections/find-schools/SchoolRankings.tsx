@@ -36,11 +36,11 @@ const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className={`w-12 h-12 ${rankingColors[key]} rounded-md flex items-center justify-center mb-2`}>
-              <span className="font-bold text-lg">{rankingLabels[key]}</span>
+            <div className={`w-10 h-10 ${rankingColors[key]} rounded-md flex items-center justify-center mb-1`}>
+              <span className="font-semibold text-sm">{rankingLabels[key]}</span>
             </div>
             <div className="text-center">
-              <span className="text-xs font-semibold text-white">#{value}</span>
+              <span className="text-xs font-medium text-white">#{value}</span>
             </div>
           </motion.div>
         ))}

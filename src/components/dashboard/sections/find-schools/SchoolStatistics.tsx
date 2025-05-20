@@ -21,9 +21,10 @@ const SchoolStatistics = ({ school }: SchoolStatisticsProps) => {
         >
           <ProgressCircle 
             value={school.acceptance}
-            size="lg"
+            size="md"
             color="red"
             label="Acceptance"
+            strokeWidth={3}
           />
         </motion.div>
         
@@ -35,9 +36,10 @@ const SchoolStatistics = ({ school }: SchoolStatisticsProps) => {
         >
           <ProgressCircle 
             value={school.graduation}
-            size="lg"
+            size="md"
             color="green"
             label="Graduation"
+            strokeWidth={3}
           />
         </motion.div>
       </div>

@@ -18,7 +18,7 @@ interface ProgressCircleProps {
 export const ProgressCircle: React.FC<ProgressCircleProps> = ({
   value,
   size = "md",
-  strokeWidth = 4,
+  strokeWidth = 3,
   color = "purple",
   showValue = true,
   label,
@@ -46,15 +46,15 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
       labelSize: "text-xs"
     },
     md: {
-      width: 80,
-      height: 80,
+      width: 72,
+      height: 72,
       textSize: "text-xl",
-      labelSize: "text-sm"
+      labelSize: "text-xs"
     },
     lg: {
-      width: 120,
-      height: 120,
-      textSize: "text-3xl",
+      width: 100,
+      height: 100,
+      textSize: "text-2xl",
       labelSize: "text-sm"
     }
   };
@@ -145,7 +145,7 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <span className={cn(selectedSize.textSize, "font-semibold", selectedColor.text, valueClassName)}>
+            <span className={cn("font-semibold", selectedColor.text, valueClassName)}>
               {progress}%
             </span>
           </motion.div>
@@ -153,7 +153,7 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
       </div>
       
       {label && (
-        <span className={cn("mt-2", selectedSize.labelSize, "text-gray-300", labelClassName)}>
+        <span className={cn("mt-1", selectedSize.labelSize, "text-gray-300", labelClassName)}>
           {label}
         </span>
       )}
