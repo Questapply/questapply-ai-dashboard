@@ -167,7 +167,7 @@ const RoadmapSection = () => {
         </motion.p>
         
         {/* Roadmap Container with updated width to match AI Meets Your Talent section */}
-        <div className="max-w-6xl mx-auto"> 
+        <div className="max-w-5xl mx-auto"> 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -176,18 +176,18 @@ const RoadmapSection = () => {
           >
             <GradientCard 
               variant="talent-section" 
-              className="p-2 md:p-3 shadow-xl"
+              className="p-1 md:p-2 shadow-xl"
             >
               {/* Workflow Steps - Styled like n8n nodes with connector line */}
-              <div className="flex flex-wrap justify-center mb-6 relative px-0 md:px-2">
-                {/* Connector Lines */}
+              <div className="flex justify-between mb-6 relative px-1 md:px-2">
+                {/* Connector Line - Now straighter and more precise */}
                 <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform -translate-y-1/2 z-0"></div>
                 
-                {/* n8n styled steps with adjusted width */}
+                {/* n8n styled steps with adjusted width and spacing */}
                 {steps.map((step, index) => (
-                  <div key={step.id} className="relative z-10 px-0.5 mb-6 md:mb-0">
+                  <div key={step.id} className="relative z-10 px-0 mb-6 md:mb-0">
                     <motion.button
-                      className={`relative flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 p-1 rounded-lg transition-all duration-300 
+                      className={`relative flex flex-col items-center justify-center w-16 h-16 sm:w-18 sm:h-18 rounded-lg transition-all duration-300 
                         ${activeStep === step.id 
                           ? 'dark:bg-gray-800 bg-gray-100 shadow-lg border-2 dark:border-white/20 border-gray-300/60' 
                           : 'dark:bg-gray-800/80 dark:hover:bg-gray-800 dark:border-gray-700/50 dark:hover:border-purple-500/50 bg-white/90 hover:bg-gray-50 border border-gray-200/70 hover:border-purple-300/50'}`}
@@ -218,7 +218,7 @@ const RoadmapSection = () => {
                         </div>
                       </div>
                       
-                      {/* Step Title - Prevent text wrapping with smaller font and less padding */}
+                      {/* Step Title - No text wrapping with optimal width */}
                       <span className="text-[10px] font-medium dark:text-white text-gray-700 text-center whitespace-nowrap">
                         {step.title}
                       </span>
@@ -234,7 +234,20 @@ const RoadmapSection = () => {
               
               {/* Dynamic Content Area - Fixed height with scrolling */}
               <div className="mt-4">
-                <ScrollArea className="h-[500px] rounded-md px-2">
+                <ScrollArea className="h-[500px] rounded-md px-1">
+                  {activeStep === null && (
+                    <motion.div 
+                      className="text-center py-8"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <p className="text-purple-200 text-lg dark:text-purple-200 text-purple-700">
+                        Click on any step above to see a demonstration of our application process
+                      </p>
+                    </motion.div>
+                  )}
+                  
                   {activeStep === 1 && showFindSchools && (
                     <div className="space-y-8 px-2">
                       <FindSchools />
@@ -565,20 +578,6 @@ const RoadmapSection = () => {
                           </div>
                         </motion.div>
                       )}
-                    </motion.div>
-                  )}
-                  
-                  {/* Default state when no step is selected */}
-                  {activeStep === null && (
-                    <motion.div 
-                      className="text-center py-8"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <p className="text-purple-200 text-lg">
-                        Click on any step above to see a demonstration of our application process
-                      </p>
                     </motion.div>
                   )}
                 </ScrollArea>

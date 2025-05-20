@@ -37,7 +37,7 @@ const StepNavigation: React.FC<StepNavigationProps> = ({
   };
 
   return (
-    <div className="hidden md:flex justify-between mb-8 px-8">
+    <div className="hidden md:flex justify-between mb-8 px-6">
       {steps.map((step, index) => {
         const isPrevious = steps.findIndex(s => s.id === currentStep) > index;
         const isCurrent = step.id === currentStep;
@@ -70,7 +70,7 @@ const StepNavigation: React.FC<StepNavigationProps> = ({
             {/* Step Title */}
             <span 
               className={cn(
-                "text-xs font-medium text-center transition-colors duration-200",
+                "text-xs font-medium text-center whitespace-nowrap",
                 isCurrent ? 
                   "text-purple-600 dark:text-purple-400" : 
                   isPrevious || progress >= stepProgress ? 
