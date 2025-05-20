@@ -53,7 +53,7 @@ const EmailCompositionDialog = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} className="bg-gray-900/90">
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl bg-[#0D1117]">
         <DialogHeader>
           <DialogTitle className="text-white">
