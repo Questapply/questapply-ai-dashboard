@@ -25,8 +25,8 @@ const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
   };
 
   return (
-    <div className="bg-gray-800/60 p-4 rounded-lg">
-      <h4 className="text-sm font-medium text-gray-300 mb-3">Rankings</h4>
+    <div className="bg-gray-100 dark:bg-gray-800/60 p-4 rounded-lg">
+      <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Rankings</h4>
       <div className="flex gap-3 overflow-x-auto pb-1">
         {Object.entries(rankings).map(([key, value]) => (
           <motion.div 
@@ -37,12 +37,12 @@ const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
             className="flex flex-col items-center"
           >
             <div 
-              className={`w-8 h-8 bg-[#1A1A1A] rounded flex items-center justify-center shadow-lg`}
+              className={`w-8 h-8 bg-gray-200 dark:bg-[#1A1A1A] rounded flex items-center justify-center shadow-lg`}
             >
               <span className={`font-bold text-xs ${rankingColors[key]}`}>{rankingLabels[key]}</span>
             </div>
             <div className="text-center mt-1">
-              <span className="text-xs font-medium text-white">#{value}</span>
+              <span className="text-xs font-medium text-gray-800 dark:text-white">#{value}</span>
             </div>
           </motion.div>
         ))}

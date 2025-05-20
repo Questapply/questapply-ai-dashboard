@@ -10,8 +10,8 @@ interface SchoolStatisticsProps {
 
 const SchoolStatistics = ({ school }: SchoolStatisticsProps) => {
   return (
-    <div className="bg-gray-800/60 p-4 rounded-lg">
-      <h4 className="text-sm font-medium text-gray-300 mb-3">Statistics</h4>
+    <div className="bg-gray-100 dark:bg-gray-800/60 p-4 rounded-lg">
+      <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Statistics</h4>
       <div className="flex justify-around items-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
