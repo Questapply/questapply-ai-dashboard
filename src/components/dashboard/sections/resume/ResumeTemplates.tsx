@@ -3,62 +3,65 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Download, Star } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const resumeTemplates = [
   { 
     id: "academic", 
     name: "Academic CV", 
     description: "Ideal for PhD applications and research positions",
-    image: "/placeholder.svg",
+    image: "https://resume-now.com/assets/editor-v2/images/templates/advanced.png",
     popular: true
   },
   { 
     id: "professional", 
     name: "Professional Resume", 
     description: "Clean, modern design for industry applications",
-    image: "/placeholder.svg",
+    image: "https://resume-now.com/assets/editor-v2/images/templates/refined.png",
     popular: false
   },
   { 
     id: "creative", 
     name: "Creative Resume", 
     description: "Stand out with a unique yet professional design",
-    image: "/placeholder.svg",
+    image: "https://resume-now.com/assets/editor-v2/images/templates/charismatic.png",
     popular: false
   },
   { 
     id: "minimal", 
     name: "Minimal Resume", 
     description: "Simple and elegant design focusing on content",
-    image: "/placeholder.svg",
+    image: "https://resume-now.com/assets/editor-v2/images/templates/distinguished.png",
     popular: false
   },
   { 
     id: "modern", 
     name: "Modern Resume", 
     description: "Contemporary style with bold typography",
-    image: "/placeholder.svg",
+    image: "https://resume-now.com/assets/editor-v2/images/templates/executive.png",
     popular: false
   },
   { 
     id: "technical", 
     name: "Technical Resume", 
     description: "Optimized for technical and engineering roles",
-    image: "/placeholder.svg",
+    image: "https://resume-now.com/assets/editor-v2/images/templates/accomplished.png",
     popular: true
   },
   { 
     id: "research", 
     name: "Research CV", 
     description: "Focused on academic research achievements",
-    image: "/placeholder.svg",
+    image: "https://resume-now.com/assets/editor-v2/images/templates/professional.png",
     popular: false
   },
   { 
     id: "executive", 
     name: "Executive Resume", 
     description: "Sophisticated design for senior positions",
-    image: "/placeholder.svg",
+    image: "https://resume-now.com/assets/editor-v2/images/templates/modern.png",
     popular: false
   }
 ];
@@ -80,6 +83,30 @@ const item = {
 };
 
 const ResumeTemplates = () => {
+  const [isLoading, setIsLoading] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleUseTemplate = (templateId: string, templateName: string) => {
+    setIsLoading(templateId);
+    
+    // Simulate loading
+    setTimeout(() => {
+      setIsLoading(null);
+      // Switch to myResumes tab and show toast notification
+      navigate('/dashboard');
+      
+      // Using setTimeout to ensure navigation happens before DOM manipulation
+      setTimeout(() => {
+        // Find and click the My Resumes tab
+        const myResumesTab = document.querySelector('[value="myResumes"]') as HTMLElement;
+        if (myResumesTab) {
+          myResumesTab.click();
+          toast.success(`${templateName} template selected successfully`);
+        }
+      }, 100);
+    }, 1000);
+  };
+
   return (
     <div className="p-6">
       <motion.div
@@ -114,7 +141,7 @@ const ResumeTemplates = () => {
                 <img 
                   src={template.image} 
                   alt={template.name} 
-                  className="w-full h-48 object-cover object-top"
+                  className="w-full h-64 object-contain object-center p-2 bg-white"
                 />
                 {template.popular && (
                   <div className="absolute top-2 right-2 bg-amber-500 text-white text-xs font-medium px-2 py-1 rounded-full flex items-center">
@@ -127,8 +154,12 @@ const ResumeTemplates = () => {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">{template.name}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 h-10">{template.description}</p>
                 <div className="flex space-x-2">
-                  <Button className="flex-1 bg-purple-600 hover:bg-purple-700 text-white">
-                    Use Template
+                  <Button 
+                    className="flex-1 bg-purple-600 hover:bg-purple-700 text-white"
+                    onClick={() => handleUseTemplate(template.id, template.name)}
+                    disabled={isLoading === template.id}
+                  >
+                    {isLoading === template.id ? "Loading..." : "USE TEMPLATE"}
                   </Button>
                   <Button variant="outline" size="icon">
                     <Download className="h-4 w-4" />

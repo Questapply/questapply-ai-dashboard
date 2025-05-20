@@ -1,9 +1,10 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 import { BookOpen, FileText, Image, Wand, University, Trophy, FileSearch } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import ResumeGuidance from "@/components/dashboard/sections/resume/ResumeGuidance";
 import ResumeTemplates from "@/components/dashboard/sections/resume/ResumeTemplates";
 import MyResumes from "@/components/dashboard/sections/resume/MyResumes";
@@ -23,12 +24,22 @@ const resumeTabs = [
 ];
 
 const CreateResume = () => {
-  const [activeTab, setActiveTab] = useState("guidance");
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get("tab") || "guidance";
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+  // Update active tab based on URL params
+  useEffect(() => {
+    const tabFromParams = searchParams.get("tab");
+    if (tabFromParams && resumeTabs.some(tab => tab.id === tabFromParams)) {
+      setActiveTab(tabFromParams);
+    }
+  }, [searchParams]);
 
   return (
     <div className="animate-fade-in">
       <Tabs 
-        defaultValue="guidance" 
+        defaultValue={activeTab} 
         value={activeTab}
         onValueChange={setActiveTab}
         className="w-full"
