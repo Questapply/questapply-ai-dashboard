@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { CardContent } from "@/components/ui/card";
 import AnimatedCard from "@/components/ui/animated-card";
-import { Search, MapPin, Mail, Globe, Heart } from "lucide-react";
+import { Mail, MapPin, Globe, Heart, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FilterDropdown from "../filters/FilterDropdown";
 import {
@@ -75,6 +75,7 @@ const FindProfessors = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
   const [selectedProfessor, setSelectedProfessor] = useState<typeof professors[0] | null>(null);
+  const [reminderDialogOpen, setReminderDialogOpen] = useState(false);
 
   const handleFilterSelect = (filterName: string, value: string) => {
     setSelectedFilters(prev => ({
@@ -124,9 +125,14 @@ const FindProfessors = () => {
     // In a real app, this would filter professors based on search
   };
 
-  const handleContactClick = (professor: typeof professors[0]) => {
+  const handleEmailClick = (professor: typeof professors[0]) => {
     setSelectedProfessor(professor);
     setContactDialogOpen(true);
+  };
+
+  const handleReminderClick = (professor: typeof professors[0]) => {
+    setSelectedProfessor(professor);
+    setReminderDialogOpen(true);
   };
 
   return (
@@ -259,86 +265,106 @@ const FindProfessors = () => {
           >
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Professor Profile */}
+                {/* Professor Profile with updated layout */}
                 <motion.div 
                   className="flex flex-col items-center md:items-start gap-4"
                   variants={itemVariants}
                 >
-                  <div className="relative">
-                    <motion.img 
-                      src={professor.avatar} 
-                      alt={`${professor.name}'s avatar`}
-                      className="w-32 h-32 rounded-full object-cover border-4 border-purple-100 dark:border-purple-900/30 shadow-md"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                    <motion.div
-                      className="absolute -bottom-2 -right-2 bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 rounded-full px-3 py-1 text-xs font-medium shadow-sm border border-purple-200 dark:border-purple-800"
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.5, type: "spring" }}
-                    >
-                      {professor.title}
-                    </motion.div>
-                    
-                    {/* Favorite Button */}
-                    <motion.button
-                      className="absolute -top-2 -right-2 bg-white dark:bg-gray-800 rounded-full p-2 shadow-md border border-gray-200 dark:border-gray-700"
-                      onClick={() => toggleFavorite(professor.id)}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.3, type: "spring" }}
-                      aria-label={favorites[professor.id] ? "Remove from favorites" : "Add to favorites"}
-                    >
-                      <Heart 
-                        className={cn(
-                          "h-5 w-5 transition-colors duration-300", 
-                          favorites[professor.id] 
-                            ? "text-red-500 fill-red-500" 
-                            : "text-gray-400 dark:text-gray-500"
-                        )} 
+                  <div className="flex items-start gap-4 w-full">
+                    <div className="relative">
+                      <motion.img 
+                        src={professor.avatar} 
+                        alt={`${professor.name}'s avatar`}
+                        className="w-24 h-24 rounded-full object-cover border-4 border-purple-100 dark:border-purple-900/30 shadow-md"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2 }}
                       />
-                    </motion.button>
-                  </div>
-                  
-                  <div className="text-center md:text-left">
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{professor.name}</h3>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-2 w-full">
-                    <img 
-                      src={professor.universityLogo} 
-                      alt="University Logo"
-                      className="w-8 h-8 rounded-full bg-white p-1"
-                    />
-                    <div className="flex flex-col">
-                      <a 
-                        href="#" 
-                        className="text-purple-600 dark:text-purple-400 hover:underline text-sm font-medium transition-colors"
+                      <motion.div
+                        className="absolute -bottom-2 -right-2 bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 rounded-full px-3 py-1 text-xs font-medium shadow-sm border border-purple-200 dark:border-purple-800"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.5, type: "spring" }}
                       >
-                        {professor.university}
-                      </a>
-                      <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-                        <MapPin className="h-3 w-3 mr-1" /> {professor.country}
+                        {professor.title}
+                      </motion.div>
+                    </div>
+                    
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{professor.name}</h3>
+                        <button
+                          onClick={() => toggleFavorite(professor.id)}
+                          className="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 transition-colors"
+                          aria-label={favorites[professor.id] ? "Remove from favorites" : "Add to favorites"}
+                        >
+                          <Heart 
+                            className={cn(
+                              "h-5 w-5 transition-colors duration-300", 
+                              favorites[professor.id] 
+                                ? "text-red-500 fill-red-500" 
+                                : ""
+                            )} 
+                          />
+                        </button>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-2 mt-2 w-full">
+                        <img 
+                          src={professor.universityLogo} 
+                          alt="University Logo"
+                          className="w-8 h-8 rounded-full bg-white p-1"
+                        />
+                        <div className="flex flex-col">
+                          <a 
+                            href="#" 
+                            className="text-purple-600 dark:text-purple-400 hover:underline text-sm font-medium transition-colors"
+                          >
+                            {professor.university}
+                          </a>
+                          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                            <MapPin className="h-3 w-3 mr-1" /> {professor.country}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="flex flex-wrap gap-2 w-full">
+                  {/* Professor contact icons */}
+                  <div className="flex items-center gap-4 mt-2">
+                    <a href={`mailto:${professor.email}`} className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      <Mail className="w-5 h-5" />
+                    </a>
+                    <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide">
+                        <path d="M12 14a6 6 0 0 0-6-6h-.5A5.5 5.5 0 0 0 0 13.5v1A5.5 5.5 0 0 0 5.5 20H6a6 6 0 0 0 6-6Z"></path>
+                        <path d="M16 8h.5A5.5 5.5 0 0 1 22 13.5v1A5.5 5.5 0 0 1 16.5 20H16"></path>
+                        <path d="M12 14v6"></path>
+                        <path d="M12 2v12"></path>
+                      </svg>
+                    </a>
+                    <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      <Globe className="w-5 h-5" />
+                    </a>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-2 w-full mt-2">
                     <Button 
                       variant="outline" 
                       size="sm" 
                       className="flex-1 transition-all hover:bg-gray-100 dark:hover:bg-gray-700"
-                      onClick={() => handleContactClick(professor)}
+                      onClick={() => handleEmailClick(professor)}
                     >
                       <Mail className="h-4 w-4 mr-1" />
-                      Contact
+                      Send Email
                     </Button>
-                    <Button variant="outline" size="sm" className="flex-1 transition-all hover:bg-gray-100 dark:hover:bg-gray-700">
-                      <Globe className="h-4 w-4 mr-1" />
-                      Website
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex-1 transition-all hover:bg-gray-100 dark:hover:bg-gray-700"
+                      onClick={() => handleReminderClick(professor)}
+                    >
+                      <Send className="h-4 w-4 mr-1" />
+                      Remind
                     </Button>
                   </div>
                 </motion.div>
@@ -456,24 +482,6 @@ const FindProfessors = () => {
                         </svg>
                       </motion.button>
                     </div>
-                    
-                    <motion.button
-                      className="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 transition-colors"
-                      onClick={() => toggleFavorite(professor.id)}
-                      aria-label={favorites[professor.id] ? "Remove from favorites" : "Add to favorites"}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      {favorites[professor.id] ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 fill-red-500" viewBox="0 0 24 24">
-                          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                        </svg>
-                      ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                      )}
-                    </motion.button>
                   </div>
                 </motion.div>
               </div>
@@ -488,6 +496,16 @@ const FindProfessors = () => {
           open={contactDialogOpen}
           onOpenChange={setContactDialogOpen}
           professor={selectedProfessor}
+        />
+      )}
+
+      {/* Reminder Dialog */}
+      {selectedProfessor && (
+        <ProfessorContactDialog 
+          open={reminderDialogOpen}
+          onOpenChange={setReminderDialogOpen}
+          professor={selectedProfessor}
+          isReminder={true}
         />
       )}
     </div>

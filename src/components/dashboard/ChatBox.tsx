@@ -43,6 +43,12 @@ const ChatBox = ({
         "What are the best Canadian CS PhD programs for my field?",
         "Which top UK CS PhD programs suit my academic goals?"
       ];
+    } else if (activeSection === "find-professors") {
+      return [
+        "Which top Professors in AI?",
+        "What are the top Professors in Machine Learning?",
+        "Which top Professors in Deep Learning?"
+      ];
     } else {
       return [
         "Which top universities in the US match my profile?",

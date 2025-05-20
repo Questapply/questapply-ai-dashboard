@@ -23,17 +23,26 @@ interface ProfessorContactDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   professor: Professor;
+  isReminder?: boolean;
 }
 
 const ProfessorContactDialog = ({
   open,
   onOpenChange,
-  professor
+  professor,
+  isReminder = false
 }: ProfessorContactDialogProps) => {
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
   const [reminderDialogOpen, setReminderDialogOpen] = useState(false);
   const [questionnaireOpen, setQuestionnaireOpen] = useState(false);
   const [emailTemplate, setEmailTemplate] = useState("");
+  
+  // If isReminder is true, directly show the reminder dialog
+  React.useEffect(() => {
+    if (isReminder && open) {
+      handleRemind();
+    }
+  }, [isReminder, open]);
   
   const handleCreateEmail = () => {
     setEmailDialogOpen(true);
@@ -41,6 +50,7 @@ const ProfessorContactDialog = ({
   
   const handleRemind = () => {
     setReminderDialogOpen(true);
+    onOpenChange(false); // Close this dialog as we're opening the reminder dialog
   };
   
   const handleCreateByExpert = () => {
@@ -55,6 +65,19 @@ const ProfessorContactDialog = ({
   };
 
   const professorEmail = professor.email || `${professor.name.toLowerCase().replace(/\s+/g, '.')}@university.edu`;
+  
+  // If we're showing the reminder, don't show the contact options dialog
+  if (isReminder) {
+    return (
+      <EmailCompositionDialog 
+        open={open}
+        onOpenChange={onOpenChange}
+        professorName={professor.name}
+        professorEmail={professorEmail}
+        isReminder={true}
+      />
+    );
+  }
   
   return (
     <>
