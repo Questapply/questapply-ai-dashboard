@@ -131,31 +131,7 @@ const ChatBox = ({
             </button>
           </div>
 
-          {/* Filter Options Inside the Chat Box */}
-          {filterOptions && (
-            <div className={`p-3 border-t ${isDarkMode ? "border-gray-700" : "border-gray-200"} animate-fade-in`}>
-              <div className="flex items-center gap-2 mb-2">
-                <span className={`text-sm font-medium ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>
-                  Filters
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {filterOptions.map((filter, index) => (
-                  <button
-                    key={index}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full border ${
-                      isDarkMode 
-                        ? "bg-gray-800 border-gray-700 text-gray-300 hover:bg-teal-900/20 hover:border-teal-700" 
-                        : "bg-white border-gray-200 text-gray-700 hover:bg-teal-50 hover:border-teal-200"
-                    } text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5`}
-                  >
-                    {filter.icon}
-                    {filter.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Filter Options Inside the Chat Box - REMOVED */}
         </form>
       </div>
 
