@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -166,8 +167,8 @@ const RoadmapSection = () => {
           A smart, step-by-step guide that uses AI to help you reach your educational and career goals.
         </motion.p>
         
-        {/* Roadmap Container - We'll use a div for content and wrap in GradientCard */}
-        <div className="max-w-5xl mx-auto">
+        {/* Roadmap Container with updated styling to match AI Meets Your Talent section */}
+        <div className="max-w-7xl mx-auto"> {/* Increased width to match AI Meets Your Talent */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -175,7 +176,7 @@ const RoadmapSection = () => {
             viewport={{ once: true }}
           >
             <GradientCard 
-              variant="talent-section"
+              variant="dark" 
               className="p-6 md:p-8 shadow-xl"
             >
               {/* Workflow Steps - Styled like n8n nodes with connector line */}
