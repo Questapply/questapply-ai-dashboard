@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { GradientCard } from "@/components/ui/gradient-card";
 import { 
   Search, 
   BookOpen, 
@@ -152,7 +153,7 @@ const RoadmapSection = () => {
           <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">AI-Powered</span> Roadmap to Success
         </motion.h2>
         
-        {/* Subtitle */}
+        {/* Subtitle - Styled to match AI Meets Your Talent subtitle */}
         <motion.p 
           className="text-lg md:text-xl text-center text-purple-200 mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -163,23 +164,25 @@ const RoadmapSection = () => {
           A smart, step-by-step guide that uses AI to help you reach your educational and career goals.
         </motion.p>
         
-        {/* Roadmap Container - Styled to match Chat Box Style */}
-        <motion.div 
-          className="bg-gray-900/60 backdrop-blur-sm border border-purple-500/30 rounded-xl p-6 md:p-8 shadow-xl max-w-5xl mx-auto"
+        {/* Roadmap Container - Styled exactly like AI Meets Your Talent box */}
+        <GradientCard 
+          variant="talent-section"
+          className="p-6 md:p-8 shadow-xl max-w-5xl mx-auto"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true }}
         >
-          {/* Workflow Steps - Styled like n8n nodes */}
+          {/* Workflow Steps - Styled like n8n nodes with connector line */}
           <div className="flex flex-wrap justify-center mb-12 relative">
             {/* Connector Lines */}
             <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform -translate-y-1/2 z-0"></div>
             
+            {/* n8n styled steps */}
             {steps.map((step, index) => (
               <div key={step.id} className="relative z-10 px-2 mb-6 md:mb-0">
                 <motion.button
-                  className={`relative flex flex-col items-center justify-center w-28 h-28 sm:w-32 sm:h-32 p-4 rounded-lg transition-all duration-300
+                  className={`relative flex flex-col items-center justify-center w-24 h-24 sm:w-28 sm:h-28 p-4 rounded-lg transition-all duration-300
                     ${activeStep === step.id 
                       ? 'bg-gray-800 shadow-lg border-2 border-white/20 dark:bg-gray-800/90' 
                       : 'bg-gray-800/80 hover:bg-gray-800 border border-gray-700/50 hover:border-purple-500/50 dark:bg-gray-800/60 dark:hover:bg-gray-800/80'}`}
@@ -642,7 +645,7 @@ const RoadmapSection = () => {
               )}
             </ScrollArea>
           </div>
-        </motion.div>
+        </GradientCard>
       </div>
     </div>
   );
