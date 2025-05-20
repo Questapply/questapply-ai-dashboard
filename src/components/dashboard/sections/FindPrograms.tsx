@@ -280,22 +280,6 @@ const FindPrograms = () => {
             selectedValue={selectedFilters.orderBy}
           />
         </div>
-        
-        {/* Updated suggested search texts */}
-        <div className="mt-4">
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Suggested searches</p>
-          <div className="flex flex-col gap-2">
-            <Button variant="ghost" className="justify-start text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/60">
-              Which top US CS PhD programs match my profile?
-            </Button>
-            <Button variant="ghost" className="justify-start text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/60">
-              What are the best Canadian CS PhD programs for my field?
-            </Button>
-            <Button variant="ghost" className="justify-start text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/60">
-              Which top UK CS PhD programs suit my academic goals?
-            </Button>
-          </div>
-        </div>
       </motion.div>
 
       {/* Programs List */}
