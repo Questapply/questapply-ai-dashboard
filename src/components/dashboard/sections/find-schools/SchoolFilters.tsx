@@ -42,13 +42,13 @@ const SchoolFilters = ({ activeFilters, toggleFilter }: SchoolFiltersProps) => {
           <motion.button
             key={filter.id}
             className={`
-              flex items-center gap-2 px-4 py-2 rounded-full text-sm
+              flex items-center gap-2 px-4 py-2 rounded-full text-sm border
               ${
                 activeFilters.includes(filter.id)
-                  ? "bg-purple-600 text-white shadow-md shadow-purple-500/20"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:shadow-sm"
+                  ? "bg-purple-600 border-purple-700 text-white shadow-md shadow-purple-500/20"
+                  : "bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:border-purple-200 dark:hover:border-purple-700 hover:shadow-sm"
               }
-              transition-all duration-300 ease-in-out
+              transition-all duration-300 ease-in-out transform hover:-translate-y-0.5
             `}
             onClick={() => toggleFilter(filter.id)}
             initial={{ opacity: 0, scale: 0.9 }}
