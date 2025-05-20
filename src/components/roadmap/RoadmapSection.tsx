@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -56,43 +57,43 @@ const RoadmapSection = () => {
     { 
       id: 1, 
       title: "Find Schools", 
-      icon: <Search className="h-6 w-6" />,
+      icon: <Search className="h-5 w-5" />,
       color: "#6366f1"
     },
     { 
       id: 2, 
       title: "Find Programs", 
-      icon: <BookOpen className="h-6 w-6" />,
+      icon: <BookOpen className="h-5 w-5" />,
       color: "#ec4899" 
     },
     { 
       id: 3, 
       title: "Find Professors", 
-      icon: <User className="h-6 w-6" />,
+      icon: <User className="h-5 w-5" />,
       color: "#f97316" 
     },
     { 
       id: 4, 
       title: "Create Resume", 
-      icon: <FileText className="h-6 w-6" />,
+      icon: <FileText className="h-5 w-5" />,
       color: "#10b981" 
     },
     { 
       id: 5, 
       title: "Create SOP", 
-      icon: <FileText className="h-6 w-6" />,
+      icon: <FileText className="h-5 w-5" />,
       color: "#0ea5e9" 
     },
     { 
       id: 6, 
       title: "Create LOR", 
-      icon: <FileText className="h-6 w-6" />,
+      icon: <FileText className="h-5 w-5" />,
       color: "#14b8a6" 
     },
     { 
       id: 7, 
       title: "Apply Now", 
-      icon: <Send className="h-6 w-6" />,
+      icon: <Send className="h-5 w-5" />,
       color: "#84cc16" 
     }
   ];
@@ -179,31 +180,48 @@ const RoadmapSection = () => {
               variant="talent-section" 
               className="p-4 md:p-6 shadow-xl w-full dark:bg-gray-800 bg-white/90"
             >
-              {/* Updated Button Layout - Styled like Find Schools filters */}
-              <div className="flex justify-center items-center my-6 px-6">
-                <div className="flex flex-wrap gap-4 justify-center w-full">
-                  {steps.map((step) => (
-                    <motion.button
-                      key={step.id}
-                      className={cn(
-                        "flex flex-col items-center gap-2 px-6 py-3 rounded-full text-base",
-                        "border border-white/30 dark:border-white/20",
-                        "transition-all duration-300 ease-in-out",
-                        activeStep === step.id
-                          ? "bg-purple-600 border-purple-700 text-white shadow-md shadow-purple-500/20"
-                          : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:border-purple-200 dark:hover:border-purple-700 hover:shadow-sm"
+              {/* Updated Button Layout - n8n-style horizontal line of connected steps */}
+              <div className="flex justify-center items-center my-6 overflow-x-auto px-4 py-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
+                <div className="flex items-center space-x-2 min-w-max">
+                  {steps.map((step, index) => (
+                    <React.Fragment key={step.id}>
+                      {/* Button */}
+                      <motion.button
+                        className={cn(
+                          "relative flex items-center gap-2 px-4 py-3 rounded-md text-sm md:text-base transition-all duration-300",
+                          "border border-gray-200 dark:border-gray-700",
+                          activeStep === step.id 
+                            ? "bg-purple-600 text-white border-purple-700 shadow-md shadow-purple-500/20" 
+                            : "bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:border-purple-200 dark:hover:border-purple-600"
+                        )}
+                        onClick={() => handleStepClick(step.id)}
+                        whileHover={{ 
+                          y: -2,
+                          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" 
+                        }}
+                      >
+                        {/* Icon */}
+                        <span 
+                          className={cn(
+                            "flex items-center justify-center h-7 w-7 rounded-md",
+                            activeStep === step.id ? "text-white" : ""
+                          )}
+                          style={{ color: activeStep === step.id ? "#ffffff" : step.color }}
+                        >
+                          {step.icon}
+                        </span>
+                        
+                        {/* Step Title */}
+                        <span className="font-medium whitespace-nowrap">
+                          {step.title}
+                        </span>
+                      </motion.button>
+                      
+                      {/* Connector Line between buttons (except after last one) */}
+                      {index < steps.length - 1 && (
+                        <div className="h-0.5 w-3 bg-gray-300 dark:bg-gray-600"></div>
                       )}
-                      onClick={() => handleStepClick(step.id)}
-                      whileHover={{ 
-                        y: -3, 
-                        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" 
-                      }}
-                    >
-                      <div style={{ color: activeStep === step.id ? "#ffffff" : step.color }}>
-                        {step.icon}
-                      </div>
-                      <span className="text-center whitespace-nowrap">{step.title}</span>
-                    </motion.button>
+                    </React.Fragment>
                   ))}
                 </div>
               </div>
