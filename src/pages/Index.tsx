@@ -366,14 +366,14 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Main content - Hero section */}
+      {/* Main content - Hero section with Background matching */}
       <section className="flex-grow flex items-center bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900">
         <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <Hero3 isDarkMode={isDarkMode} />
         </div>
       </section>
       
-      {/* Roadmap Section */}
+      {/* Roadmap Section - Background already matched in the component */}
       <RoadmapSection />
 
       {/* Footer */}
