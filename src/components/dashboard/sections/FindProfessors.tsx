@@ -1,6 +1,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Mail, BookOpen, Globe, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import ChatBox from "../ChatBox";
 import FilterDropdown from "../filters/FilterDropdown";
 import {
@@ -13,6 +15,8 @@ import {
   professorTitleOptions,
   filterIcons
 } from "./FilterData";
+import ProfessorContactDialog from "./professors/ProfessorContactDialog";
+import ProfessorReminderDialog from "./professors/ProfessorReminderDialog";
 
 // Sample professors data
 const professors = [
@@ -152,7 +156,7 @@ const FindProfessors = () => {
           <h2 className="font-semibold text-gray-700 dark:text-gray-200">Filters</h2>
         </div>
         
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 overflow-x-auto py-2">
           {[
             {label: "Country", icon: filterIcons.country, options: countryOptions},
             {label: "State", icon: filterIcons.state, options: usStatesOptions},
@@ -169,7 +173,7 @@ const FindProfessors = () => {
               options={filter.options}
               onSelect={(value) => handleFilterSelect(filter.label.toLowerCase().replace(/\s+/g, ''), value)}
               selectedValue={selectedFilters[filter.label.toLowerCase().replace(/\s+/g, '')]}
-              buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/20 hover:border-teal-200 dark:hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5"
+              buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/20 hover:border-teal-200 dark:hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5 whitespace-nowrap"
             />
           ))}
         </div>
@@ -186,7 +190,7 @@ const FindProfessors = () => {
             transition={{ duration: 0.5, delay: 0.1 * index }}
           >
             <div className="p-6">
-              {/* Professor header with photo and name */}
+              {/* Professor header with photo and name - updated layout */}
               <div className="flex items-start gap-4 mb-4">
                 <img
                   src={professor.photoUrl}
@@ -200,7 +204,7 @@ const FindProfessors = () => {
                       onClick={() => toggleFavorite(professor.id)}
                       className={`text-2xl ${favorites[professor.id] ? 'text-red-500' : 'text-gray-400 hover:text-red-500'}`}
                     >
-                      {favorites[professor.id] ? '❤️' : '♡'}
+                      <Heart className={`h-5 w-5 ${favorites[professor.id] ? "fill-red-500 text-red-500" : ""}`} />
                     </button>
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">{professor.title}</div>
@@ -224,27 +228,20 @@ const FindProfessors = () => {
                 <div className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{professor.bio}</div>
               </div>
               
-              {/* Contact links */}
+              {/* Contact links - updated to stylish icons */}
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <a href={`mailto:${professor.email}`} className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 p-2 rounded-full hover:bg-blue-100 dark:hover:bg-blue-800/30 transition-colors">
+                  <Mail className="h-5 w-5" />
+                </a>
+                <a href={professor.scholarUrl} target="_blank" rel="noopener noreferrer" className="bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 p-2 rounded-full hover:bg-amber-100 dark:hover:bg-amber-800/30 transition-colors">
+                  <BookOpen className="h-5 w-5" />
+                </a>
+                <a href={professor.websiteUrl} target="_blank" rel="noopener noreferrer" className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 p-2 rounded-full hover:bg-green-100 dark:hover:bg-green-800/30 transition-colors">
+                  <Globe className="h-5 w-5" />
+                </a>
+              </div>
+              
               <div className="flex items-center justify-between mb-4">
-                <div className="flex space-x-4">
-                  <a href={`mailto:${professor.email}`} className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                    </svg>
-                  </a>
-                  <a href={professor.scholarUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </a>
-                  <a href={professor.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clipRule="evenodd" />
-                    </svg>
-                  </a>
-                </div>
-                
                 <div className="flex items-center space-x-2 text-xs text-gray-600 dark:text-gray-400">
                   <span title="Publications">{professor.publications} pubs</span>
                   <span>•</span>
@@ -252,27 +249,43 @@ const FindProfessors = () => {
                 </div>
               </div>
               
-              {/* Action buttons */}
+              {/* Action buttons - updated text and functionality */}
               <div className="flex justify-between gap-2">
-                <button
+                <Button
                   onClick={() => handleSendEmail(professor.id)}
                   className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
                 >
                   Send Email
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => handleSendReminder(professor.id)}
                   className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md text-sm font-medium transition-colors"
                 >
                   Remind
-                </button>
+                </Button>
               </div>
             </div>
           </motion.div>
         ))}
       </div>
 
-      {/* We would need to add the Contact and Reminder dialogs here */}
+      {/* Add Contact Dialog */}
+      {showContactDialog && selectedProfessor !== null && (
+        <ProfessorContactDialog 
+          open={showContactDialog}
+          onOpenChange={() => setShowContactDialog(false)}
+          professor={professors.find(p => p.id === selectedProfessor) || professors[0]}
+        />
+      )}
+
+      {/* Add Reminder Dialog */}
+      {showReminderDialog && selectedProfessor !== null && (
+        <ProfessorReminderDialog
+          open={showReminderDialog}
+          onOpenChange={() => setShowReminderDialog(false)}
+          professor={professors.find(p => p.id === selectedProfessor) || professors[0]}
+        />
+      )}
     </div>
   );
 };

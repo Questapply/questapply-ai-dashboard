@@ -23,29 +23,29 @@ interface Professor {
   photoUrl: string;
 }
 
-interface ProfessorContactDialogProps {
+interface ProfessorReminderDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   professor: Professor;
 }
 
-const ProfessorContactDialog = ({ open, onOpenChange, professor }: ProfessorContactDialogProps) => {
-  const [subject, setSubject] = useState(`Research inquiry - Prospective student`);
+const ProfessorReminderDialog = ({ open, onOpenChange, professor }: ProfessorReminderDialogProps) => {
+  const [subject, setSubject] = useState(`Follow up on previous email - ${professor.name}`);
   const [message, setMessage] = useState(
-    `Dear ${professor.name},\n\nMy name is [Your Name] and I am interested in applying to ${professor.university} for the [Program Name] program.\n\nI am writing to inquire about potential research opportunities in your lab. I am particularly interested in your work on [specific research area].\n\nI have attached my CV for your reference. I would greatly appreciate the opportunity to discuss my research interests and potential fit with your lab.\n\nThank you for your time and consideration.\n\nBest regards,\n[Your Name]`
+    `Dear ${professor.name},\n\nI hope this email finds you well. I wanted to follow up on my previous email regarding...\n\nBest regards,\n[Your Name]`
   );
   const { toast } = useToast();
 
-  const handleSendEmail = () => {
+  const handleSendReminder = () => {
     // Here we would normally send the actual email
-    console.log("Sending email to:", professor.email);
+    console.log("Sending reminder to:", professor.email);
     console.log("Subject:", subject);
     console.log("Message:", message);
     
     // Show success message
     toast({
-      title: "Email sent",
-      description: `Your email was sent to ${professor.name}`,
+      title: "Reminder email sent",
+      description: `Your follow-up email was sent to ${professor.name}`,
       variant: "default",
     });
     
@@ -57,9 +57,9 @@ const ProfessorContactDialog = ({ open, onOpenChange, professor }: ProfessorCont
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Contact Professor</DialogTitle>
+          <DialogTitle>Send Reminder - Follow up on a previous email</DialogTitle>
           <DialogDescription>
-            Send an email to {professor.name} at {professor.university}
+            Send a follow-up email to {professor.name} at {professor.university}
           </DialogDescription>
         </DialogHeader>
 
@@ -101,11 +101,11 @@ const ProfessorContactDialog = ({ open, onOpenChange, professor }: ProfessorCont
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={handleSendEmail}>Send Email</Button>
+          <Button onClick={handleSendReminder}>Send Reminder</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default ProfessorContactDialog;
+export default ProfessorReminderDialog;

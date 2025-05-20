@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -204,7 +205,7 @@ const FindPrograms = () => {
           <h2 className="font-semibold text-gray-700 dark:text-gray-200">Filters</h2>
         </div>
         
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 overflow-x-auto py-2">
           {[
             {label: "Country", icon: filterIcons.country, options: countryOptions},
             {label: "State", icon: filterIcons.state, options: usStatesOptions},
@@ -224,7 +225,7 @@ const FindPrograms = () => {
               options={filter.options}
               onSelect={(value) => handleFilterSelect(filter.label.toLowerCase().replace(/\s+/g, ''), value)}
               selectedValue={selectedFilters[filter.label.toLowerCase().replace(/\s+/g, '')]}
-              buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/20 hover:border-teal-200 dark:hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5"
+              buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/20 hover:border-teal-200 dark:hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5 whitespace-nowrap"
             />
           ))}
         </div>
@@ -278,182 +279,112 @@ const FindPrograms = () => {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600">
-                      Compare
-                    </Button>
-                    <motion.button
-                      className="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 transition-colors"
-                      onClick={() => toggleFavorite(program.id)}
-                      aria-label={favorites[program.id] ? "Remove from favorites" : "Add to favorites"}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      {favorites[program.id] ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 fill-red-500" viewBox="0 0 24 24">
-                          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                        </svg>
-                      ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                      )}
-                    </motion.button>
-                  </div>
-                </div>
-                
-                {/* Info Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Program Features */}
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Program Features</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="flex items-center gap-2">
-                        <motion.div 
-                          className="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center text-yellow-600 dark:text-yellow-400"
-                          whileHover={{ rotate: 20 }}
-                        >
-                          🏆
-                        </motion.div>
-                        <div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">QS Ranking</div>
-                          <div className="font-medium">{program.qsRanking}</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <motion.div 
-                          className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400"
-                          whileHover={{ rotate: 20 }}
-                        >
-                          ⏱️
-                        </motion.div>
-                        <div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">Duration</div>
-                          <div className="font-medium">{program.duration}</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <motion.div 
-                          className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center text-green-600 dark:text-green-400"
-                          whileHover={{ rotate: 20 }}
-                        >
-                          🏫
-                        </motion.div>
-                        <div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">Campus</div>
-                          <div className="font-medium">{program.campus}</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <motion.div 
-                          className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center text-purple-600 dark:text-purple-400"
-                          whileHover={{ rotate: 20 }}
-                        >
-                          🗣️
-                        </motion.div>
-                        <div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">Language</div>
-                          <div className="font-medium">{program.language}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Deadline */}
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Application Deadline</h4>
-                    <div className="flex items-center justify-center h-full">
-                      <motion.div 
-                        className="flex flex-col items-center gap-2 p-4 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-lg shadow-sm"
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                        whileHover={{ 
-                          scale: 1.05,
-                          boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
-                        }}
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-purple-500" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                        </svg>
-                        <div className="text-base font-bold text-gray-800 dark:text-gray-200">{program.deadline}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">Application Deadline</div>
-                      </motion.div>
-                    </div>
-                  </div>
-                  
-                  {/* Requirements */}
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Requirements (Min)</h4>
-                    <div className="flex justify-around">
-                      <StatCircle 
-                        value={program.requirements.toefl} 
-                        label="TOEFL" 
-                        color="blue"
-                        isPercentage={false}
-                      />
-                      
-                      <StatCircle 
-                        value={program.requirements.gpa} 
-                        label="GPA" 
-                        color="green"
-                        isPercentage={false}
-                      />
-                      
-                      {/* GRE Status */}
-                      <div className="flex flex-col items-center">
-                        <motion.div 
-                          className={`rounded-full h-[70px] w-[70px] flex items-center justify-center border-4 shadow-sm ${getGREStatusStyle(program.requirements.gre).border} ${getGREStatusStyle(program.requirements.gre).bg}`}
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 260,
-                            damping: 20,
-                            delay: 0.3
-                          }}
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          <span className={`text-xl font-bold ${getGREStatusStyle(program.requirements.gre).text}`}>
-                            {getGREStatusStyle(program.requirements.gre).icon}
-                          </span>
-                        </motion.div>
-                        <span className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                          GRE
-                        </span>
-                        <span className={`text-xs ${getGREStatusStyle(program.requirements.gre).text} font-medium`}>
-                          {program.requirements.gre}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Button actions */}
-                <div className="flex justify-end mt-2 gap-3">
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7 }}
-                  >
                     <Button 
                       variant="outline" 
-                      className="text-purple-600 border-purple-300 dark:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                      size="sm"
+                      className="border-gray-200 dark:border-gray-700"
                       onClick={() => handleProgramInformation(program.id)}
                     >
-                      Program Information
+                      Program Details
                     </Button>
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Button className="bg-purple-600 text-white hover:bg-purple-700 shadow-md hover:shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30 transition-all">
-                      Add to List
-                    </Button>
-                  </motion.div>
+                    <button
+                      onClick={() => toggleFavorite(program.id)}
+                      className={`p-2 rounded-full ${
+                        favorites[program.id]
+                          ? "text-red-500 bg-red-50 dark:bg-red-900/20"
+                          : "text-gray-400 bg-gray-50 dark:bg-gray-800"
+                      }`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill={favorites[program.id] ? "currentColor" : "none"}
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Program Info Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div className="flex flex-col">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">Duration</span>
+                    <span className="font-medium text-gray-800 dark:text-gray-200">{program.duration}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">Format</span>
+                    <span className="font-medium text-gray-800 dark:text-gray-200">{program.format}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">Language</span>
+                    <span className="font-medium text-gray-800 dark:text-gray-200">{program.language}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">Campus</span>
+                    <span className="font-medium text-gray-800 dark:text-gray-200">{program.campus}</span>
+                  </div>
+                </div>
+
+                {/* Requirements and Rankings */}
+                <div className="flex flex-col md:flex-row gap-6">
+                  {/* Requirements */}
+                  <div className="flex-1">
+                    <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Requirements</h4>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">TOEFL iBT</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">{program.requirements.toefl}+</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">GPA</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">{program.requirements.gpa}+</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">GRE</span>
+                        <div className={`mt-0.5 inline-flex items-center px-2 py-0.5 rounded text-xs ${
+                          getGREStatusStyle(program.requirements.gre).bg
+                        } ${getGREStatusStyle(program.requirements.gre).border} ${
+                          getGREStatusStyle(program.requirements.gre).text
+                        }`}>
+                          <span className="mr-1 font-bold">{getGREStatusStyle(program.requirements.gre).icon}</span>
+                          {program.requirements.gre}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Rankings & Deadlines */}
+                  <div className="flex-1">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Ranking</h4>
+                        <div className="flex items-center">
+                          <div className="bg-blue-100 dark:bg-blue-900/30 h-8 w-8 flex items-center justify-center rounded-md">
+                            <span className="text-blue-800 dark:text-blue-300 font-semibold">{program.qsRanking}</span>
+                          </div>
+                          <span className="ml-2 text-gray-600 dark:text-gray-400 text-sm">
+                            QS World Ranking
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Deadline</h4>
+                        <div className="flex items-center">
+                          <div className="bg-purple-100 dark:bg-purple-900/30 h-8 px-3 flex items-center justify-center rounded-md">
+                            <span className="text-purple-800 dark:text-purple-300 font-semibold text-sm">{program.deadline}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </CardContent>

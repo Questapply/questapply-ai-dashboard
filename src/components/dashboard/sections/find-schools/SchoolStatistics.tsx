@@ -1,8 +1,11 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import ProgressCircle from "@/components/ui/progress-circle";
-import { School } from "./SchoolsData";
+
+interface School {
+  acceptance: number;
+  graduation: number;
+}
 
 interface SchoolStatisticsProps {
   school: School;
@@ -11,37 +14,80 @@ interface SchoolStatisticsProps {
 const SchoolStatistics = ({ school }: SchoolStatisticsProps) => {
   return (
     <div className="bg-gray-800/60 p-4 rounded-lg">
-      <h4 className="text-sm font-medium text-gray-300 mb-3">Statistics</h4>
-      <div className="flex justify-around items-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-col items-center"
-        >
-          <ProgressCircle 
-            value={school.acceptance}
-            size="lg"
-            color="red"
-            label="Acceptance"
-            strokeWidth={6}
-          />
-        </motion.div>
+      <h4 className="text-sm font-medium text-gray-300 mb-4">Statistics</h4>
+      
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center gap-3">
+          <div className="relative w-14 h-14">
+            <svg className="w-full h-full transform -rotate-90">
+              <circle
+                cx="28"
+                cy="28"
+                r="24"
+                fill="transparent"
+                stroke="#374151"
+                strokeWidth="6"
+              />
+              <circle
+                cx="28"
+                cy="28"
+                r="24"
+                fill="transparent"
+                stroke="#10B981"
+                strokeWidth="6"
+                strokeDasharray={`${2 * Math.PI * 24 * (school.graduation / 100)} ${
+                  2 * Math.PI * 24
+                }`}
+                strokeLinecap="round"
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-xs font-bold text-white">
+                {school.graduation}%
+              </span>
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-gray-400">Graduation</div>
+            <div className="text-sm font-medium text-green-400">Rate</div>
+          </div>
+        </div>
         
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex flex-col items-center"
-        >
-          <ProgressCircle 
-            value={school.graduation}
-            size="lg"
-            color="green"
-            label="Graduation"
-            strokeWidth={6}
-          />
-        </motion.div>
+        <div className="flex items-center gap-3">
+          <div className="relative w-14 h-14">
+            <svg className="w-full h-full transform -rotate-90">
+              <circle
+                cx="28"
+                cy="28"
+                r="24"
+                fill="transparent"
+                stroke="#374151"
+                strokeWidth="6"
+              />
+              <circle
+                cx="28"
+                cy="28"
+                r="24"
+                fill="transparent"
+                stroke="#EF4444"
+                strokeWidth="6"
+                strokeDasharray={`${2 * Math.PI * 24 * (school.acceptance / 100)} ${
+                  2 * Math.PI * 24
+                }`}
+                strokeLinecap="round"
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-xs font-bold text-white">
+                {school.acceptance}%
+              </span>
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-gray-400">Acceptance</div>
+            <div className="text-sm font-medium text-red-400">Rate</div>
+          </div>
+        </div>
       </div>
     </div>
   );
