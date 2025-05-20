@@ -31,14 +31,14 @@ const DashboardLayout = ({
   }, []);
   
   return (
-    <div className={`flex h-screen w-full ${isDarkMode ? 'bg-gradient-to-br from-gray-900 to-black' : 'bg-gradient-to-br from-blue-50 to-teal-100'} overflow-hidden`}>
+    <div className={`flex min-h-screen w-full ${isDarkMode ? 'bg-gradient-to-br from-gray-900 to-black' : 'bg-gradient-to-br from-blue-50 to-teal-100'}`}>
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 flex flex-col overflow-auto">
         {/* Top Navigation */}
-        <nav className={`${isDarkMode ? 'bg-gray-900/80' : 'bg-white/80'} backdrop-blur-md border-b ${isDarkMode ? 'border-blue-900/50' : 'border-blue-100'} p-4`}>
+        <nav className={`${isDarkMode ? 'bg-gray-900/80' : 'bg-white/80'} backdrop-blur-md border-b ${isDarkMode ? 'border-blue-900/50' : 'border-blue-100'} p-4 sticky top-0 z-10`}>
           <div className="flex justify-between items-center">
             <button
               className={`md:hidden ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}
@@ -84,7 +84,7 @@ const DashboardLayout = ({
         </nav>
 
         {/* Main Content Container */}
-        <div className="px-4 md:px-8 py-6">
+        <div className="px-4 md:px-8 py-6 flex-1">
           <div className="max-w-7xl mx-auto">
             {children}
           </div>

@@ -25,6 +25,12 @@ style.textContent = `
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(128, 90, 213, 0.8);
   }
+  
+  /* Override any overflow:hidden that might be blocking scrolling */
+  body, html {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
 `;
 document.head.appendChild(style);
 
