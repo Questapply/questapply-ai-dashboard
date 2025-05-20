@@ -17,6 +17,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Hero3 from "@/components/hero/Hero3";
+import RoadmapSection from "@/components/roadmap/RoadmapSection";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -365,12 +366,15 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Main content - replaced with Hero3 */}
+      {/* Main content - Hero section */}
       <section className="flex-grow flex items-center bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900">
         <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <Hero3 isDarkMode={isDarkMode} />
         </div>
       </section>
+      
+      {/* Roadmap Section - Added after Hero3 */}
+      <RoadmapSection />
 
       {/* Footer */}
       <footer className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-purple-100 dark:border-purple-900/50">
