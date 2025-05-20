@@ -207,15 +207,15 @@ const FindPrograms = () => {
         <div className="flex flex-wrap gap-2">
           {[
             {label: "Country", icon: filterIcons.country, options: countryOptions},
-            {label: "State", icon: filterIcons.state, options: usStatesOptions},
-            {label: "Schools", icon: filterIcons.schools, options: schoolsOptions},
-            {label: "Degree Level", icon: filterIcons.degreeLevel, options: degreeLevelOptions},
-            {label: "Area of Study", icon: filterIcons.areaOfStudy, options: areaOfStudyOptions},
-            {label: "Programs", icon: filterIcons.programs, options: programOptions},
-            {label: "Deadline", icon: filterIcons.deadline, options: deadlineOptions},
-            {label: "English", icon: filterIcons.english, options: englishTestOptions},
-            {label: "GRE", icon: filterIcons.gre, options: greOptions},
-            {label: "Order By", icon: filterIcons.orderBy, options: orderByProgramOptions}
+            {label: "State", icon: filterIcons.state, options: usStatesOptions.map(state => state.toString())},
+            {label: "Schools", icon: filterIcons.schools, options: schoolsOptions.map(school => school.toString())},
+            {label: "Degree Level", icon: filterIcons.degreeLevel, options: degreeLevelOptions.map(level => level.toString())},
+            {label: "Area of Study", icon: filterIcons.areaOfStudy, options: areaOfStudyOptions.map(area => area.toString())},
+            {label: "Programs", icon: filterIcons.programs, options: programOptions.map(program => program.toString())},
+            {label: "Deadline", icon: filterIcons.deadline, options: deadlineOptions.map(deadline => deadline.toString())},
+            {label: "English", icon: filterIcons.english, options: englishTestOptions.map(test => test.toString())},
+            {label: "GRE", icon: filterIcons.gre, options: greOptions.map(option => option.toString())},
+            {label: "Order By", icon: filterIcons.orderBy, options: orderByProgramOptions.map(option => option.toString())}
           ].map((filter, idx) => (
             <FilterDropdown 
               key={idx}
