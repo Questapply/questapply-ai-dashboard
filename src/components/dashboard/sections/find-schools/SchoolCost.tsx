@@ -15,7 +15,7 @@ const SchoolCost = ({ inState, outState }: SchoolCostProps) => {
   return (
     <div className="bg-gray-800/60 p-4 rounded-lg shadow-sm">
       <h4 className="text-sm font-medium text-gray-300 mb-3">Cost</h4>
-      <div className="space-y-4">
+      <div className="space-y-3">
         <motion.div 
           className="flex justify-between items-center"
           initial={{ opacity: 0, y: 20 }}

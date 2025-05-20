@@ -17,7 +17,6 @@ interface FilterDropdownProps {
   onSelect: (value: string) => void;
   selectedValue?: string;
   className?: string;
-  buttonClassName?: string;  // Added this prop
 }
 
 const FilterDropdown = ({
@@ -26,8 +25,7 @@ const FilterDropdown = ({
   options,
   onSelect,
   selectedValue,
-  className,
-  buttonClassName  // Added this prop
+  className
 }: FilterDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -73,7 +71,7 @@ const FilterDropdown = ({
             "hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:shadow-sm",
             "transition-all duration-300 ease-in-out focus:outline-none",
             selectedValue && "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
-            buttonClassName || className  // Use buttonClassName if provided
+            className
           )}
           aria-label={`Filter by ${label}`}
         >

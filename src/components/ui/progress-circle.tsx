@@ -18,7 +18,7 @@ interface ProgressCircleProps {
 export const ProgressCircle: React.FC<ProgressCircleProps> = ({
   value,
   size = "md",
-  strokeWidth = 6,
+  strokeWidth = 4,
   color = "purple",
   showValue = true,
   label,
