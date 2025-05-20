@@ -1,13 +1,15 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Edit, Download, Share, Eye, Plus } from "lucide-react";
+import { Edit, Download, Share, Eye, Plus, FileText } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
-const resumeSections = [
+// Default resume sections for academic CV
+const defaultResumeSections = [
   { id: "personal", title: "Personal Information", complete: true },
   { id: "summary", title: "Summary", complete: true },
   { id: "research", title: "Research Interests", complete: true },
@@ -22,8 +24,60 @@ const resumeSections = [
 ];
 
 const MyResumes = () => {
-  const [selectedResume, setSelectedResume] = useState("academic");
+  // Get the selected resume template from localStorage (set in ResumeTemplates.tsx)
+  const storedTemplateId = localStorage.getItem("selectedResumeTemplate") || "academic";
+  const storedSections = localStorage.getItem("resumeSections");
+  
+  // State for managing resume data
+  const [myResumes, setMyResumes] = useState([
+    { id: "academic", name: "Academic CV", lastUpdated: "May 16, 2025" }
+  ]);
+  const [selectedResume, setSelectedResume] = useState(storedTemplateId);
   const [viewingSection, setViewingSection] = useState("");
+  const [resumeSections, setResumeSections] = useState(defaultResumeSections);
+
+  // Initialize new resume if template was selected
+  useEffect(() => {
+    if (storedTemplateId && storedTemplateId !== "academic") {
+      // Check if this resume already exists
+      const exists = myResumes.some(resume => resume.id === storedTemplateId);
+      
+      if (!exists) {
+        // Add the new resume type
+        setMyResumes(prev => [
+          ...prev, 
+          { 
+            id: storedTemplateId, 
+            name: capitalizeFirstLetter(storedTemplateId) + (storedTemplateId === "research" ? " CV" : " Resume"),
+            lastUpdated: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+          }
+        ]);
+      }
+    }
+    
+    // Check if we have stored sections
+    if (storedSections) {
+      try {
+        const parsedSections = JSON.parse(storedSections);
+        // Map the sections to include completion status
+        const sectionsWithStatus = parsedSections.map((section: any) => ({
+          ...section,
+          complete: Math.random() > 0.3 // Randomly set some as complete for demo purposes
+        }));
+        setResumeSections(sectionsWithStatus);
+        
+        // Clear the stored sections after using them
+        localStorage.removeItem("resumeSections");
+      } catch (e) {
+        console.error("Error parsing stored resume sections:", e);
+      }
+    }
+  }, [storedTemplateId, storedSections]);
+
+  // Helper function to capitalize first letter
+  const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   const container = {
     hidden: { opacity: 0 },
@@ -49,10 +103,31 @@ const MyResumes = () => {
         transition={{ duration: 0.3 }}
       >
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">My Resumes</h2>
-        <Button className="bg-purple-600 hover:bg-purple-700">
-          <Plus className="h-4 w-4 mr-2" />
-          Create New Resume
-        </Button>
+        <div className="flex space-x-3">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="flex items-center">
+                <FileText className="h-4 w-4 mr-2" />
+                My Documents
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {myResumes.map((resume) => (
+                <DropdownMenuItem 
+                  key={resume.id}
+                  onClick={() => setSelectedResume(resume.id)}
+                >
+                  {resume.name}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
+          <Button className="bg-purple-600 hover:bg-purple-700">
+            <Plus className="h-4 w-4 mr-2" />
+            Create New Resume
+          </Button>
+        </div>
       </motion.div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -67,22 +142,18 @@ const MyResumes = () => {
               <h3 className="font-semibold text-lg text-gray-900 dark:text-white">My Documents</h3>
             </div>
             <div className="p-0">
-              <Tabs defaultValue="academic" orientation="vertical" className="w-full">
+              <Tabs defaultValue={selectedResume} orientation="vertical" className="w-full">
                 <TabsList className="flex flex-col w-full rounded-none border-none bg-transparent h-auto">
-                  <TabsTrigger 
-                    value="academic" 
-                    className="justify-start py-3 px-5 text-left border-l-2 border-transparent data-[state=active]:border-purple-600 data-[state=active]:bg-purple-50 data-[state=active]:dark:bg-purple-900/20 rounded-none"
-                    onClick={() => setSelectedResume("academic")}
-                  >
-                    Academic CV
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="professional" 
-                    className="justify-start py-3 px-5 text-left border-l-2 border-transparent data-[state=active]:border-purple-600 data-[state=active]:bg-purple-50 data-[state=active]:dark:bg-purple-900/20 rounded-none"
-                    onClick={() => setSelectedResume("professional")}
-                  >
-                    Professional Resume
-                  </TabsTrigger>
+                  {myResumes.map((resume) => (
+                    <TabsTrigger 
+                      key={resume.id} 
+                      value={resume.id} 
+                      className="justify-start py-3 px-5 text-left border-l-2 border-transparent data-[state=active]:border-purple-600 data-[state=active]:bg-purple-50 data-[state=active]:dark:bg-purple-900/20 rounded-none"
+                      onClick={() => setSelectedResume(resume.id)}
+                    >
+                      {resume.name}
+                    </TabsTrigger>
+                  ))}
                 </TabsList>
               </Tabs>
             </div>
@@ -99,9 +170,11 @@ const MyResumes = () => {
             <div className="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
               <div>
                 <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
-                  {selectedResume === "academic" ? "Academic CV" : "Professional Resume"}
+                  {myResumes.find(resume => resume.id === selectedResume)?.name || "Resume"}
                 </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Last updated: May 16, 2025</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Last updated: {myResumes.find(resume => resume.id === selectedResume)?.lastUpdated || new Date().toLocaleDateString()}
+                </p>
               </div>
               <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 rounded text-xs font-medium">
                 {resumeSections.filter(section => section.complete).length}/{resumeSections.length} Complete

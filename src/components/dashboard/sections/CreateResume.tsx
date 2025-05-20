@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
@@ -23,12 +23,21 @@ const resumeTabs = [
 ];
 
 const CreateResume = () => {
-  const [activeTab, setActiveTab] = useState("guidance");
+  // Check if there's a stored active tab from template selection
+  const storedActiveTab = localStorage.getItem("activeResumeTab");
+  const [activeTab, setActiveTab] = useState(storedActiveTab || "guidance");
+
+  // Clear the stored tab after using it
+  useEffect(() => {
+    if (storedActiveTab) {
+      localStorage.removeItem("activeResumeTab");
+    }
+  }, [storedActiveTab]);
 
   return (
     <div className="animate-fade-in">
       <Tabs 
-        defaultValue="guidance" 
+        defaultValue={activeTab}
         value={activeTab}
         onValueChange={setActiveTab}
         className="w-full"
