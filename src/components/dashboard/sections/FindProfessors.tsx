@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { CardContent } from "@/components/ui/card";
 import AnimatedCard from "@/components/ui/animated-card";
-import { Mail, MapPin, Globe, Heart, Send } from "lucide-react";
+import { Mail, MapPin, Globe, Heart, Send, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FilterDropdown from "../filters/FilterDropdown";
 import {
