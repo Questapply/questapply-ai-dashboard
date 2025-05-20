@@ -42,20 +42,18 @@ const ProfessorContactDialog = ({
   // If isReminder is true, directly show the reminder dialog
   useEffect(() => {
     if (isReminder && open) {
-      handleRemind();
+      setReminderDialogOpen(true);
     }
     
     // If directEmailMode is true, directly show the email dialog
     if (directEmailMode && open) {
-      handleCreateEmail();
+      setEmailDialogOpen(true);
     }
   }, [isReminder, directEmailMode, open]);
   
   const handleCreateEmail = () => {
     setEmailDialogOpen(true);
-    if (directEmailMode) {
-      onOpenChange(false); // Close this dialog as we're opening the email dialog directly
-    }
+    onOpenChange(false); // Close this dialog as we're opening the email dialog
   };
   
   const handleRemind = () => {
@@ -76,69 +74,43 @@ const ProfessorContactDialog = ({
 
   const professorEmail = professor.email || `${professor.name.toLowerCase().replace(/\s+/g, '.')}@university.edu`;
   
-  // If we're showing the reminder or direct email, don't show the contact options dialog
-  if (isReminder) {
-    return (
-      <EmailCompositionDialog 
-        open={open}
-        onOpenChange={onOpenChange}
-        professorName={professor.name}
-        professorEmail={professorEmail}
-        isReminder={true}
-      />
-    );
-  }
-  
-  if (directEmailMode) {
-    return (
-      <EmailCompositionDialog 
-        open={emailDialogOpen}
-        onOpenChange={(open) => {
-          setEmailDialogOpen(open);
-          if (!open) setEmailTemplate("");
-        }}
-        professorName={professor.name}
-        professorEmail={professorEmail}
-        defaultTemplate={emailTemplate || undefined}
-        onCreateByExpert={handleCreateByExpert}
-      />
-    );
-  }
-  
   return (
     <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Contact Professor {professor.name}</DialogTitle>
-          </DialogHeader>
-          
-          <div className="flex flex-col space-y-4 py-6">
-            <Button 
-              onClick={handleCreateEmail}
-              className="justify-start gap-3"
-            >
-              <Mail className="h-4 w-4" />
-              <div className="flex-1 text-left">
-                <div>Create Email</div>
-                <div className="text-xs opacity-70">Draft an email to the professor</div>
-              </div>
-            </Button>
+      {/* Main Contact Options Dialog */}
+      {!isReminder && !directEmailMode && (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Contact Professor {professor.name}</DialogTitle>
+            </DialogHeader>
             
-            <Button 
-              onClick={handleRemind}
-              variant="outline"
-              className="justify-start gap-3"
-            >
-              <Clock className="h-4 w-4" />
-              <div className="flex-1 text-left">
-                <div>Send Reminder</div>
-                <div className="text-xs opacity-70">Follow up on a previous email</div>
-              </div>
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+            <div className="flex flex-col space-y-4 py-6">
+              <Button 
+                onClick={handleCreateEmail}
+                className="justify-start gap-3"
+              >
+                <Mail className="h-4 w-4" />
+                <div className="flex-1 text-left">
+                  <div>Create Email</div>
+                  <div className="text-xs opacity-70">Draft an email to the professor</div>
+                </div>
+              </Button>
+              
+              <Button 
+                onClick={handleRemind}
+                variant="outline"
+                className="justify-start gap-3"
+              >
+                <Clock className="h-4 w-4" />
+                <div className="flex-1 text-left">
+                  <div>Send Reminder</div>
+                  <div className="text-xs opacity-70">Follow up on a previous email</div>
+                </div>
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
       
       {/* Email Composition Dialog */}
       <EmailCompositionDialog 
