@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import AnimatedCard from "@/components/ui/animated-card";
@@ -57,7 +58,7 @@ const TestCategories = [
   }
 ];
 
-const AiTalentAssessment = () => {
+const AiTalentTest = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>("All Tests");
 
   return (
@@ -172,4 +173,4 @@ const AiTalentAssessment = () => {
   );
 };
 
-export default AiTalentAssessment;
+export default AiTalentTest;

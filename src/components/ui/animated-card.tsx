@@ -8,13 +8,15 @@ interface AnimatedCardProps {
   className?: string;
   delay?: number;
   onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
 const AnimatedCard: React.FC<AnimatedCardProps> = ({
   children,
   className,
   delay = 0,
-  onClick
+  onClick,
+  style
 }) => {
   return (
     <motion.div
@@ -35,6 +37,7 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({
         transition: { duration: 0.2 }
       }}
       onClick={onClick}
+      style={style}
     >
       {children}
     </motion.div>
