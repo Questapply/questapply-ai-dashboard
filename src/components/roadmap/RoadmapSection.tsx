@@ -142,11 +142,11 @@ const RoadmapSection = () => {
   };
 
   return (
-    <div className="w-full bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 py-20 px-4 sm:px-6 lg:px-8">
+    <div className="w-full bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 dark:from-purple-800 dark:via-indigo-900 dark:to-purple-900 light:from-purple-200 light:via-indigo-100 light:to-purple-100 py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Section Title - Styled to match "AI Meets Your Talent" */}
         <motion.h2 
-          className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-white mb-4"
+          className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 dark:text-white text-gray-800"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -157,7 +157,7 @@ const RoadmapSection = () => {
         
         {/* Subtitle - Styled to match AI Meets Your Talent subtitle */}
         <motion.p 
-          className="text-lg md:text-xl text-center text-purple-200 mb-16"
+          className="text-lg md:text-xl text-center mb-16 dark:text-purple-200 text-purple-700"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -175,22 +175,22 @@ const RoadmapSection = () => {
             viewport={{ once: true }}
           >
             <GradientCard 
-              variant="dark" 
-              className="p-4 md:p-6 shadow-xl"
+              variant="talent-section" 
+              className="p-2 md:p-3 shadow-xl"
             >
               {/* Workflow Steps - Styled like n8n nodes with connector line */}
-              <div className="flex flex-wrap justify-center mb-10 relative px-2 md:px-4">
+              <div className="flex flex-wrap justify-center mb-6 relative px-0 md:px-2">
                 {/* Connector Lines */}
                 <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform -translate-y-1/2 z-0"></div>
                 
                 {/* n8n styled steps with adjusted width */}
                 {steps.map((step, index) => (
-                  <div key={step.id} className="relative z-10 px-1 mb-6 md:mb-0">
+                  <div key={step.id} className="relative z-10 px-0.5 mb-6 md:mb-0">
                     <motion.button
-                      className={`relative flex flex-col items-center justify-center w-20 h-20 sm:w-24 sm:h-24 p-2 rounded-lg transition-all duration-300
+                      className={`relative flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 p-1 rounded-lg transition-all duration-300 
                         ${activeStep === step.id 
-                          ? 'bg-gray-800 shadow-lg border-2 border-white/20 dark:bg-gray-800/90' 
-                          : 'bg-gray-800/80 hover:bg-gray-800 border border-gray-700/50 hover:border-purple-500/50 dark:bg-gray-800/60 dark:hover:bg-gray-800/80'}`}
+                          ? 'dark:bg-gray-800 bg-gray-100 shadow-lg border-2 dark:border-white/20 border-gray-300/60' 
+                          : 'dark:bg-gray-800/80 dark:hover:bg-gray-800 dark:border-gray-700/50 dark:hover:border-purple-500/50 bg-white/90 hover:bg-gray-50 border border-gray-200/70 hover:border-purple-300/50'}`}
                       onClick={() => handleStepClick(step.id)}
                       whileHover={{ 
                         scale: 1.05, 
@@ -204,13 +204,13 @@ const RoadmapSection = () => {
                     >
                       {/* Node indicator dot */}
                       <div 
-                        className={`absolute top-0 right-0 w-3 h-3 rounded-full mr-2 mt-2 
-                          ${activeStep === step.id ? 'bg-green-400 animate-pulse' : 'bg-gray-500'}`}
+                        className={`absolute top-0 right-0 w-3 h-3 rounded-full mr-1 mt-1 
+                          ${activeStep === step.id ? 'bg-green-400 animate-pulse' : 'bg-gray-400'}`}
                       ></div>
                       
                       {/* Icon */}
                       <div 
-                        className="w-10 h-10 rounded-full flex items-center justify-center mb-1"
+                        className="w-8 h-8 rounded-full flex items-center justify-center mb-1"
                         style={{ backgroundColor: `${step.color}30` }}
                       >
                         <div style={{ color: step.color }}>
@@ -218,13 +218,13 @@ const RoadmapSection = () => {
                         </div>
                       </div>
                       
-                      {/* Step Title - Prevent text wrapping */}
-                      <span className="text-xs font-medium text-white text-center whitespace-nowrap">
+                      {/* Step Title - Prevent text wrapping with smaller font and less padding */}
+                      <span className="text-[10px] font-medium dark:text-white text-gray-700 text-center whitespace-nowrap">
                         {step.title}
                       </span>
                       
                       {/* Step Number */}
-                      <div className="absolute -top-3 -left-3 w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center border border-gray-600 text-xs text-white">
+                      <div className="absolute -top-2 -left-2 w-5 h-5 rounded-full dark:bg-gray-700 bg-gray-200 flex items-center justify-center dark:border-gray-600 border-gray-300 border text-xs dark:text-white text-gray-700">
                         {step.id}
                       </div>
                     </motion.button>
@@ -233,8 +233,8 @@ const RoadmapSection = () => {
               </div>
               
               {/* Dynamic Content Area - Fixed height with scrolling */}
-              <div className="mt-6">
-                <ScrollArea className="h-[500px] rounded-md px-3">
+              <div className="mt-4">
+                <ScrollArea className="h-[500px] rounded-md px-2">
                   {activeStep === 1 && showFindSchools && (
                     <div className="space-y-8 px-2">
                       <FindSchools />

@@ -22,6 +22,7 @@ const buttonVariants = cva(
         action: "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 shadow-md hover:shadow-lg transform transition-all duration-200 hover:-translate-y-0.5",
         sop: "bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600 shadow-sm hover:shadow-md whitespace-nowrap px-3",
         cv: "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 shadow-sm hover:shadow-md whitespace-nowrap px-3",
+        match: "bg-gradient-to-r from-green-500 to-teal-500 text-white hover:from-green-600 hover:to-teal-600 shadow-sm hover:shadow-md truncate dark:text-white text-white px-3",
       },
       size: {
         default: "h-9 px-3 py-2",
