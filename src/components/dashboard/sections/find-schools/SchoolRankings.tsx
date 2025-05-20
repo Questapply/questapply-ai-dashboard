@@ -6,22 +6,22 @@ interface SchoolRankingsProps {
 }
 
 const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
-  // Map for vibrant gradient backgrounds based on ranking service
-  const rankingColors: Record<string, string> = {
-    qs: "bg-gradient-to-r from-amber-500 to-orange-600 text-white",
-    usNews: "bg-gradient-to-r from-red-600 to-blue-700 text-white", 
-    forbes: "bg-gradient-to-r from-blue-500 to-green-600 text-white",
-    shanghai: "bg-gradient-to-r from-green-500 to-purple-600 text-white",
-    the: "bg-gradient-to-r from-purple-500 to-pink-600 text-white"
-  };
-
-  // Map for readable labels
+  // Map for ranking labels and colors
   const rankingLabels: Record<string, string> = {
     qs: "QS",
     usNews: "US",
     forbes: "FB",
     shanghai: "SH",
     the: "THE"
+  };
+
+  // Map for text colors based on ranking service
+  const rankingColors: Record<string, string> = {
+    qs: "text-amber-400",
+    usNews: "text-red-400",
+    forbes: "text-blue-400",
+    shanghai: "text-green-400",
+    the: "text-purple-400"
   };
 
   return (
@@ -37,13 +37,9 @@ const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
             className="flex flex-col items-center"
           >
             <div 
-              className={`w-12 h-8 ${rankingColors[key]} rounded flex items-center justify-center shadow-lg bg-[#1A1A1A]`}
-              style={{
-                backgroundImage: rankingColors[key].split('bg-')[1],
-                textShadow: '0 0 5px rgba(255,255,255,0.5)'
-              }}
+              className={`w-8 h-8 bg-[#1A1A1A] rounded flex items-center justify-center shadow-lg`}
             >
-              <span className="font-bold text-xs">{rankingLabels[key]}</span>
+              <span className={`font-bold text-xs ${rankingColors[key]}`}>{rankingLabels[key]}</span>
             </div>
             <div className="text-center mt-1">
               <span className="text-xs font-medium text-white">#{value}</span>
