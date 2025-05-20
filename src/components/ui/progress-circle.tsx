@@ -145,7 +145,10 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <span className={cn("font-semibold text-xs", selectedColor.text, valueClassName)}>
+            <span 
+              className={cn("font-semibold text-xs", selectedColor.text, valueClassName)}
+              style={{ textShadow: '0 0 5px rgba(255,255,255,0.3)' }}
+            >
               {progress}%
             </span>
           </motion.div>
@@ -153,7 +156,10 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
       </div>
       
       {label && (
-        <span className={cn("mt-1", selectedSize.labelSize, "text-gray-300", labelClassName)}>
+        <span 
+          className={cn("mt-1", selectedSize.labelSize, "text-gray-300", labelClassName)}
+          style={{ textShadow: '0 0 3px rgba(0,0,0,0.5)' }}
+        >
           {label}
         </span>
       )}

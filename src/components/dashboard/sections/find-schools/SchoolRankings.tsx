@@ -8,11 +8,11 @@ interface SchoolRankingsProps {
 const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
   // Map for vibrant gradient backgrounds based on ranking service
   const rankingColors: Record<string, string> = {
-    qs: "bg-gradient-to-r from-amber-500 to-yellow-600 text-white",
-    usNews: "bg-gradient-to-r from-red-600 to-red-700 text-white",
-    forbes: "bg-gradient-to-r from-blue-500 to-blue-700 text-white",
-    shanghai: "bg-gradient-to-r from-green-500 to-green-600 text-white",
-    the: "bg-gradient-to-r from-purple-500 to-purple-700 text-white"
+    qs: "bg-gradient-to-r from-amber-500 to-orange-600 text-white",
+    usNews: "bg-gradient-to-r from-red-600 to-blue-700 text-white", 
+    forbes: "bg-gradient-to-r from-blue-500 to-green-600 text-white",
+    shanghai: "bg-gradient-to-r from-green-500 to-purple-600 text-white",
+    the: "bg-gradient-to-r from-purple-500 to-pink-600 text-white"
   };
 
   // Map for readable labels
@@ -36,7 +36,13 @@ const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
             transition={{ duration: 0.3 }}
             className="flex flex-col items-center"
           >
-            <div className={`w-10 h-7 ${rankingColors[key]} rounded flex items-center justify-center shadow-sm`}>
+            <div 
+              className={`w-12 h-8 ${rankingColors[key]} rounded flex items-center justify-center shadow-lg bg-[#1A1A1A]`}
+              style={{
+                backgroundImage: rankingColors[key].split('bg-')[1],
+                textShadow: '0 0 5px rgba(255,255,255,0.5)'
+              }}
+            >
               <span className="font-bold text-xs">{rankingLabels[key]}</span>
             </div>
             <div className="text-center mt-1">
