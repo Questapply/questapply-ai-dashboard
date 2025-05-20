@@ -181,14 +181,14 @@ const RoadmapSection = () => {
               className="p-4 md:p-6 shadow-xl w-full dark:bg-gray-800 bg-white/90"
             >
               {/* Updated Button Layout - n8n-style horizontal line of connected steps */}
-              <div className="flex justify-center items-center my-6 overflow-x-auto px-4 py-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
-                <div className="flex items-center space-x-2 min-w-max">
+              <div className="flex justify-center items-center my-6 px-3 py-2">
+                <div className="flex flex-wrap justify-center gap-2 w-full">
                   {steps.map((step, index) => (
                     <React.Fragment key={step.id}>
                       {/* Button */}
                       <motion.button
                         className={cn(
-                          "relative flex items-center gap-2 px-4 py-3 rounded-md text-sm md:text-base transition-all duration-300",
+                          "relative flex items-center gap-2 px-4 py-4 rounded-md text-sm md:text-base transition-all duration-300",
                           "border border-gray-200 dark:border-gray-700",
                           activeStep === step.id 
                             ? "bg-purple-600 text-white border-purple-700 shadow-md shadow-purple-500/20" 
@@ -198,6 +198,11 @@ const RoadmapSection = () => {
                         whileHover={{ 
                           y: -2,
                           boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" 
+                        }}
+                        style={{
+                          width: `calc(${100 / steps.length}% - 8px)`,
+                          minWidth: '130px',
+                          maxWidth: '160px'
                         }}
                       >
                         {/* Icon */}
@@ -216,11 +221,6 @@ const RoadmapSection = () => {
                           {step.title}
                         </span>
                       </motion.button>
-                      
-                      {/* Connector Line between buttons (except after last one) */}
-                      {index < steps.length - 1 && (
-                        <div className="h-0.5 w-3 bg-gray-300 dark:bg-gray-600"></div>
-                      )}
                     </React.Fragment>
                   ))}
                 </div>
