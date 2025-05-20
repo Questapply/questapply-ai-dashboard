@@ -11,47 +11,56 @@ const LORSamples = () => {
     {
       id: "academic-undergrad",
       title: "Academic LOR - Undergraduate",
-      description: "For Bachelor students applying to Master's programs"
+      description: "For Bachelor students applying to Master's programs",
+      preview: "In my 25 years of teaching, Maria stands out among the top 1% of students I have encountered. Her exceptional analytical skills and intellectual curiosity set her apart..."
     },
     {
       id: "academic-grad",
       title: "Academic LOR - Graduate",
-      description: "For Master's students applying to PhD programs"
+      description: "For Master's students applying to PhD programs",
+      preview: "Robert's exceptional ability to formulate research questions and design elegant experiments demonstrates his readiness for doctoral studies. His work on autonomous systems was particularly impressive..."
     },
     {
       id: "research-lor",
       title: "Research LOR",
-      description: "Emphasizing research experience and capabilities"
+      description: "Emphasizing research experience and capabilities",
+      preview: "During two years in my lab, Jennifer demonstrated remarkable aptitude for complex experimental design and analysis. Her diligence in validating hypotheses and attention to methodological rigor..."
     },
     {
       id: "professional-lor",
       title: "Professional LOR",
-      description: "From employers or supervisors"
+      description: "From employers or supervisors",
+      preview: "During her three years as a software engineer on our team, Jennifer consistently delivered high-quality solutions to complex problems. Her ability to quickly grasp new technologies..."
     },
     {
       id: "engineering-lor",
       title: "Engineering LOR",
-      description: "Specific to engineering disciplines"
+      description: "Specific to engineering disciplines",
+      preview: "Michael's exceptional problem-solving abilities and technical expertise make him stand out among his peers. His groundbreaking senior design project demonstrated both theoretical knowledge and practical skills..."
     },
     {
       id: "business-lor",
       title: "Business School LOR",
-      description: "For MBA and business program applicants"
+      description: "For MBA and business program applicants",
+      preview: "In my capacity as Director of Strategy, I've observed Lisa's remarkable business acumen and leadership skills firsthand. Her analytical approach to market challenges and ability to rally cross-functional teams..."
     },
     {
       id: "computer-science-lor",
       title: "Computer Science LOR",
-      description: "For CS and IT program applicants"
+      description: "For CS and IT program applicants",
+      preview: "Alex has consistently demonstrated exceptional aptitude for algorithm design and computational thinking. His implementation of a novel approach to distributed systems optimization showcases both technical prowess..."
     },
     {
       id: "scholarship-lor",
       title: "Scholarship LOR",
-      description: "Focused on merit and financial need"
+      description: "Focused on merit and financial need",
+      preview: "Despite significant financial constraints, Sophia has maintained academic excellence while working part-time to support her education. Her determination, intellectual curiosity, and community service make her..."
     },
     {
       id: "character-reference",
       title: "Character Reference",
-      description: "Highlighting personal qualities and integrity"
+      description: "Highlighting personal qualities and integrity",
+      preview: "Beyond his academic achievements, Daniel has demonstrated remarkable leadership as the president of our student government. His integrity, empathy, and commitment to fostering an inclusive campus environment..."
     }
   ];
 
@@ -73,8 +82,10 @@ const LORSamples = () => {
             className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 hover:border-blue-200 dark:hover:border-blue-800 hover:shadow-md transition-all border border-gray-200 dark:border-gray-700"
           >
             <h3 className="text-lg font-medium mb-1">{sample.title}</h3>
-            <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">{sample.description}</p>
-            
+            <p className="text-gray-600 dark:text-gray-300 text-sm mb-3">{sample.description}</p>
+            <div className="bg-white dark:bg-gray-700/50 p-3 rounded border border-gray-100 dark:border-gray-600 mb-4 text-sm text-gray-700 dark:text-gray-300 italic">
+              "{sample.preview}"
+            </div>
             <Button 
               variant="outline" 
               className="w-full"

@@ -1,14 +1,19 @@
-
 import React, { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FileText, ChevronLeft, ChevronRight, Calendar, Send, Upload, Archive } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import LORMethodModal from "./LORMethodModal";
+import RecommenderRequestForm from "./RecommenderRequestForm";
 
 const MyLORs = () => {
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [showMethodModal, setShowMethodModal] = useState(false);
+  const [recommendationMethod, setRecommendationMethod] = useState<"self" | "other" | null>(null);
+  const [showRecommenderForm, setShowRecommenderForm] = useState(false);
+  
   const [formData, setFormData] = useState({
     submissionMethod: "",
     date: "",
@@ -66,6 +71,7 @@ const MyLORs = () => {
     });
     setIsCreatingNew(false);
     setCurrentStep(1);
+    setRecommendationMethod(null);
   };
 
   const handleSelectSubmissionMethod = (method: string) => {
@@ -81,9 +87,48 @@ const MyLORs = () => {
     });
   };
 
+  const startNewLOR = () => {
+    setShowMethodModal(true);
+  };
+
+  const handleMethodSelect = (method: "self" | "other") => {
+    setRecommendationMethod(method);
+    setShowMethodModal(false);
+    
+    if (method === "other") {
+      // Show the recommender form
+      setShowRecommenderForm(true);
+    } else {
+      // Start the normal LOR creation flow
+      setIsCreatingNew(true);
+    }
+  };
+
+  const handleRecommenderFormBack = () => {
+    setShowRecommenderForm(false);
+    setShowMethodModal(true);
+  };
+
+  const handleRecommenderFormComplete = () => {
+    setShowRecommenderForm(false);
+    setIsCreatingNew(true);
+  };
+
   return (
     <div className="animate-fade-in">
-      {isCreatingNew ? (
+      {/* LOR Method Selection Modal */}
+      <LORMethodModal 
+        isOpen={showMethodModal}
+        onClose={() => setShowMethodModal(false)}
+        onSelect={handleMethodSelect}
+      />
+
+      {showRecommenderForm ? (
+        <RecommenderRequestForm 
+          onBack={handleRecommenderFormBack}
+          onComplete={handleRecommenderFormComplete}
+        />
+      ) : isCreatingNew ? (
         <div className="space-y-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold">Create New Letter of Recommendation</h2>
@@ -499,7 +544,7 @@ const MyLORs = () => {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">Your Saved LORs</h2>
             <Button 
-              onClick={() => setIsCreatingNew(true)}
+              onClick={startNewLOR}
               className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white"
             >
               Create New Letter
