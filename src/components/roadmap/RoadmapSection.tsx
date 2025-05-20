@@ -175,42 +175,42 @@ const RoadmapSection = () => {
             viewport={{ once: true }}
           >
             <GradientCard 
-              variant="roadmap" 
+              variant="talent-section" 
               className="p-4 md:p-6 shadow-xl w-full dark:bg-gray-800 bg-white/90"
             >
-              {/* Updated Button Layout - Matching filter button style */}
-              <div className="flex justify-center items-center my-6 px-3 py-2">
-                <div className="flex flex-wrap justify-center gap-3 w-full">
+              {/* New Button Layout - Minimal design with colorful icons */}
+              <div className="flex justify-center items-center my-6 px-4 py-2">
+                <div className="flex space-x-6 md:space-x-8 justify-between w-full max-w-4xl">
                   {steps.map((step) => (
-                    <motion.button
-                      key={step.id}
-                      className={`
-                        flex flex-col items-center justify-center px-5 py-3 rounded-full border 
-                        transition-all duration-300 min-w-[150px]
-                        ${activeStep === step.id 
-                          ? "bg-purple-600 border-purple-700 text-white shadow-md shadow-purple-500/20" 
-                          : "bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-300 text-gray-700 dark:text-gray-300 hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:border-purple-200 dark:hover:border-purple-700"
-                        }
-                      `}
-                      onClick={() => handleStepClick(step.id)}
-                      whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-                      whileTap={{ scale: 0.95 }}
+                    <div 
+                      key={step.id} 
+                      className="flex flex-col items-center"
                     >
-                      {/* Icon - Colorful */}
-                      <span 
-                        className="mb-1.5"
-                        style={{ color: step.color }}
+                      <motion.button
+                        className={`relative flex flex-col items-center justify-center p-3 rounded-lg transition-all duration-300
+                          ${activeStep === step.id 
+                            ? "bg-gray-100/10 dark:bg-gray-700/30" 
+                            : "hover:bg-gray-100/5 dark:hover:bg-gray-700/20"
+                          }`}
+                        onClick={() => handleStepClick(step.id)}
+                        whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                       >
-                        {step.icon}
-                      </span>
-                      
-                      {/* Step Title - Match filter font */}
-                      <span 
-                        className="text-base font-medium"
-                      >
-                        {step.title}
-                      </span>
-                    </motion.button>
+                        {/* Icon - Only the icon is colorful */}
+                        <div 
+                          className="mb-2 p-2 rounded-lg"
+                          style={{ color: step.color }}
+                        >
+                          {step.icon}
+                        </div>
+                        
+                        {/* Step Title - Clean and minimal */}
+                        <span 
+                          className="text-sm font-medium text-center whitespace-nowrap dark:text-gray-300 text-gray-700"
+                        >
+                          {step.title}
+                        </span>
+                      </motion.button>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -218,7 +218,6 @@ const RoadmapSection = () => {
               {/* Dynamic Content Area - Fixed height with scrolling */}
               <div className="mt-6">
                 <ScrollArea className="h-[500px] rounded-md px-1">
-                  {/* ... keep existing code for content display based on activeStep state */}
                   {activeStep === null && (
                     <motion.div 
                       className="text-center py-8"
@@ -304,7 +303,7 @@ const RoadmapSection = () => {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.5 }}
                         >
-                          {/* ... keep existing code for program cards */}
+                          {/* Program Cards (simplified version of SchoolCard) */}
                           {[1, 2].map((id) => (
                             <div key={id} className="border border-gray-700 rounded-lg p-6 bg-gray-800/50">
                               <div className="flex justify-between items-start">
