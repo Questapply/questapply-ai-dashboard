@@ -139,7 +139,7 @@ const RoadmapSection = () => {
   };
 
   return (
-    <div className="w-full bg-gradient-to-br from-indigo-900/90 via-purple-900/90 to-indigo-800/90 py-20 px-4 sm:px-6 lg:px-8">
+    <div className="w-full bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Section Title - Styled to match "AI Meets Your Talent" */}
         <motion.h2 
