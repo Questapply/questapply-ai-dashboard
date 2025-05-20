@@ -40,8 +40,8 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
   // Size configs
   const sizeMap = {
     sm: {
-      width: 58,
-      height: 58,
+      width: 50,
+      height: 50,
       textSize: "text-xs",
       labelSize: "text-xs"
     },
