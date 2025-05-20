@@ -374,9 +374,7 @@ const Index = () => {
       </section>
       
       {/* Roadmap Section - Added after Hero3 */}
-      <section id="roadmap-section">
-        <RoadmapSection />
-      </section>
+      <RoadmapSection />
 
       {/* Footer */}
       <footer className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-purple-100 dark:border-purple-900/50">
