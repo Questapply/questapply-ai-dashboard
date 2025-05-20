@@ -40,7 +40,7 @@ const Index = () => {
   const [showSOP, setShowSOP] = useState(false);
   const autoResetTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Check URL param for hero selection
+  // Check URL param for hero selection without scrolling
   useEffect(() => {
     const heroParam = searchParams.get('hero');
     if (heroParam) {
@@ -61,7 +61,7 @@ const Index = () => {
     }
   }, [searchParams, toast]);
 
-  // Auto-scroll to bottom of chat when messages change
+  // Auto-scroll to bottom of chat when messages change - only for the chat component itself
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessages]);
@@ -373,7 +373,7 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Roadmap Section - Added after Hero3 */}
+      {/* Roadmap Section */}
       <RoadmapSection />
 
       {/* Footer */}
