@@ -76,6 +76,7 @@ const FindProfessors = () => {
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
   const [selectedProfessor, setSelectedProfessor] = useState<typeof professors[0] | null>(null);
   const [reminderDialogOpen, setReminderDialogOpen] = useState(false);
+  const [emailDialogOpen, setEmailDialogOpen] = useState(false);
 
   const handleFilterSelect = (filterName: string, value: string) => {
     setSelectedFilters(prev => ({
@@ -127,7 +128,7 @@ const FindProfessors = () => {
 
   const handleEmailClick = (professor: typeof professors[0]) => {
     setSelectedProfessor(professor);
-    setContactDialogOpen(true);
+    setEmailDialogOpen(true);
   };
 
   const handleReminderClick = (professor: typeof professors[0]) => {
@@ -308,20 +309,20 @@ const FindProfessors = () => {
                         </button>
                       </div>
                       
-                      <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-2 mt-2 w-full">
+                      <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 mt-2 w-full min-h-[80px]">
                         <img 
                           src={professor.universityLogo} 
                           alt="University Logo"
-                          className="w-8 h-8 rounded-full bg-white p-1"
+                          className="w-10 h-10 rounded-full bg-white p-1"
                         />
                         <div className="flex flex-col">
                           <a 
                             href="#" 
-                            className="text-purple-600 dark:text-purple-400 hover:underline text-sm font-medium transition-colors"
+                            className="text-purple-600 dark:text-purple-400 hover:underline text-md font-medium transition-colors"
                           >
                             {professor.university}
                           </a>
-                          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                             <MapPin className="h-3 w-3 mr-1" /> {professor.country}
                           </div>
                         </div>
@@ -330,20 +331,21 @@ const FindProfessors = () => {
                   </div>
                   
                   {/* Professor contact icons */}
-                  <div className="flex items-center gap-4 mt-2">
-                    <a href={`mailto:${professor.email}`} className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                      <Mail className="w-5 h-5" />
+                  <div className="flex items-center gap-6 mt-2 justify-center w-full">
+                    <a href={`mailto:${professor.email}`} className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
+                      <Mail className="w-6 h-6" />
                     </a>
-                    <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide">
-                        <path d="M12 14a6 6 0 0 0-6-6h-.5A5.5 5.5 0 0 0 0 13.5v1A5.5 5.5 0 0 0 5.5 20H6a6 6 0 0 0 6-6Z"></path>
-                        <path d="M16 8h.5A5.5 5.5 0 0 1 22 13.5v1A5.5 5.5 0 0 1 16.5 20H16"></path>
-                        <path d="M12 14v6"></path>
-                        <path d="M12 2v12"></path>
+                    <a href="#" className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors">
+                      {/* Google Scholar Icon */}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>
+                        <path d="M10 15h4v1h-4z"/>
+                        <path d="M10 18h4v1h-4z"/>
+                        <path d="M10 12h4v1h-4z"/>
                       </svg>
                     </a>
-                    <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                      <Globe className="w-5 h-5" />
+                    <a href="#" className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors">
+                      <Globe className="w-6 h-6" />
                     </a>
                   </div>
                   
@@ -402,9 +404,9 @@ const FindProfessors = () => {
                           whileHover={{ scale: 1.03 }}
                           className="text-purple-600 dark:text-purple-400 text-sm hover:underline flex items-center gap-1"
                         >
-                          <span>View Publications</span>
+                          <span>Show More</span>
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                           </svg>
                         </motion.button>
                       </div>
@@ -490,12 +492,13 @@ const FindProfessors = () => {
         ))}
       </motion.div>
 
-      {/* Professor Contact Dialog */}
+      {/* Email Composition Dialog (opened directly on Send Email click) */}
       {selectedProfessor && (
         <ProfessorContactDialog 
-          open={contactDialogOpen}
-          onOpenChange={setContactDialogOpen}
+          open={emailDialogOpen}
+          onOpenChange={setEmailDialogOpen}
           professor={selectedProfessor}
+          directEmailMode={true}
         />
       )}
 

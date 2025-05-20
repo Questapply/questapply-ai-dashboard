@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,13 +24,15 @@ interface ProfessorContactDialogProps {
   onOpenChange: (open: boolean) => void;
   professor: Professor;
   isReminder?: boolean;
+  directEmailMode?: boolean;
 }
 
 const ProfessorContactDialog = ({
   open,
   onOpenChange,
   professor,
-  isReminder = false
+  isReminder = false,
+  directEmailMode = false
 }: ProfessorContactDialogProps) => {
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
   const [reminderDialogOpen, setReminderDialogOpen] = useState(false);
@@ -38,14 +40,22 @@ const ProfessorContactDialog = ({
   const [emailTemplate, setEmailTemplate] = useState("");
   
   // If isReminder is true, directly show the reminder dialog
-  React.useEffect(() => {
+  useEffect(() => {
     if (isReminder && open) {
       handleRemind();
     }
-  }, [isReminder, open]);
+    
+    // If directEmailMode is true, directly show the email dialog
+    if (directEmailMode && open) {
+      handleCreateEmail();
+    }
+  }, [isReminder, directEmailMode, open]);
   
   const handleCreateEmail = () => {
     setEmailDialogOpen(true);
+    if (directEmailMode) {
+      onOpenChange(false); // Close this dialog as we're opening the email dialog directly
+    }
   };
   
   const handleRemind = () => {
@@ -66,7 +76,7 @@ const ProfessorContactDialog = ({
 
   const professorEmail = professor.email || `${professor.name.toLowerCase().replace(/\s+/g, '.')}@university.edu`;
   
-  // If we're showing the reminder, don't show the contact options dialog
+  // If we're showing the reminder or direct email, don't show the contact options dialog
   if (isReminder) {
     return (
       <EmailCompositionDialog 
@@ -75,6 +85,22 @@ const ProfessorContactDialog = ({
         professorName={professor.name}
         professorEmail={professorEmail}
         isReminder={true}
+      />
+    );
+  }
+  
+  if (directEmailMode) {
+    return (
+      <EmailCompositionDialog 
+        open={emailDialogOpen}
+        onOpenChange={(open) => {
+          setEmailDialogOpen(open);
+          if (!open) setEmailTemplate("");
+        }}
+        professorName={professor.name}
+        professorEmail={professorEmail}
+        defaultTemplate={emailTemplate || undefined}
+        onCreateByExpert={handleCreateByExpert}
       />
     );
   }
