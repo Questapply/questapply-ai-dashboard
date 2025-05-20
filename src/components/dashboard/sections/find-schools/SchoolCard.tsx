@@ -65,7 +65,7 @@ const SchoolCard = ({
       <div className="p-6">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Logo, Basic Info and Rankings */}
-          <div className="flex flex-col gap-6 w-full md:w-1/3">
+          <div className="w-full md:w-1/4 flex flex-col gap-4">
             <SchoolBasicInfo 
               name={school.name}
               location={school.location}
@@ -78,17 +78,17 @@ const SchoolCard = ({
             <SchoolRankings rankings={school.ranking} />
             
             {/* Actions */}
-            <div className="flex gap-2 mt-2">
+            <div className="flex flex-col gap-2 mt-2">
               <Button 
                 variant="outline" 
-                className="flex-1 bg-purple-900/20 text-purple-400 border-purple-800 hover:bg-purple-800/30"
+                className="w-full bg-purple-900/20 hover:bg-purple-800/30 text-purple-400 border-purple-800"
                 onClick={handleViewDetails}
               >
                 School Details
               </Button>
               <Button 
                 variant="outline"
-                className="flex items-center gap-1 bg-blue-900/20 text-blue-400 border-blue-800 hover:bg-blue-800/30"
+                className="w-full flex items-center justify-center gap-2 bg-blue-900/20 hover:bg-blue-800/30 text-blue-400 border-blue-800"
                 onClick={handleCompare}
               >
                 <GitCompare className="h-4 w-4" />
@@ -98,23 +98,21 @@ const SchoolCard = ({
           </div>
           
           {/* Main Content */}
-          <div className="flex-grow">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Cost */}
-              <SchoolCost 
-                inState={school.cost.inState}
-                outState={school.cost.outState}
-              />
-              
-              {/* Statistics */}
-              <SchoolStatistics 
-                school={school}
-              />
-              
-              {/* Programs */}
-              <div className="lg:col-span-2">
-                <SchoolPrograms programs={school.programs} />
-              </div>
+          <div className="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Cost */}
+            <SchoolCost 
+              inState={school.cost.inState}
+              outState={school.cost.outState}
+            />
+            
+            {/* Statistics */}
+            <SchoolStatistics 
+              school={school}
+            />
+            
+            {/* Programs */}
+            <div className="lg:col-span-2">
+              <SchoolPrograms programs={school.programs} />
             </div>
           </div>
         </div>

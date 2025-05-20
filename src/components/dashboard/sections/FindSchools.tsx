@@ -106,7 +106,7 @@ const FindSchools = () => {
         </motion.div>
       </div>
 
-      {/* Filters - replaced with dropdown filters */}
+      {/* Filters with updated styling */}
       <motion.div 
         className="mb-8"
         initial={{ y: 20, opacity: 0 }}
@@ -121,12 +121,14 @@ const FindSchools = () => {
         </div>
         
         <div className="flex flex-wrap gap-2">
+          {/* Updated filter dropdowns with the same styling as in chatbox */}
           <FilterDropdown 
             label="Country" 
             icon={<span>{filterIcons.country}</span>}
             options={countryOptions}
             onSelect={(value) => handleFilterSelect("country", value)}
             selectedValue={selectedFilters.country}
+            buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-gray-800 border-gray-700 text-gray-300 hover:bg-teal-900/20 hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5"
           />
           
           <FilterDropdown 
@@ -135,6 +137,7 @@ const FindSchools = () => {
             options={usStatesOptions}
             onSelect={(value) => handleFilterSelect("state", value)}
             selectedValue={selectedFilters.state}
+            buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-gray-800 border-gray-700 text-gray-300 hover:bg-teal-900/20 hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5"
           />
           
           <FilterDropdown 
@@ -143,6 +146,7 @@ const FindSchools = () => {
             options={schoolsOptions}
             onSelect={(value) => handleFilterSelect("school", value)}
             selectedValue={selectedFilters.school}
+            buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-gray-800 border-gray-700 text-gray-300 hover:bg-teal-900/20 hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5"
           />
           
           <FilterDropdown 
@@ -151,6 +155,7 @@ const FindSchools = () => {
             options={degreeLevelOptions}
             onSelect={(value) => handleFilterSelect("degreeLevel", value)}
             selectedValue={selectedFilters.degreeLevel}
+            buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-gray-800 border-gray-700 text-gray-300 hover:bg-teal-900/20 hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5"
           />
           
           <FilterDropdown 
@@ -159,6 +164,7 @@ const FindSchools = () => {
             options={areaOfStudyOptions}
             onSelect={(value) => handleFilterSelect("areaOfStudy", value)}
             selectedValue={selectedFilters.areaOfStudy}
+            buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-gray-800 border-gray-700 text-gray-300 hover:bg-teal-900/20 hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5"
           />
           
           <FilterDropdown 
@@ -167,6 +173,7 @@ const FindSchools = () => {
             options={programOptions}
             onSelect={(value) => handleFilterSelect("program", value)}
             selectedValue={selectedFilters.program}
+            buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-gray-800 border-gray-700 text-gray-300 hover:bg-teal-900/20 hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5"
           />
           
           <FilterDropdown 
@@ -175,6 +182,7 @@ const FindSchools = () => {
             options={orderBySchoolOptions}
             onSelect={(value) => handleFilterSelect("orderBy", value)}
             selectedValue={selectedFilters.orderBy}
+            buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-gray-800 border-gray-700 text-gray-300 hover:bg-teal-900/20 hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5"
           />
         </div>
       </motion.div>

@@ -8,11 +8,11 @@ interface SchoolRankingsProps {
 const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
   // Map for background colors based on ranking service
   const rankingColors: Record<string, string> = {
-    qs: "bg-amber-700 text-amber-100",
-    usNews: "bg-red-700 text-red-100",
-    forbes: "bg-blue-700 text-blue-100",
-    shanghai: "bg-green-700 text-green-100",
-    the: "bg-purple-700 text-purple-100"
+    qs: "bg-amber-700",
+    usNews: "bg-red-700",
+    forbes: "bg-blue-700",
+    shanghai: "bg-green-700",
+    the: "bg-purple-700"
   };
 
   // Map for readable labels
@@ -27,7 +27,7 @@ const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
   return (
     <div className="bg-gray-800/60 p-4 rounded-lg">
       <h4 className="text-sm font-medium text-gray-300 mb-3">Rankings</h4>
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="flex justify-around gap-2">
         {Object.entries(rankings).map(([key, value]) => (
           <motion.div 
             key={key}
@@ -36,7 +36,7 @@ const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className={`w-12 h-12 ${rankingColors[key]} rounded-md flex items-center justify-center mb-2`}>
+            <div className={`w-12 h-12 ${rankingColors[key]} rounded-md flex items-center justify-center mb-1 text-white`}>
               <span className="font-bold text-lg">{rankingLabels[key]}</span>
             </div>
             <div className="text-center">
