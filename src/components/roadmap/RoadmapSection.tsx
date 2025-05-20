@@ -23,6 +23,7 @@ import {
 } from "@/components/dashboard/sections/FilterData";
 import { schools } from "@/components/dashboard/sections/find-schools/SchoolsData";
 import SchoolCard from "@/components/dashboard/sections/find-schools/SchoolCard";
+import { FindSchools } from "@/components/dashboard/sections";
 
 const RoadmapSection = () => {
   // States for tracking active step and selected programs
@@ -47,6 +48,7 @@ const RoadmapSection = () => {
   const [showSchoolCards, setShowSchoolCards] = useState(false);
   const [showApplyPopup, setShowApplyPopup] = useState(false);
   const [showApplicationForm, setShowApplicationForm] = useState(false);
+  const [showFindSchools, setShowFindSchools] = useState(false);
 
   // Step data
   const steps = [
@@ -104,10 +106,11 @@ const RoadmapSection = () => {
     setShowProfessorCards(false);
     setShowApplyPopup(false);
     setShowApplicationForm(false);
+    setShowFindSchools(false);
     
     // Handle specific step actions without auto-scrolling
     if (stepId === 1) {
-      setTimeout(() => setShowSchoolCards(true), 800);
+      setShowFindSchools(true);
     } else if (stepId === 2) {
       setTimeout(() => setShowProgramCards(true), 800);
     } else if (stepId === 3) {
@@ -231,77 +234,10 @@ const RoadmapSection = () => {
               
               {/* Dynamic Content Area - Fixed height with scrolling */}
               <div className="mt-8">
-                <ScrollArea className="h-[400px] rounded-md">
-                  {activeStep === 1 && (
+                <ScrollArea className="h-[500px] rounded-md">
+                  {activeStep === 1 && showFindSchools && (
                     <div className="space-y-8 px-2">
-                      {/* Filters */}
-                      <motion.div 
-                        className="flex flex-wrap gap-2 p-4 bg-gray-800/50 rounded-lg"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        <FilterDropdown 
-                          label="Country" 
-                          icon={<span>{filterIcons.country}</span>}
-                          options={countryOptions}
-                          selectedValue="United States"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Degree Level" 
-                          icon={<span>{filterIcons.degreeLevel}</span>}
-                          options={degreeLevelOptions}
-                          selectedValue="PhD"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Area of Study" 
-                          icon={<span>{filterIcons.areaOfStudy}</span>}
-                          options={areaOfStudyOptions}
-                          selectedValue="Engineering & Technology"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Programs" 
-                          icon={<span>{filterIcons.programs}</span>}
-                          options={programOptions}
-                          selectedValue="Computer Science"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Order By" 
-                          icon={<span>{filterIcons.orderBy}</span>}
-                          options={orderBySchoolOptions}
-                          selectedValue="QS Ranking"
-                          onSelect={() => {}}
-                        />
-                      </motion.div>
-                      
-                      {/* School Results */}
-                      {showSchoolCards && (
-                        <motion.div 
-                          className="space-y-4"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          {schools.slice(0, 2).map((school, index) => (
-                            <SchoolCard 
-                              key={school.id}
-                              school={school}
-                              index={index}
-                              isFavorite={false}
-                              toggleFavorite={() => {}}
-                              onCompare={() => {}}
-                            />
-                          ))}
-                        </motion.div>
-                      )}
+                      <FindSchools />
                     </div>
                   )}
                   
