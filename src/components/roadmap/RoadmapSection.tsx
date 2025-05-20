@@ -24,6 +24,7 @@ import {
 import { schools } from "@/components/dashboard/sections/find-schools/SchoolsData";
 import SchoolCard from "@/components/dashboard/sections/find-schools/SchoolCard";
 import { FindSchools } from "@/components/dashboard/sections";
+import { cn } from "@/lib/utils";
 
 const RoadmapSection = () => {
   // States for tracking active step and selected programs
@@ -178,39 +179,31 @@ const RoadmapSection = () => {
               variant="talent-section" 
               className="p-4 md:p-6 shadow-xl w-full dark:bg-gray-800 bg-white/90"
             >
-              {/* New Button Layout - Minimal design with colorful icons */}
-              <div className="flex justify-center items-center my-6 px-4 py-2">
-                <div className="flex space-x-6 md:space-x-8 justify-between w-full max-w-4xl">
+              {/* Updated Button Layout - Styled like Find Schools filters */}
+              <div className="flex justify-center items-center my-6 px-6">
+                <div className="flex flex-wrap gap-4 justify-center w-full">
                   {steps.map((step) => (
-                    <div 
-                      key={step.id} 
-                      className="flex flex-col items-center"
+                    <motion.button
+                      key={step.id}
+                      className={cn(
+                        "flex flex-col items-center gap-2 px-6 py-3 rounded-full text-base",
+                        "border border-white/30 dark:border-white/20",
+                        "transition-all duration-300 ease-in-out",
+                        activeStep === step.id
+                          ? "bg-purple-600 border-purple-700 text-white shadow-md shadow-purple-500/20"
+                          : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:border-purple-200 dark:hover:border-purple-700 hover:shadow-sm"
+                      )}
+                      onClick={() => handleStepClick(step.id)}
+                      whileHover={{ 
+                        y: -3, 
+                        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" 
+                      }}
                     >
-                      <motion.button
-                        className={`relative flex flex-col items-center justify-center p-3 rounded-lg transition-all duration-300
-                          ${activeStep === step.id 
-                            ? "bg-gray-100/10 dark:bg-gray-700/30" 
-                            : "hover:bg-gray-100/5 dark:hover:bg-gray-700/20"
-                          }`}
-                        onClick={() => handleStepClick(step.id)}
-                        whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-                      >
-                        {/* Icon - Only the icon is colorful */}
-                        <div 
-                          className="mb-2 p-2 rounded-lg"
-                          style={{ color: step.color }}
-                        >
-                          {step.icon}
-                        </div>
-                        
-                        {/* Step Title - Clean and minimal */}
-                        <span 
-                          className="text-sm font-medium text-center whitespace-nowrap dark:text-gray-300 text-gray-700"
-                        >
-                          {step.title}
-                        </span>
-                      </motion.button>
-                    </div>
+                      <div style={{ color: activeStep === step.id ? "#ffffff" : step.color }}>
+                        {step.icon}
+                      </div>
+                      <span className="text-center whitespace-nowrap">{step.title}</span>
+                    </motion.button>
                   ))}
                 </div>
               </div>
