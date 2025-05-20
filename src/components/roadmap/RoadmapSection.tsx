@@ -166,8 +166,8 @@ const RoadmapSection = () => {
           A smart, step-by-step guide that uses AI to help you reach your educational and career goals.
         </motion.p>
         
-        {/* Roadmap Container with exact width of 1216px */}
-        <div className="w-full max-w-[1216px] mx-auto"> 
+        {/* Roadmap Container with width of 1152px */}
+        <div className="w-full max-w-[1152px] mx-auto"> 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -176,50 +176,47 @@ const RoadmapSection = () => {
           >
             <GradientCard 
               variant="talent-section" 
-              className="p-1 md:p-2 shadow-xl w-full"
+              className="p-4 md:p-6 shadow-xl w-full dark:bg-gray-800 bg-white/90"
             >
-              {/* New Button Layout - Fixed sizes, equal spacing, no connector line */}
-              <div className="flex justify-center items-center my-6 px-2 h-[80px]">
-                {steps.map((step) => (
-                  <div 
-                    key={step.id} 
-                    className="mx-[10px]"
-                  >
-                    <motion.button
-                      className={`relative flex flex-col items-center justify-center w-[120px] h-[60px] rounded-[10px] transition-all duration-300 border-2`}
-                      style={{ 
-                        borderColor: step.color,
-                        backgroundColor: activeStep === step.id ? `${step.color}20` : '#2A1F4D'
-                      }}
-                      onClick={() => handleStepClick(step.id)}
-                      whileHover={{ 
-                        scale: 1.05, 
-                        boxShadow: `0 0 15px ${step.color}50`,
-                        transition: { duration: 0.2 }
-                      }}
+              {/* New Button Layout - Minimal design with colorful icons */}
+              <div className="flex justify-center items-center my-6 px-4 py-2">
+                <div className="flex space-x-6 md:space-x-8 justify-between w-full max-w-4xl">
+                  {steps.map((step) => (
+                    <div 
+                      key={step.id} 
+                      className="flex flex-col items-center"
                     >
-                      {/* Icon */}
-                      <div 
-                        className="mt-[10px]"
-                        style={{ color: step.color }}
+                      <motion.button
+                        className={`relative flex flex-col items-center justify-center p-3 rounded-lg transition-all duration-300
+                          ${activeStep === step.id 
+                            ? "bg-gray-100/10 dark:bg-gray-700/30" 
+                            : "hover:bg-gray-100/5 dark:hover:bg-gray-700/20"
+                          }`}
+                        onClick={() => handleStepClick(step.id)}
+                        whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                       >
-                        {step.icon}
-                      </div>
-                      
-                      {/* Step Title */}
-                      <span 
-                        className="text-[14px] font-medium mt-[5px] text-center whitespace-nowrap"
-                        style={{ color: activeStep === step.id ? step.color : '#fff' }}
-                      >
-                        {step.title}
-                      </span>
-                    </motion.button>
-                  </div>
-                ))}
+                        {/* Icon - Only the icon is colorful */}
+                        <div 
+                          className="mb-2 p-2 rounded-lg"
+                          style={{ color: step.color }}
+                        >
+                          {step.icon}
+                        </div>
+                        
+                        {/* Step Title - Clean and minimal */}
+                        <span 
+                          className="text-sm font-medium text-center whitespace-nowrap dark:text-gray-300 text-gray-700"
+                        >
+                          {step.title}
+                        </span>
+                      </motion.button>
+                    </div>
+                  ))}
+                </div>
               </div>
               
               {/* Dynamic Content Area - Fixed height with scrolling */}
-              <div className="mt-4">
+              <div className="mt-6">
                 <ScrollArea className="h-[500px] rounded-md px-1">
                   {activeStep === null && (
                     <motion.div 

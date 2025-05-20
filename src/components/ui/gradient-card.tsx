@@ -21,7 +21,7 @@ const GradientCard = React.forwardRef<HTMLDivElement, GradientCardProps>(
         case "dark":
           return "border border-gray-800 dark:bg-black/90 backdrop-blur-sm dark:text-white bg-white/90 text-gray-900 light:border-gray-200";
         case "talent-section":
-          return "border border-purple-500/30 dark:bg-gray-900/60 backdrop-blur-sm bg-white/90 border-purple-300/20 max-w-[1216px] mx-auto";
+          return "border border-purple-500/30 dark:bg-gray-800 backdrop-blur-sm bg-white/90 border-purple-300/20 max-w-[1152px] mx-auto";
         default:
           return "border border-purple-300/20 bg-white/90 backdrop-blur-sm dark:border-purple-500/30 dark:bg-gray-900/60";
       }
