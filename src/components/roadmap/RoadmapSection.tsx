@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -144,7 +143,7 @@ const RoadmapSection = () => {
 
   return (
     <div className="w-full bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Section Title - Styled to match "AI Meets Your Talent" */}
         <motion.h2 
           className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-white mb-4"
@@ -167,8 +166,8 @@ const RoadmapSection = () => {
           A smart, step-by-step guide that uses AI to help you reach your educational and career goals.
         </motion.p>
         
-        {/* Roadmap Container with updated styling to match AI Meets Your Talent section */}
-        <div className="max-w-7xl mx-auto"> {/* Increased width to match AI Meets Your Talent */}
+        {/* Roadmap Container with updated width to match AI Meets Your Talent section */}
+        <div className="max-w-6xl mx-auto"> 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -177,18 +176,18 @@ const RoadmapSection = () => {
           >
             <GradientCard 
               variant="dark" 
-              className="p-6 md:p-8 shadow-xl"
+              className="p-4 md:p-6 shadow-xl"
             >
               {/* Workflow Steps - Styled like n8n nodes with connector line */}
-              <div className="flex flex-wrap justify-center mb-12 relative">
+              <div className="flex flex-wrap justify-center mb-10 relative px-2 md:px-4">
                 {/* Connector Lines */}
                 <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform -translate-y-1/2 z-0"></div>
                 
-                {/* n8n styled steps */}
+                {/* n8n styled steps with adjusted width */}
                 {steps.map((step, index) => (
-                  <div key={step.id} className="relative z-10 px-2 mb-6 md:mb-0">
+                  <div key={step.id} className="relative z-10 px-1 mb-6 md:mb-0">
                     <motion.button
-                      className={`relative flex flex-col items-center justify-center w-24 h-24 sm:w-28 sm:h-28 p-4 rounded-lg transition-all duration-300
+                      className={`relative flex flex-col items-center justify-center w-20 h-20 sm:w-24 sm:h-24 p-2 rounded-lg transition-all duration-300
                         ${activeStep === step.id 
                           ? 'bg-gray-800 shadow-lg border-2 border-white/20 dark:bg-gray-800/90' 
                           : 'bg-gray-800/80 hover:bg-gray-800 border border-gray-700/50 hover:border-purple-500/50 dark:bg-gray-800/60 dark:hover:bg-gray-800/80'}`}
@@ -211,7 +210,7 @@ const RoadmapSection = () => {
                       
                       {/* Icon */}
                       <div 
-                        className="w-12 h-12 rounded-full flex items-center justify-center mb-2"
+                        className="w-10 h-10 rounded-full flex items-center justify-center mb-1"
                         style={{ backgroundColor: `${step.color}30` }}
                       >
                         <div style={{ color: step.color }}>
@@ -219,13 +218,13 @@ const RoadmapSection = () => {
                         </div>
                       </div>
                       
-                      {/* Step Title */}
-                      <span className="text-sm font-medium text-white text-center">
+                      {/* Step Title - Prevent text wrapping */}
+                      <span className="text-xs font-medium text-white text-center whitespace-nowrap">
                         {step.title}
                       </span>
                       
                       {/* Step Number */}
-                      <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-gray-700 flex items-center justify-center border border-gray-600 text-xs text-white">
+                      <div className="absolute -top-3 -left-3 w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center border border-gray-600 text-xs text-white">
                         {step.id}
                       </div>
                     </motion.button>
@@ -234,8 +233,8 @@ const RoadmapSection = () => {
               </div>
               
               {/* Dynamic Content Area - Fixed height with scrolling */}
-              <div className="mt-8">
-                <ScrollArea className="h-[500px] rounded-md">
+              <div className="mt-6">
+                <ScrollArea className="h-[500px] rounded-md px-3">
                   {activeStep === 1 && showFindSchools && (
                     <div className="space-y-8 px-2">
                       <FindSchools />
