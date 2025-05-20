@@ -27,7 +27,7 @@ const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
   return (
     <div className="bg-gray-800/60 p-4 rounded-lg">
       <h4 className="text-sm font-medium text-gray-300 mb-3">Rankings</h4>
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="flex justify-between gap-2 overflow-x-auto pb-1">
         {Object.entries(rankings).map(([key, value]) => (
           <motion.div 
             key={key}

@@ -1,12 +1,9 @@
 
 import { useState, useEffect } from "react";
-import { ArrowUp, Search, FileText, Download } from "lucide-react";
+import { ArrowUp, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FilterOption } from "@/utils/FilterUtils";
 import ConversationalDocumentGenerator from "@/components/generation/ConversationalDocumentGenerator";
-import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar } from "@/components/ui/avatar";
 
 interface ChatBoxProps {
   searchQuery: string;
@@ -14,28 +11,7 @@ interface ChatBoxProps {
   isQuestApplyAI: boolean;
   isDarkMode: boolean;
   filterOptions: FilterOption[] | null;
-}
-
-interface QuickQuestion {
-  id: string;
-  text: string;
-}
-
-interface School {
-  id: number;
-  name: string;
-  ranking: string;
-  location: string;
-  icon: React.ReactNode;
-}
-
-interface Professor {
-  id: number;
-  name: string;
-  university: string;
-  expertise: string;
-  initial: string;
-  imgUrl: string;
+  section?: "find-schools" | "find-programs" | "find-professors";
 }
 
 const ChatBox = ({ 
@@ -43,7 +19,8 @@ const ChatBox = ({
   setSearchQuery, 
   isQuestApplyAI, 
   isDarkMode,
-  filterOptions 
+  filterOptions,
+  section
 }: ChatBoxProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [typingEffect, setTypingEffect] = useState("");
@@ -52,15 +29,6 @@ const ChatBox = ({
   
   const welcomeMessage = "Hello! I'm here to help with your application. Let's start with Step 1: Find Schools. What would you like to search?";
   
-  const quickQuestions: QuickQuestion[] = [
-    { id: "q1", text: "How to find schools?" },
-    { id: "q2", text: "Best programs for AI?" },
-    { id: "q3", text: "How to write a resume?" },
-    { id: "q4", text: "Application deadlines?" },
-    { id: "q5", text: "Scholarship opportunities?" },
-    { id: "q6", text: "Generate SOP (FREE)" }
-  ];
-
   useEffect(() => {
     if (isQuestApplyAI) {
       let i = 0;
@@ -78,27 +46,44 @@ const ChatBox = ({
     }
   }, [isQuestApplyAI]);
 
-  const handleQuickQuestionClick = (question: string) => {
-    setSearchQuery(question);
-    // In a real app, you might want to trigger a submission here
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Search query:", searchQuery);
     // Handle search logic here
   };
 
-  const handleGenerateSOP = () => {
-    setActiveGenerator("sop");
-  };
-
-  const handleGenerateCV = () => {
-    setActiveGenerator("cv");
-  };
-
   const closeGenerator = () => {
     setActiveGenerator(null);
+  };
+
+  // Get suggested searches based on section
+  const getSuggestedSearches = () => {
+    switch(section) {
+      case "find-schools":
+        return [
+          "Which top universities in the US match my profile?",
+          "What are the best universities in Canada for my field?",
+          "Which top UK universities suit my academic goals?"
+        ];
+      case "find-programs":
+        return [
+          "Which top US CS PhD programs match my profile?",
+          "What are the best Canadian CS PhD programs for my field?",
+          "Which top UK CS PhD programs suit my academic goals?"
+        ];
+      case "find-professors":
+        return [
+          "Which top Professors in AI?",
+          "What are the top Professors in Machine Learning?",
+          "Which top Professors in Deep Learning?"
+        ];
+      default:
+        return [
+          "How to improve my application?",
+          "Top schools for Computer Science",
+          "Resume writing tips for PhD applications"
+        ];
+    }
   };
 
   return (
@@ -172,50 +157,6 @@ const ChatBox = ({
             </button>
           </div>
 
-          {/* Quick Questions and Generation Buttons */}
-          {isQuestApplyAI && (
-            <div className="px-4 pb-4">
-              <div className="flex flex-wrap gap-2 mt-2">
-                {quickQuestions.map((question) => (
-                  <motion.button
-                    key={question.id}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => handleQuickQuestionClick(question.text)}
-                    className={`px-4 py-2 rounded-full text-sm border ${
-                      isDarkMode 
-                        ? "bg-gray-800 border-gray-700 text-gray-300 hover:bg-teal-900/20 hover:border-teal-700" 
-                        : "bg-white border-gray-200 text-gray-700 hover:bg-teal-50 hover:border-teal-200"
-                    } transition-all duration-300 hover:shadow-sm`}
-                  >
-                    {question.text}
-                  </motion.button>
-                ))}
-                
-                {/* Document Generation Buttons */}
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={handleGenerateSOP}
-                  className={`px-4 py-2 rounded-full text-sm border flex items-center gap-1 bg-gradient-to-r from-purple-500 to-violet-500 text-white shadow-sm hover:shadow-md hover:from-purple-600 hover:to-violet-600`}
-                >
-                  <FileText className="h-3.5 w-3.5 mr-1" />
-                  Generate SOP
-                </motion.button>
-                
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={handleGenerateCV}
-                  className={`px-4 py-2 rounded-full text-sm border flex items-center gap-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-sm hover:shadow-md hover:from-blue-600 hover:to-cyan-600`}
-                >
-                  <Download className="h-3.5 w-3.5 mr-1" />
-                  Generate CV
-                </motion.button>
-              </div>
-            </div>
-          )}
-
           {/* Filter Options Inside the Chat Box */}
           {filterOptions && (
             <div className={`p-3 border-t ${isDarkMode ? "border-gray-700" : "border-gray-200"} animate-fade-in`}>
@@ -250,21 +191,16 @@ const ChatBox = ({
         } rounded-lg shadow-lg border p-4 z-10 animate-fade-in`}>
           <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">Suggested searches</div>
           <div className="space-y-2">
-            <div className={`cursor-pointer p-2 ${
-              isDarkMode ? "hover:bg-teal-900/20 text-gray-300" : "hover:bg-teal-50 text-gray-700"
-            } rounded-md transition-colors duration-200`}>
-              How to improve my application?
-            </div>
-            <div className={`cursor-pointer p-2 ${
-              isDarkMode ? "hover:bg-teal-900/20 text-gray-300" : "hover:bg-teal-50 text-gray-700"
-            } rounded-md transition-colors duration-200`}>
-              Top schools for Computer Science
-            </div>
-            <div className={`cursor-pointer p-2 ${
-              isDarkMode ? "hover:bg-teal-900/20 text-gray-300" : "hover:bg-teal-50 text-gray-700"
-            } rounded-md transition-colors duration-200`}>
-              Resume writing tips for PhD applications
-            </div>
+            {getSuggestedSearches().map((search, index) => (
+              <div key={index} 
+                className={`cursor-pointer p-2 ${
+                  isDarkMode ? "hover:bg-teal-900/20 text-gray-300" : "hover:bg-teal-50 text-gray-700"
+                } rounded-md transition-colors duration-200`}
+                onClick={() => setSearchQuery(search)}
+              >
+                {search}
+              </div>
+            ))}
           </div>
         </div>
       )}

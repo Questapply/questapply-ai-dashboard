@@ -17,8 +17,10 @@ import {
   orderBySchoolOptions,
   filterIcons
 } from "./FilterData";
+import ChatBox from "../ChatBox";
 
 const FindSchools = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({});
   const [favorites, setFavorites] = useState<Record<number, boolean>>(
     schools.reduce((acc, school) => ({...acc, [school.id]: school.favorite}), {})
@@ -106,7 +108,24 @@ const FindSchools = () => {
         </motion.div>
       </div>
 
-      {/* Filters - replaced with dropdown filters */}
+      {/* Search Box */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="mb-8"
+      >
+        <ChatBox
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          isQuestApplyAI={false}
+          isDarkMode={document.documentElement.classList.contains('dark')}
+          filterOptions={null}
+          section="find-schools"
+        />
+      </motion.div>
+
+      {/* Filters - improved filter buttons with chatbox style */}
       <motion.div 
         className="mb-8"
         initial={{ y: 20, opacity: 0 }}
@@ -121,61 +140,25 @@ const FindSchools = () => {
         </div>
         
         <div className="flex flex-wrap gap-2">
-          <FilterDropdown 
-            label="Country" 
-            icon={<span>{filterIcons.country}</span>}
-            options={countryOptions}
-            onSelect={(value) => handleFilterSelect("country", value)}
-            selectedValue={selectedFilters.country}
-          />
-          
-          <FilterDropdown 
-            label="State" 
-            icon={<span>{filterIcons.state}</span>}
-            options={usStatesOptions}
-            onSelect={(value) => handleFilterSelect("state", value)}
-            selectedValue={selectedFilters.state}
-          />
-          
-          <FilterDropdown 
-            label="Schools" 
-            icon={<span>{filterIcons.schools}</span>}
-            options={schoolsOptions}
-            onSelect={(value) => handleFilterSelect("school", value)}
-            selectedValue={selectedFilters.school}
-          />
-          
-          <FilterDropdown 
-            label="Degree Level" 
-            icon={<span>{filterIcons.degreeLevel}</span>}
-            options={degreeLevelOptions}
-            onSelect={(value) => handleFilterSelect("degreeLevel", value)}
-            selectedValue={selectedFilters.degreeLevel}
-          />
-          
-          <FilterDropdown 
-            label="Area of Study" 
-            icon={<span>{filterIcons.areaOfStudy}</span>}
-            options={areaOfStudyOptions}
-            onSelect={(value) => handleFilterSelect("areaOfStudy", value)}
-            selectedValue={selectedFilters.areaOfStudy}
-          />
-          
-          <FilterDropdown 
-            label="Programs" 
-            icon={<span>{filterIcons.programs}</span>}
-            options={programOptions}
-            onSelect={(value) => handleFilterSelect("program", value)}
-            selectedValue={selectedFilters.program}
-          />
-          
-          <FilterDropdown 
-            label="Order By" 
-            icon={<span>{filterIcons.orderBy}</span>}
-            options={orderBySchoolOptions}
-            onSelect={(value) => handleFilterSelect("orderBy", value)}
-            selectedValue={selectedFilters.orderBy}
-          />
+          {[
+            {label: "Country", icon: filterIcons.country, options: countryOptions},
+            {label: "State", icon: filterIcons.state, options: usStatesOptions},
+            {label: "Schools", icon: filterIcons.schools, options: schoolsOptions},
+            {label: "Degree Level", icon: filterIcons.degreeLevel, options: degreeLevelOptions},
+            {label: "Area of Study", icon: filterIcons.areaOfStudy, options: areaOfStudyOptions},
+            {label: "Programs", icon: filterIcons.programs, options: programOptions},
+            {label: "Order By", icon: filterIcons.orderBy, options: orderBySchoolOptions}
+          ].map((filter, idx) => (
+            <FilterDropdown 
+              key={idx}
+              label={filter.label} 
+              icon={<span>{filter.icon}</span>}
+              options={filter.options}
+              onSelect={(value) => handleFilterSelect(filter.label.toLowerCase().replace(/\s+/g, ''), value)}
+              selectedValue={selectedFilters[filter.label.toLowerCase().replace(/\s+/g, '')]}
+              buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/20 hover:border-teal-200 dark:hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5"
+            />
+          ))}
         </div>
       </motion.div>
 

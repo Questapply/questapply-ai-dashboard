@@ -24,6 +24,7 @@ const SchoolStatistics = ({ school }: SchoolStatisticsProps) => {
             size="lg"
             color="red"
             label="Acceptance"
+            strokeWidth={6}
           />
         </motion.div>
         
@@ -38,6 +39,7 @@ const SchoolStatistics = ({ school }: SchoolStatisticsProps) => {
             size="lg"
             color="green"
             label="Graduation"
+            strokeWidth={6}
           />
         </motion.div>
       </div>

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import FilterDropdown from "../filters/FilterDropdown";
+import ChatBox from "../ChatBox";
 import {
   countryOptions,
   usStatesOptions,
@@ -25,12 +25,7 @@ import {
 // GPA options as a range from 0.0 to 4.0
 const gpaOptions = Array.from({ length: 41 }, (_, i) => (i / 10).toFixed(1));
 
-type ProgramFilter = {
-  id: string;
-  name: string;
-  icon: string;
-};
-
+// Program data from the original file
 const programs = [
   {
     id: 1,
@@ -99,6 +94,7 @@ const programs = [
 
 const FindPrograms = () => {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({});
   const [favorites, setFavorites] = useState<Record<number, boolean>>(
     programs.reduce((acc, program) => ({...acc, [program.id]: program.favorite}), {})
@@ -177,7 +173,24 @@ const FindPrograms = () => {
         </motion.div>
       </div>
 
-      {/* Filters - replaced with dropdown filters */}
+      {/* Search Box */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="mb-8"
+      >
+        <ChatBox
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          isQuestApplyAI={false}
+          isDarkMode={document.documentElement.classList.contains('dark')}
+          filterOptions={null}
+          section="find-programs"
+        />
+      </motion.div>
+
+      {/* Filters - updated to match chatbot filter styling */}
       <motion.div 
         className="mb-8"
         initial={{ y: 20, opacity: 0 }}
@@ -192,93 +205,28 @@ const FindPrograms = () => {
         </div>
         
         <div className="flex flex-wrap gap-2">
-          <FilterDropdown 
-            label="Country" 
-            icon={<span>{filterIcons.country}</span>}
-            options={countryOptions}
-            onSelect={(value) => handleFilterSelect("country", value)}
-            selectedValue={selectedFilters.country}
-          />
-          
-          <FilterDropdown 
-            label="State" 
-            icon={<span>{filterIcons.state}</span>}
-            options={usStatesOptions}
-            onSelect={(value) => handleFilterSelect("state", value)}
-            selectedValue={selectedFilters.state}
-          />
-          
-          <FilterDropdown 
-            label="Schools" 
-            icon={<span>{filterIcons.schools}</span>}
-            options={schoolsOptions}
-            onSelect={(value) => handleFilterSelect("school", value)}
-            selectedValue={selectedFilters.school}
-          />
-          
-          <FilterDropdown 
-            label="Degree Level" 
-            icon={<span>{filterIcons.degreeLevel}</span>}
-            options={degreeLevelOptions}
-            onSelect={(value) => handleFilterSelect("degreeLevel", value)}
-            selectedValue={selectedFilters.degreeLevel}
-          />
-          
-          <FilterDropdown 
-            label="Area of Study" 
-            icon={<span>{filterIcons.areaOfStudy}</span>}
-            options={areaOfStudyOptions}
-            onSelect={(value) => handleFilterSelect("areaOfStudy", value)}
-            selectedValue={selectedFilters.areaOfStudy}
-          />
-          
-          <FilterDropdown 
-            label="Programs" 
-            icon={<span>{filterIcons.programs}</span>}
-            options={programOptions}
-            onSelect={(value) => handleFilterSelect("program", value)}
-            selectedValue={selectedFilters.program}
-          />
-          
-          <FilterDropdown 
-            label="Deadline" 
-            icon={<span>{filterIcons.deadline}</span>}
-            options={deadlineOptions}
-            onSelect={(value) => handleFilterSelect("deadline", value)}
-            selectedValue={selectedFilters.deadline}
-          />
-          
-          <FilterDropdown 
-            label="English" 
-            icon={<span>{filterIcons.english}</span>}
-            options={englishTestOptions}
-            onSelect={(value) => handleFilterSelect("english", value)}
-            selectedValue={selectedFilters.english}
-          />
-          
-          <FilterDropdown 
-            label="GPA" 
-            icon={<span>{filterIcons.gpa}</span>}
-            options={gpaOptions}
-            onSelect={(value) => handleFilterSelect("gpa", value)}
-            selectedValue={selectedFilters.gpa}
-          />
-          
-          <FilterDropdown 
-            label="GRE" 
-            icon={<span>{filterIcons.gre}</span>}
-            options={greOptions}
-            onSelect={(value) => handleFilterSelect("gre", value)}
-            selectedValue={selectedFilters.gre}
-          />
-          
-          <FilterDropdown 
-            label="Order By" 
-            icon={<span>{filterIcons.orderBy}</span>}
-            options={orderByProgramOptions}
-            onSelect={(value) => handleFilterSelect("orderBy", value)}
-            selectedValue={selectedFilters.orderBy}
-          />
+          {[
+            {label: "Country", icon: filterIcons.country, options: countryOptions},
+            {label: "State", icon: filterIcons.state, options: usStatesOptions},
+            {label: "Schools", icon: filterIcons.schools, options: schoolsOptions},
+            {label: "Degree Level", icon: filterIcons.degreeLevel, options: degreeLevelOptions},
+            {label: "Area of Study", icon: filterIcons.areaOfStudy, options: areaOfStudyOptions},
+            {label: "Programs", icon: filterIcons.programs, options: programOptions},
+            {label: "Deadline", icon: filterIcons.deadline, options: deadlineOptions},
+            {label: "English", icon: filterIcons.english, options: englishTestOptions},
+            {label: "GRE", icon: filterIcons.gre, options: greOptions},
+            {label: "Order By", icon: filterIcons.orderBy, options: orderByProgramOptions}
+          ].map((filter, idx) => (
+            <FilterDropdown 
+              key={idx}
+              label={filter.label} 
+              icon={<span>{filter.icon}</span>}
+              options={filter.options}
+              onSelect={(value) => handleFilterSelect(filter.label.toLowerCase().replace(/\s+/g, ''), value)}
+              selectedValue={selectedFilters[filter.label.toLowerCase().replace(/\s+/g, '')]}
+              buttonClassName="flex items-center gap-2 px-4 py-2 rounded-full border bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/20 hover:border-teal-200 dark:hover:border-teal-700 text-sm transition-all duration-300 hover:shadow-sm transform hover:-translate-y-0.5"
+            />
+          ))}
         </div>
       </motion.div>
 

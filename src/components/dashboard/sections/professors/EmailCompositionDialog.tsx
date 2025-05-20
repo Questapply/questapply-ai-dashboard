@@ -1,17 +1,18 @@
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
-import { Save, Send } from "lucide-react";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { CopyCheck, Download, Sparkles } from "lucide-react";
 
 interface EmailCompositionDialogProps {
   open: boolean;
@@ -21,6 +22,7 @@ interface EmailCompositionDialogProps {
   defaultTemplate?: string;
   isReminder?: boolean;
   onCreateByExpert?: () => void;
+  title?: string;
 }
 
 const EmailCompositionDialog = ({
@@ -30,106 +32,129 @@ const EmailCompositionDialog = ({
   professorEmail,
   defaultTemplate,
   isReminder = false,
-  onCreateByExpert
+  onCreateByExpert,
+  title
 }: EmailCompositionDialogProps) => {
-  const [emailContent, setEmailContent] = useState(defaultTemplate || generateDefaultTemplate(professorName, isReminder));
-  const [isGeneratingEmail, setIsGeneratingEmail] = useState(false);
+  const { toast } = useToast();
+  const [subject, setSubject] = useState(
+    isReminder 
+      ? `Re: Research inquiry - follow up`
+      : `Research inquiry from a prospective student`
+  );
+  const [emailContent, setEmailContent] = useState(
+    defaultTemplate || (isReminder
+      ? `Dear Professor ${professorName},\n\nI hope this email finds you well. I am writing to follow up on my previous message regarding my interest in your research on [research area]. I understand you must be very busy, but I wanted to check if you had a chance to review my inquiry.\n\nI remain very interested in your work and would appreciate any guidance or feedback you might provide.\n\nThank you for your time and consideration.\n\nBest regards,\n[Your Name]`
+      : `Dear Professor ${professorName},\n\nI hope this email finds you well. My name is [Your Name], and I am a [Your Current Status] student at [Your Institution], majoring in [Your Major].\n\nI am writing to express my interest in your research on [Professor's Research Area]. I have read your paper titled "[Paper Title]", and I found your methodology and conclusions particularly fascinating.\n\nI am currently planning to apply for [Degree Program] in [Field of Study], and I am very interested in the possibility of working with you. I believe that your expertise in [Research Area] aligns perfectly with my research interests.\n\nMay I inquire if you are accepting students for the upcoming academic year? I would be grateful for any guidance or advice you might offer regarding the application process or research opportunities in your lab.\n\nThank you for your time and consideration. I look forward to hearing from you.\n\nBest regards,\n[Your Name]`)
+  );
+  
+  const [copied, setCopied] = useState(false);
 
-  const handleSaveEmail = () => {
-    // In a real app, we would save this to a database
-    toast.success(`Email ${isReminder ? "reminder " : ""}draft saved for ${professorName}`);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(emailContent);
+    setCopied(true);
+    
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+    
+    toast({
+      title: "Email copied to clipboard",
+      description: "You can now paste it into your email client."
+    });
+  };
+  
+  const handleSend = () => {
+    // This would typically send through an email API, but for now we'll just open the mail client
+    const emailLink = `mailto:${professorEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailContent)}`;
+    window.open(emailLink);
+    
+    toast({
+      title: "Email opened in your default mail client",
+      description: "Review and send your email from your mail application."
+    });
   };
 
-  const handleSendEmail = () => {
-    // In a real app, we would send this email
-    toast.success(`Email ${isReminder ? "reminder " : ""}sent to ${professorName} (${professorEmail})`);
-    onOpenChange(false);
-  };
-
-  const handleCreateByExpert = () => {
-    if (onCreateByExpert) {
-      onCreateByExpert();
-    }
+  const handleExportAsDoc = () => {
+    // This is a simple export to .doc - in a real app, use a library like docx
+    const blob = new Blob([emailContent], { type: 'application/msword' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Email to Professor ${professorName}.doc`;
+    link.click();
+    
+    toast({
+      title: "Email exported as .doc",
+      description: "The document has been downloaded to your device."
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl">
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {isReminder ? `Send Reminder to ${professorName}` : `Email to ${professorName}`}
+            {title || (isReminder ? "Send Reminder Email" : "Compose Email")}
           </DialogTitle>
         </DialogHeader>
         
-        <div className="border rounded-md bg-gray-50 dark:bg-gray-900/50 p-2">
-          <div className="flex flex-col space-y-2 text-sm">
-            <div className="flex items-center">
-              <span className="w-16 font-medium text-gray-700 dark:text-gray-300">To:</span>
-              <span className="text-gray-600 dark:text-gray-400">{professorEmail}</span>
-            </div>
-            <div className="flex items-center">
-              <span className="w-16 font-medium text-gray-700 dark:text-gray-300">Subject:</span>
-              <span className="text-gray-600 dark:text-gray-400">
-                {isReminder ? "Following up on previous communication" : "Research Interest and Application Inquiry"}
-              </span>
-            </div>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="to" className="text-right">
+              To
+            </Label>
+            <Input
+              id="to"
+              value={professorEmail}
+              readOnly
+              className="col-span-3 bg-gray-50 dark:bg-gray-800"
+            />
+          </div>
+          
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="subject" className="text-right">
+              Subject
+            </Label>
+            <Input
+              id="subject"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+          
+          <div className="grid grid-cols-4 items-start gap-4">
+            <Label htmlFor="message" className="text-right pt-2">
+              Message
+            </Label>
+            <Textarea
+              id="message"
+              value={emailContent}
+              onChange={(e) => setEmailContent(e.target.value)}
+              className="col-span-3 min-h-[300px] font-mono text-sm"
+            />
           </div>
         </div>
-
-        <div className="flex flex-col space-y-1.5">
-          <div className="flex items-center gap-2 p-1 border-b border-gray-200 dark:border-gray-700">
-            <button className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800" title="Bold">
-              <span className="font-bold">B</span>
-            </button>
-            <button className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800" title="Italic">
-              <span className="italic">I</span>
-            </button>
-            <button className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800" title="Underline">
-              <span className="underline">U</span>
-            </button>
-            <button className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800" title="Quote">
-              <span className="font-serif">"</span>
-            </button>
-            <button className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800" title="Bulleted list">
-              <span>•</span>
-            </button>
-          </div>
-          <Textarea 
-            value={emailContent}
-            onChange={(e) => setEmailContent(e.target.value)}
-            className="min-h-[300px] font-sans text-sm"
-          />
-          <div className="text-xs text-right text-gray-500">
-            {emailContent.length} characters
-          </div>
-        </div>
-
-        <DialogFooter>
-          {!isReminder && (
-            <Button 
-              variant="outline" 
-              className="gap-2" 
-              onClick={handleCreateByExpert}
-              disabled={isGeneratingEmail}
-            >
-              <span className="text-purple-600 dark:text-purple-400">👨‍🎓</span>
-              Create by Our Expert
+        
+        <DialogFooter className="flex flex-wrap justify-between items-center gap-2">
+          <div className="flex gap-2">
+            {onCreateByExpert && (
+              <Button variant="outline" onClick={onCreateByExpert}>
+                <Sparkles className="mr-2 h-4 w-4" />
+                Create with AI
+              </Button>
+            )}
+            <Button variant="outline" onClick={handleExportAsDoc}>
+              <Download className="mr-2 h-4 w-4" />
+              Export as Doc
             </Button>
-          )}
-          <Button 
-            variant="outline" 
-            className="gap-2"
-            onClick={handleSaveEmail}
-          >
-            <Save className="h-4 w-4" />
-            Save
-          </Button>
-          <Button 
-            className="gap-2"
-            onClick={handleSendEmail}
-          >
-            <Send className="h-4 w-4" />
-            Send Email{isReminder ? " Reminder" : ""}
+            <Button variant="outline" onClick={handleCopy}>
+              <CopyCheck className={`mr-2 h-4 w-4 ${copied ? "text-green-500" : ""}`} />
+              {copied ? "Copied!" : "Copy Email"}
+            </Button>
+          </div>
+          
+          <Button onClick={handleSend}>
+            Send Email
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -138,36 +163,3 @@ const EmailCompositionDialog = ({
 };
 
 export default EmailCompositionDialog;
-
-// Helper function to generate default email templates
-function generateDefaultTemplate(professorName: string, isReminder: boolean): string {
-  if (isReminder) {
-    return `Dear Professor ${professorName},
-
-I hope this email finds you well. I am writing to follow up on my previous email regarding my interest in joining your research team.
-
-I understand that you must be very busy, but I wanted to check if you had a chance to review my application and materials.
-
-Thank you for your time and consideration. I look forward to your response.
-
-Best regards,
-[Your Name]
-`;
-  }
-  
-  return `Dear Professor ${professorName},
-
-I hope this email finds you well. My name is [Enter Your Full Name], and I am writing to express my strong interest in joining the [Enter the Ph.D. program] at Princeton University.
-
-I have completed my undergraduate studies with a GPA of [Enter your undergraduate GPA] and my graduate studies with a GPA of [Enter your graduate GPA]. My research interests align closely with your work in [Enter the specific research area], which I have followed and admired through your publications.
-
-I have published several papers in [Enter the journal names or conferences], and I am eager to contribute to your research team. Attached, please find my CV and copies of my publications for your review.
-
-Could you please let me know if you are currently looking for a Ph.D. student under your supervision? I would be thrilled to discuss how my background, skills, and research interests might align with your current projects.
-
-Thank you for your time and consideration. I look forward to your response.
-
-Best regards,
-[Your Name]
-`;
-}

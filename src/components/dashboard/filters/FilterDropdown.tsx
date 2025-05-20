@@ -1,116 +1,93 @@
 
-import { useState } from "react";
-import { Check, ChevronDown } from "lucide-react";
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ChevronDown, Check } from "lucide-react";
 
 interface FilterDropdownProps {
   label: string;
-  icon: React.ReactNode;
-  options: Array<string | { label: string; value: string; icon?: string }>;
-  onSelect: (value: string) => void;
+  options: string[];
   selectedValue?: string;
-  className?: string;
+  onSelect: (value: string) => void;
+  icon?: React.ReactNode;
+  buttonClassName?: string;
 }
 
 const FilterDropdown = ({
   label,
-  icon,
   options,
-  onSelect,
   selectedValue,
-  className
+  onSelect,
+  icon,
+  buttonClassName
 }: FilterDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleSelect = (value: string) => {
-    onSelect(value);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleOptionClick = (option: string) => {
+    onSelect(option);
     setIsOpen(false);
   };
 
-  const getSelectedLabel = () => {
-    if (!selectedValue) return label;
-
-    const option = options.find(opt => {
-      if (typeof opt === "string") return opt === selectedValue;
-      return opt.value === selectedValue;
-    });
-
-    if (!option) return label;
-
-    if (typeof option === "string") return option;
-    return option.label;
-  };
-
-  const getSelectedIcon = () => {
-    if (!selectedValue) return null;
-
-    const option = options.find(opt => {
-      if (typeof opt === "string") return false;
-      return opt.value === selectedValue && opt.icon;
-    });
-
-    if (!option || typeof option === "string") return null;
-    return option.icon;
-  };
-
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
-        <motion.button
-          whileHover={{ y: -3 }}
-          className={cn(
-            "flex items-center gap-2 px-4 py-2 rounded-full text-sm",
-            "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300",
-            "hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:shadow-sm",
-            "transition-all duration-300 ease-in-out focus:outline-none",
-            selectedValue && "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
-            className
-          )}
-          aria-label={`Filter by ${label}`}
-        >
-          <span>{icon}</span>
-          <span className="max-w-[120px] truncate">
-            {getSelectedIcon() ? (
-              <span className="mr-1">{getSelectedIcon()}</span>
-            ) : null}
-            {getSelectedLabel()}
-          </span>
-          <ChevronDown className="h-3.5 w-3.5 ml-1" />
-        </motion.button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="min-w-[200px] max-h-[300px] overflow-y-auto">
-        {options.map((option, index) => {
-          const isString = typeof option === "string";
-          const optionValue = isString ? option : option.value;
-          const optionLabel = isString ? option : option.label;
-          const optionIcon = !isString && option.icon ? option.icon : null;
-          
-          return (
-            <DropdownMenuItem
-              key={index}
-              className={cn(
-                "flex items-center justify-between cursor-pointer",
-                selectedValue === optionValue && "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
-              )}
-              onClick={() => handleSelect(optionValue)}
-            >
-              <div className="flex items-center gap-2">
-                {optionIcon && <span>{optionIcon}</span>}
-                <span>{optionLabel}</span>
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={toggleDropdown}
+        className={buttonClassName || `inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700`}
+      >
+        {icon && <span className="mr-2">{icon}</span>}
+        <span>{label}</span>
+        {selectedValue && (
+          <span className="ml-1 text-blue-600 dark:text-blue-400">: {selectedValue}</span>
+        )}
+        <ChevronDown className={`ml-2 h-4 w-4 transition-transform ${isOpen ? "transform rotate-180" : ""}`} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute left-0 z-10 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5">
+          <div className="py-1 max-h-60 overflow-auto" role="menu" aria-orientation="vertical">
+            {options.map((option) => (
+              <div
+                key={option}
+                className="flex items-center px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                onClick={() => handleOptionClick(option)}
+              >
+                <Checkbox
+                  id={`${label}-${option}`}
+                  checked={selectedValue === option}
+                  className="mr-2 h-4 w-4"
+                />
+                <label
+                  htmlFor={`${label}-${option}`}
+                  className="flex-grow cursor-pointer text-gray-700 dark:text-gray-300"
+                >
+                  {option}
+                </label>
+                {selectedValue === option && (
+                  <Check className="h-4 w-4 text-blue-500" />
+                )}
               </div>
-              {selectedValue === optionValue && <Check className="h-4 w-4" />}
-            </DropdownMenuItem>
-          );
-        })}
-      </DropdownMenuContent>
-    </DropdownMenu>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

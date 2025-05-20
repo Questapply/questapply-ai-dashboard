@@ -14,9 +14,10 @@ import EmailQuestionnaireFlow from "./EmailQuestionnaireFlow";
 interface Professor {
   id: number;
   name: string;
-  title: string;
+  university?: string;
   email?: string;
-  research: string[];
+  research?: string[];
+  title?: string;
 }
 
 interface ProfessorContactDialogProps {
@@ -71,7 +72,7 @@ const ProfessorContactDialog = ({
             >
               <Mail className="h-4 w-4" />
               <div className="flex-1 text-left">
-                <div>Create Email</div>
+                <div>Send Email</div>
                 <div className="text-xs opacity-70">Draft an email to the professor</div>
               </div>
             </Button>
@@ -111,6 +112,7 @@ const ProfessorContactDialog = ({
         professorName={professor.name}
         professorEmail={professorEmail}
         isReminder={true}
+        title="Send Reminder - Follow up on a previous email"
       />
       
       {/* Questionnaire Flow Dialog */}
@@ -118,7 +120,7 @@ const ProfessorContactDialog = ({
         open={questionnaireOpen}
         onOpenChange={setQuestionnaireOpen}
         professorName={professor.name}
-        professorResearch={professor.research}
+        professorResearch={professor.research || []}
         onComplete={handleQuestionnaireComplete}
       />
     </>
