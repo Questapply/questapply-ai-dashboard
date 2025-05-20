@@ -143,8 +143,8 @@ const RoadmapSection = () => {
   };
 
   return (
-    <div className="w-full bg-gradient-to-br from-gray-900 via-gray-800 to-black py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="w-full bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 py-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
         {/* Section Title - Styled to match "AI Meets Your Talent" */}
         <motion.h2 
           className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-white mb-4"
@@ -168,7 +168,7 @@ const RoadmapSection = () => {
         </motion.p>
         
         {/* Roadmap Container with updated styling to match AI Meets Your Talent section */}
-        <div className="max-w-full w-full mx-auto">
+        <div className="max-w-7xl mx-auto"> {/* Increased width to match AI Meets Your Talent */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -177,18 +177,18 @@ const RoadmapSection = () => {
           >
             <GradientCard 
               variant="dark" 
-              className="p-4 md:p-6 shadow-xl"
+              className="p-6 md:p-8 shadow-xl"
             >
               {/* Workflow Steps - Styled like n8n nodes with connector line */}
-              <div className="flex flex-nowrap justify-between mb-6 relative overflow-x-auto py-2 px-2">
+              <div className="flex flex-wrap justify-center mb-12 relative">
                 {/* Connector Lines */}
                 <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform -translate-y-1/2 z-0"></div>
                 
                 {/* n8n styled steps */}
                 {steps.map((step, index) => (
-                  <div key={step.id} className="relative z-10 px-1 mb-4 md:mb-0 flex-shrink-0">
+                  <div key={step.id} className="relative z-10 px-2 mb-6 md:mb-0">
                     <motion.button
-                      className={`relative flex flex-col items-center justify-center w-20 h-24 md:w-24 md:h-28 p-2 rounded-lg transition-all duration-300 whitespace-nowrap
+                      className={`relative flex flex-col items-center justify-center w-24 h-24 sm:w-28 sm:h-28 p-4 rounded-lg transition-all duration-300
                         ${activeStep === step.id 
                           ? 'bg-gray-800 shadow-lg border-2 border-white/20 dark:bg-gray-800/90' 
                           : 'bg-gray-800/80 hover:bg-gray-800 border border-gray-700/50 hover:border-purple-500/50 dark:bg-gray-800/60 dark:hover:bg-gray-800/80'}`}
@@ -211,7 +211,7 @@ const RoadmapSection = () => {
                       
                       {/* Icon */}
                       <div 
-                        className="w-10 h-10 rounded-full flex items-center justify-center mb-2"
+                        className="w-12 h-12 rounded-full flex items-center justify-center mb-2"
                         style={{ backgroundColor: `${step.color}30` }}
                       >
                         <div style={{ color: step.color }}>
@@ -220,7 +220,7 @@ const RoadmapSection = () => {
                       </div>
                       
                       {/* Step Title */}
-                      <span className="text-xs font-medium text-white text-center">
+                      <span className="text-sm font-medium text-white text-center">
                         {step.title}
                       </span>
                       
@@ -234,16 +234,16 @@ const RoadmapSection = () => {
               </div>
               
               {/* Dynamic Content Area - Fixed height with scrolling */}
-              <div className="mt-6">
+              <div className="mt-8">
                 <ScrollArea className="h-[500px] rounded-md">
                   {activeStep === 1 && showFindSchools && (
-                    <div className="space-y-6 px-1">
+                    <div className="space-y-8 px-2">
                       <FindSchools />
                     </div>
                   )}
                   
                   {activeStep === 2 && (
-                    <div className="space-y-6 px-1">
+                    <div className="space-y-8 px-2">
                       {/* Filters */}
                       <motion.div 
                         className="flex flex-wrap gap-2 p-4 bg-gray-800/50 rounded-lg"
