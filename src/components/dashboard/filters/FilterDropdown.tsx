@@ -3,9 +3,11 @@ import { useState, useRef, useEffect } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChevronDown, Check } from "lucide-react";
 
+type FilterOption = string | { value: string; label: string; icon?: string };
+
 interface FilterDropdownProps {
   label: string;
-  options: string[];
+  options: FilterOption[];
   selectedValue?: string;
   onSelect: (value: string) => void;
   icon?: React.ReactNode;
@@ -40,9 +42,15 @@ const FilterDropdown = ({
     setIsOpen(!isOpen);
   };
 
-  const handleOptionClick = (option: string) => {
-    onSelect(option);
+  const handleOptionClick = (option: FilterOption) => {
+    const optionValue = typeof option === 'string' ? option : option.value;
+    onSelect(optionValue);
     setIsOpen(false);
+  };
+
+  // Helper function to get display text for an option
+  const getOptionLabel = (option: FilterOption): string => {
+    return typeof option === 'string' ? option : option.label;
   };
 
   return (
@@ -62,28 +70,33 @@ const FilterDropdown = ({
       {isOpen && (
         <div className="absolute left-0 z-10 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5">
           <div className="py-1 max-h-60 overflow-auto" role="menu" aria-orientation="vertical">
-            {options.map((option) => (
-              <div
-                key={option}
-                className="flex items-center px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-                onClick={() => handleOptionClick(option)}
-              >
-                <Checkbox
-                  id={`${label}-${option}`}
-                  checked={selectedValue === option}
-                  className="mr-2 h-4 w-4"
-                />
-                <label
-                  htmlFor={`${label}-${option}`}
-                  className="flex-grow cursor-pointer text-gray-700 dark:text-gray-300"
+            {options.map((option, index) => {
+              const optionLabel = getOptionLabel(option);
+              const optionValue = typeof option === 'string' ? option : option.value;
+              
+              return (
+                <div
+                  key={index}
+                  className="flex items-center px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                  onClick={() => handleOptionClick(option)}
                 >
-                  {option}
-                </label>
-                {selectedValue === option && (
-                  <Check className="h-4 w-4 text-blue-500" />
-                )}
-              </div>
-            ))}
+                  <Checkbox
+                    id={`${label}-${optionValue}`}
+                    checked={selectedValue === optionValue}
+                    className="mr-2 h-4 w-4"
+                  />
+                  <label
+                    htmlFor={`${label}-${optionValue}`}
+                    className="flex-grow cursor-pointer text-gray-700 dark:text-gray-300"
+                  >
+                    {optionLabel}
+                  </label>
+                  {selectedValue === optionValue && (
+                    <Check className="h-4 w-4 text-blue-500" />
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

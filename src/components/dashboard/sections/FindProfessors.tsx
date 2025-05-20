@@ -155,12 +155,12 @@ const FindProfessors = () => {
         <div className="flex flex-wrap gap-2">
           {[
             {label: "Country", icon: filterIcons.country, options: countryOptions},
-            {label: "State", icon: filterIcons.state, options: usStatesOptions.map(state => state.toString())},
-            {label: "Schools", icon: filterIcons.schools, options: schoolsOptions.map(school => school.toString())},
-            {label: "Area of Study", icon: filterIcons.areaOfStudy, options: areaOfStudyOptions.map(area => area.toString())},
-            {label: "Programs", icon: filterIcons.programs, options: programOptions.map(program => program.toString())},
-            {label: "Research Interest", icon: filterIcons.researchInterest, options: researchInterestOptions.map(interest => interest.toString())},
-            {label: "Title", icon: filterIcons.title, options: professorTitleOptions.map(title => title.toString())}
+            {label: "State", icon: filterIcons.state, options: usStatesOptions},
+            {label: "Schools", icon: filterIcons.schools, options: schoolsOptions},
+            {label: "Area of Study", icon: filterIcons.areaOfStudy, options: areaOfStudyOptions},
+            {label: "Programs", icon: filterIcons.programs, options: programOptions},
+            {label: "Research Interest", icon: filterIcons.researchInterest, options: researchInterestOptions},
+            {label: "Title", icon: filterIcons.title, options: professorTitleOptions}
           ].map((filter, idx) => (
             <FilterDropdown 
               key={idx}
