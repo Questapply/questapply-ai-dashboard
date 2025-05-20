@@ -39,10 +39,10 @@ const NavigationButtons = ({
 }: NavigationButtonsProps) => {
   return (
     <div className="mb-8 flex overflow-x-auto pb-2 scrollbar-hide">
-      <div className="flex space-x-1.5 md:space-x-2">
+      <div className="flex space-x-2">
         <Button
           variant={isQuestApplyAI ? "default" : "outline"}
-          className={`flex flex-col items-center gap-1.5 min-w-max transition-all duration-300 relative ${
+          className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 relative ${
             isQuestApplyAI 
               ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
               : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
@@ -59,7 +59,7 @@ const NavigationButtons = ({
         
         <Button
           variant={activeSection === "ai-talent-test" ? "default" : "outline"}
-          className={`flex flex-col items-center gap-1.5 min-w-max transition-all duration-300 ${
+          className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "ai-talent-test" 
               ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
               : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
@@ -73,7 +73,7 @@ const NavigationButtons = ({
         
         <Button
           variant={activeSection === "find-schools" ? "default" : "outline"}
-          className={`flex flex-col items-center gap-1.5 min-w-max transition-all duration-300 ${
+          className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-schools" 
               ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
               : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
@@ -87,7 +87,7 @@ const NavigationButtons = ({
         
         <Button
           variant={activeSection === "find-programs" ? "default" : "outline"}
-          className={`flex flex-col items-center gap-1.5 min-w-max transition-all duration-300 ${
+          className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-programs" 
               ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
               : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
@@ -101,7 +101,7 @@ const NavigationButtons = ({
         
         <Button
           variant={activeSection === "find-professors" ? "default" : "outline"}
-          className={`flex flex-col items-center gap-1.5 min-w-max transition-all duration-300 ${
+          className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-professors" 
               ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
               : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
@@ -115,7 +115,7 @@ const NavigationButtons = ({
         
         <Button
           variant={activeSection === "create-resume" ? "default" : "outline"}
-          className={`flex flex-col items-center gap-1.5 min-w-max transition-all duration-300 ${
+          className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-resume" 
               ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
               : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
@@ -129,7 +129,7 @@ const NavigationButtons = ({
         
         <Button
           variant={activeSection === "create-sop" ? "default" : "outline"}
-          className={`flex flex-col items-center gap-1.5 min-w-max transition-all duration-300 ${
+          className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-sop" 
               ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
               : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
@@ -143,7 +143,7 @@ const NavigationButtons = ({
         
         <Button
           variant={activeSection === "create-lor" ? "default" : "outline"}
-          className={`flex flex-col items-center gap-1.5 min-w-max transition-all duration-300 ${
+          className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-lor" 
               ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
               : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
@@ -157,7 +157,7 @@ const NavigationButtons = ({
         
         <Button
           variant={activeSection === "apply-now" ? "default" : "outline"}
-          className={`flex flex-col items-center gap-1.5 min-w-max transition-all duration-300 ${
+          className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "apply-now" 
               ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
               : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
