@@ -108,6 +108,7 @@ const Dashboard = () => {
             isQuestApplyAI={isQuestApplyAI}
             isDarkMode={isDarkMode}
             filterOptions={filterOptions}
+            activeSection={activeSection}
           />
         </div>
 

@@ -12,6 +12,7 @@ interface ChatBoxProps {
   isQuestApplyAI: boolean;
   isDarkMode: boolean;
   filterOptions: FilterOption[] | null;
+  activeSection?: string; // Add this to determine which section we're in
 }
 
 interface QuickQuestion {
@@ -24,7 +25,8 @@ const ChatBox = ({
   setSearchQuery, 
   isQuestApplyAI, 
   isDarkMode,
-  filterOptions 
+  filterOptions,
+  activeSection 
 }: ChatBoxProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [typingEffect, setTypingEffect] = useState("");
@@ -32,6 +34,23 @@ const ChatBox = ({
   const [activeGenerator, setActiveGenerator] = useState<"sop" | "cv" | null>(null);
   
   const welcomeMessage = "Hello! I'm here to help with your application. Let's start with Step 1: Find Schools. What would you like to search?";
+
+  // Define suggested searches based on activeSection
+  const getSuggestedSearches = () => {
+    if (activeSection === "find-programs") {
+      return [
+        "Which top US CS PhD programs match my profile?",
+        "What are the best Canadian CS PhD programs for my field?",
+        "Which top UK CS PhD programs suit my academic goals?"
+      ];
+    } else {
+      return [
+        "Which top universities in the US match my profile?",
+        "What are the best universities in Canada for my field?",
+        "Which top UK universities suit my academic goals?"
+      ];
+    }
+  };
 
   useEffect(() => {
     if (isQuestApplyAI) {
@@ -59,6 +78,8 @@ const ChatBox = ({
   const closeGenerator = () => {
     setActiveGenerator(null);
   };
+
+  const suggestedSearches = getSuggestedSearches();
 
   return (
     <div className="relative">
@@ -141,21 +162,16 @@ const ChatBox = ({
         } rounded-lg shadow-lg border p-4 z-10 animate-fade-in`}>
           <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">Suggested searches</div>
           <div className="space-y-2">
-            <div className={`cursor-pointer p-2 ${
-              isDarkMode ? "hover:bg-teal-900/20 text-gray-300" : "hover:bg-teal-50 text-gray-700"
-            } rounded-md transition-colors duration-200`}>
-              Which top universities in the US match my profile?
-            </div>
-            <div className={`cursor-pointer p-2 ${
-              isDarkMode ? "hover:bg-teal-900/20 text-gray-300" : "hover:bg-teal-50 text-gray-700"
-            } rounded-md transition-colors duration-200`}>
-              What are the best universities in Canada for my field?
-            </div>
-            <div className={`cursor-pointer p-2 ${
-              isDarkMode ? "hover:bg-teal-900/20 text-gray-300" : "hover:bg-teal-50 text-gray-700"
-            } rounded-md transition-colors duration-200`}>
-              Which top UK universities suit my academic goals?
-            </div>
+            {suggestedSearches.map((text, index) => (
+              <div 
+                key={index}
+                className={`cursor-pointer p-2 ${
+                  isDarkMode ? "hover:bg-teal-900/20 text-gray-300" : "hover:bg-teal-50 text-gray-700"
+                } rounded-md transition-colors duration-200`}
+              >
+                {text}
+              </div>
+            ))}
           </div>
         </div>
       )}
