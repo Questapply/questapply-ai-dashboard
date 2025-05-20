@@ -180,7 +180,7 @@ const RoadmapSection = () => {
               variant="talent-section" 
               className="p-4 md:p-6 shadow-xl w-full dark:bg-gray-800 bg-white/90"
             >
-              {/* Updated Button Layout - n8n-style horizontal line of connected steps */}
+              {/* Updated Button Layout - with icons above text */}
               <div className="flex justify-center items-center my-6 px-3 py-2">
                 <div className="flex flex-wrap justify-center gap-2 w-full">
                   {steps.map((step, index) => (
@@ -188,7 +188,7 @@ const RoadmapSection = () => {
                       {/* Button */}
                       <motion.button
                         className={cn(
-                          "relative flex items-center gap-2 px-4 py-4 rounded-md text-sm md:text-base transition-all duration-300",
+                          "relative flex flex-col items-center justify-center px-4 py-4 rounded-md text-sm md:text-base transition-all duration-300",
                           "border border-gray-200 dark:border-gray-700",
                           activeStep === step.id 
                             ? "bg-purple-600 text-white border-purple-700 shadow-md shadow-purple-500/20" 
@@ -202,13 +202,14 @@ const RoadmapSection = () => {
                         style={{
                           width: `calc(${100 / steps.length}% - 8px)`,
                           minWidth: '130px',
-                          maxWidth: '160px'
+                          maxWidth: '160px',
+                          height: '90px' // Increased height to accommodate vertical layout
                         }}
                       >
-                        {/* Icon */}
+                        {/* Icon - Now positioned above text */}
                         <span 
                           className={cn(
-                            "flex items-center justify-center h-7 w-7 rounded-md",
+                            "flex items-center justify-center h-8 w-8 rounded-md mb-2",
                             activeStep === step.id ? "text-white" : ""
                           )}
                           style={{ color: activeStep === step.id ? "#ffffff" : step.color }}
@@ -217,7 +218,7 @@ const RoadmapSection = () => {
                         </span>
                         
                         {/* Step Title */}
-                        <span className="font-medium whitespace-nowrap">
+                        <span className="font-medium whitespace-nowrap text-center">
                           {step.title}
                         </span>
                       </motion.button>
@@ -585,3 +586,4 @@ const RoadmapSection = () => {
 };
 
 export default RoadmapSection;
+
