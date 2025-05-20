@@ -23,7 +23,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ProfessorContactDialog from "@/components/dashboard/sections/professors/ProfessorContactDialog";
+import ProfessorReminderDialog from "@/components/dashboard/sections/professors/ProfessorReminderDialog";
 import ChatBox from "@/components/dashboard/ChatBox";
+
+// Define the Professor interface to match what's needed for the dialogs
+interface Professor {
+  id: number;
+  name: string;
+  title: string;
+  university: string;
+  email: string;
+  photoUrl: string;
+  country?: string;
+  department?: string;
+  research?: string[];
+  scholarUrl?: string;
+  websiteUrl?: string;
+  responseStatus?: string;
+  lastContacted?: string;
+  favorite?: boolean;
+}
 
 const Professors = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -32,6 +51,7 @@ const Professors = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeContactProfessor, setActiveContactProfessor] = useState<number | null>(null);
+  const [activeReminderProfessor, setActiveReminderProfessor] = useState<number | null>(null);
   
   const toggleTheme = () => {
     const newDarkMode = !isDarkMode;
@@ -44,17 +64,18 @@ const Professors = () => {
     }
   };
   
-  // Sample professors data
-  const professors = [
+  // Updated professors data with title and photoUrl properties
+  const professors: Professor[] = [
     {
       id: 1,
       name: "Dr. Sarah Johnson",
+      title: "Associate Professor", // Added required title field
       university: "Massachusetts Institute of Technology",
       country: "USA",
       department: "Computer Science",
       research: ["Artificial Intelligence", "Machine Learning"],
       email: "sjohnson@mit.edu",
-      image: "/placeholder.svg",
+      photoUrl: "/placeholder.svg", // Renamed from image to photoUrl
       scholarUrl: "https://scholar.google.com/scholar?q=author:johnson",
       websiteUrl: "https://mit.edu/sjohnson",
       responseStatus: "responded", // responded, pending, declined
@@ -64,12 +85,13 @@ const Professors = () => {
     {
       id: 2,
       name: "Prof. Michael Chen",
+      title: "Professor", // Added required title field
       university: "Stanford University",
       country: "USA",
       department: "Data Science",
       research: ["Big Data Analytics", "Statistical Learning"],
       email: "mchen@stanford.edu",
-      image: "/placeholder.svg",
+      photoUrl: "/placeholder.svg", // Renamed from image to photoUrl
       scholarUrl: "https://scholar.google.com/scholar?q=author:chen",
       websiteUrl: "https://stanford.edu/mchen",
       responseStatus: "pending",
@@ -79,12 +101,13 @@ const Professors = () => {
     {
       id: 3,
       name: "Dr. Rachel Williams",
+      title: "Associate Professor", // Added required title field
       university: "Harvard University",
       country: "USA",
       department: "Computer Science",
       research: ["Human-Computer Interaction", "UX Research"],
       email: "rwilliams@harvard.edu",
-      image: "/placeholder.svg",
+      photoUrl: "/placeholder.svg", // Renamed from image to photoUrl
       scholarUrl: "https://scholar.google.com/scholar?q=author:williams",
       websiteUrl: "https://harvard.edu/rwilliams",
       responseStatus: "declined",
@@ -94,12 +117,13 @@ const Professors = () => {
     {
       id: 4,
       name: "Prof. David Martinez",
+      title: "Professor", // Added required title field
       university: "University of California, Berkeley",
       country: "USA",
       department: "Electrical Engineering",
       research: ["Robotics", "Computer Vision"],
       email: "dmartinez@berkeley.edu",
-      image: "/placeholder.svg",
+      photoUrl: "/placeholder.svg", // Renamed from image to photoUrl
       scholarUrl: "https://scholar.google.com/scholar?q=author:martinez",
       websiteUrl: "https://berkeley.edu/dmartinez",
       responseStatus: "pending",
@@ -129,6 +153,10 @@ const Professors = () => {
 
   const handleSendEmail = (professorId: number) => {
     setActiveContactProfessor(professorId);
+  };
+  
+  const handleSendReminder = (professorId: number) => {
+    setActiveReminderProfessor(professorId);
   };
 
   return (
@@ -203,7 +231,7 @@ const Professors = () => {
                   {/* Profile photo */}
                   <div className="w-20 h-20 relative">
                     <img 
-                      src={professor.image} 
+                      src={professor.photoUrl} 
                       alt={professor.name} 
                       className="rounded-full w-full h-full object-cover"
                     />
@@ -235,7 +263,7 @@ const Professors = () => {
                           <DropdownMenuItem className="cursor-pointer">
                             Create Email
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer">
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => handleSendReminder(professor.id)}>
                             Send Reminder
                           </DropdownMenuItem>
                           <DropdownMenuItem className="cursor-pointer">
@@ -294,7 +322,7 @@ const Professors = () => {
                       size="sm" 
                       variant="outline" 
                       className="flex items-center gap-1"
-                      onClick={() => handleSendEmail(professor.id)}
+                      onClick={() => handleSendReminder(professor.id)}
                     >
                       <Clock className="h-4 w-4" />
                       <span>Remind</span>
@@ -321,6 +349,15 @@ const Professors = () => {
           open={activeContactProfessor !== null}
           onOpenChange={() => setActiveContactProfessor(null)}
           professor={professors.find(p => p.id === activeContactProfessor) || professors[0]}
+        />
+      )}
+      
+      {/* Professor Reminder Dialog */}
+      {activeReminderProfessor && (
+        <ProfessorReminderDialog
+          open={activeReminderProfessor !== null}
+          onOpenChange={() => setActiveReminderProfessor(null)}
+          professor={professors.find(p => p.id === activeReminderProfessor) || professors[0]}
         />
       )}
     </DashboardLayout>
