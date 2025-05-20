@@ -317,62 +317,25 @@ const MySOP = () => {
                       <DropdownMenuContent className="w-56">
                         <DropdownMenuLabel>Challenges</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuCheckboxItem
-                          checked={challenges.includes("No")}
-                          onCheckedChange={() => 
-                            handleCheckboxChange("No", challenges, setChallenges)
-                          }
-                        >
-                          No
-                        </DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem
-                          checked={challenges.includes("Low GPA")}
-                          onCheckedChange={() => 
-                            handleCheckboxChange("Low GPA", challenges, setChallenges)
-                          }
-                        >
-                          Low GPA
-                        </DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem
-                          checked={challenges.includes("Low grades in certain subjects")}
-                          onCheckedChange={() => 
-                            handleCheckboxChange("Low grades in certain subjects", challenges, setChallenges)
-                          }
-                        >
-                          Low grades in certain subjects
-                        </DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem
-                          checked={challenges.includes("Low grade in one or a few courses")}
-                          onCheckedChange={() => 
-                            handleCheckboxChange("Low grade in one or a few courses", challenges, setChallenges)
-                          }
-                        >
-                          Low grade in one or a few courses
-                        </DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem
-                          checked={challenges.includes("Academic probation")}
-                          onCheckedChange={() => 
-                            handleCheckboxChange("Academic probation", challenges, setChallenges)
-                          }
-                        >
-                          Academic probation
-                        </DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem
-                          checked={challenges.includes("Course withdrawals")}
-                          onCheckedChange={() => 
-                            handleCheckboxChange("Course withdrawals", challenges, setChallenges)
-                          }
-                        >
-                          Course withdrawals
-                        </DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem
-                          checked={challenges.includes("Gaps in education")}
-                          onCheckedChange={() => 
-                            handleCheckboxChange("Gaps in education", challenges, setChallenges)
-                          }
-                        >
-                          Gaps in education
-                        </DropdownMenuCheckboxItem>
+                        {[
+                          "No",
+                          "Low GPA",
+                          "Low grades in certain subjects",
+                          "Low grade in one or a few courses",
+                          "Academic probation",
+                          "Course withdrawals",
+                          "Gaps in education"
+                        ].map((item) => (
+                          <DropdownMenuCheckboxItem
+                            key={item}
+                            checked={challenges.includes(item)}
+                            onCheckedChange={() => 
+                              handleCheckboxChange(item, challenges, setChallenges)
+                            }
+                          >
+                            {item}
+                          </DropdownMenuCheckboxItem>
+                        ))}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
