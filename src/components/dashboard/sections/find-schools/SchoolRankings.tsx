@@ -15,13 +15,13 @@ const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
     the: "THE"
   };
 
-  // Map for text colors based on ranking service
+  // Map for vibrant background colors based on ranking service
   const rankingColors: Record<string, string> = {
-    qs: "text-amber-400",
-    usNews: "text-red-400",
-    forbes: "text-blue-400",
-    shanghai: "text-green-400",
-    the: "text-purple-400"
+    qs: "bg-orange-500",
+    usNews: "bg-red-600",
+    forbes: "bg-blue-600",
+    shanghai: "bg-green-600",
+    the: "bg-purple-600"
   };
 
   return (
@@ -37,9 +37,9 @@ const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
             className="flex flex-col items-center"
           >
             <div 
-              className={`w-8 h-8 bg-[#1A1A1A] rounded flex items-center justify-center shadow-lg`}
+              className={`w-12 h-8 ${rankingColors[key]} rounded flex items-center justify-center shadow-lg`}
             >
-              <span className={`font-bold text-xs ${rankingColors[key]}`}>{rankingLabels[key]}</span>
+              <span className="font-bold text-xs text-white">{rankingLabels[key]}</span>
             </div>
             <div className="text-center mt-1">
               <span className="text-xs font-medium text-white">#{value}</span>
