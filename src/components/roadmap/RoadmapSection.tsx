@@ -50,49 +50,49 @@ const RoadmapSection = () => {
   const [showApplicationForm, setShowApplicationForm] = useState(false);
   const [showFindSchools, setShowFindSchools] = useState(false);
 
-  // Step data
+  // Step data with new color scheme
   const steps = [
     { 
       id: 1, 
       title: "Find Schools", 
-      icon: <Search className="h-5 w-5" />,
+      icon: <Search className="h-6 w-6" />,
       color: "#6366f1"
     },
     { 
       id: 2, 
       title: "Find Programs", 
-      icon: <BookOpen className="h-5 w-5" />,
-      color: "#8b5cf6" 
+      icon: <BookOpen className="h-6 w-6" />,
+      color: "#ec4899" 
     },
     { 
       id: 3, 
       title: "Find Professors", 
-      icon: <User className="h-5 w-5" />,
-      color: "#ec4899" 
+      icon: <User className="h-6 w-6" />,
+      color: "#f97316" 
     },
     { 
       id: 4, 
       title: "Create Resume", 
-      icon: <FileText className="h-5 w-5" />,
-      color: "#14b8a6" 
+      icon: <FileText className="h-6 w-6" />,
+      color: "#10b981" 
     },
     { 
       id: 5, 
       title: "Create SOP", 
-      icon: <FileText className="h-5 w-5" />,
+      icon: <FileText className="h-6 w-6" />,
       color: "#0ea5e9" 
     },
     { 
       id: 6, 
       title: "Create LOR", 
-      icon: <FileText className="h-5 w-5" />,
-      color: "#f59e0b" 
+      icon: <FileText className="h-6 w-6" />,
+      color: "#14b8a6" 
     },
     { 
       id: 7, 
       title: "Apply Now", 
-      icon: <Send className="h-5 w-5" />,
-      color: "#10b981" 
+      icon: <Send className="h-6 w-6" />,
+      color: "#84cc16" 
     }
   ];
 
@@ -166,8 +166,8 @@ const RoadmapSection = () => {
           A smart, step-by-step guide that uses AI to help you reach your educational and career goals.
         </motion.p>
         
-        {/* Roadmap Container with updated width to match AI Meets Your Talent section */}
-        <div className="max-w-5xl mx-auto"> 
+        {/* Roadmap Container with exact width of 1216px */}
+        <div className="w-full max-w-[1216px] mx-auto"> 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -176,57 +176,43 @@ const RoadmapSection = () => {
           >
             <GradientCard 
               variant="talent-section" 
-              className="p-1 md:p-2 shadow-xl"
+              className="p-1 md:p-2 shadow-xl w-full"
             >
-              {/* Workflow Steps - Styled like n8n nodes with connector line */}
-              <div className="flex justify-between mb-6 relative px-1 md:px-2">
-                {/* Connector Line - Now straighter and more precise */}
-                <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform -translate-y-1/2 z-0"></div>
-                
-                {/* n8n styled steps with adjusted width and spacing */}
-                {steps.map((step, index) => (
-                  <div key={step.id} className="relative z-10 px-0 mb-6 md:mb-0">
+              {/* New Button Layout - Fixed sizes, equal spacing, no connector line */}
+              <div className="flex justify-center items-center my-6 px-2 h-[80px]">
+                {steps.map((step) => (
+                  <div 
+                    key={step.id} 
+                    className="mx-[10px]"
+                  >
                     <motion.button
-                      className={`relative flex flex-col items-center justify-center w-16 h-16 sm:w-18 sm:h-18 rounded-lg transition-all duration-300 
-                        ${activeStep === step.id 
-                          ? 'dark:bg-gray-800 bg-gray-100 shadow-lg border-2 dark:border-white/20 border-gray-300/60' 
-                          : 'dark:bg-gray-800/80 dark:hover:bg-gray-800 dark:border-gray-700/50 dark:hover:border-purple-500/50 bg-white/90 hover:bg-gray-50 border border-gray-200/70 hover:border-purple-300/50'}`}
+                      className={`relative flex flex-col items-center justify-center w-[120px] h-[60px] rounded-[10px] transition-all duration-300 border-2`}
+                      style={{ 
+                        borderColor: step.color,
+                        backgroundColor: activeStep === step.id ? `${step.color}20` : '#2A1F4D'
+                      }}
                       onClick={() => handleStepClick(step.id)}
                       whileHover={{ 
                         scale: 1.05, 
-                        boxShadow: "0 0 15px rgba(139, 92, 246, 0.3)",
+                        boxShadow: `0 0 15px ${step.color}50`,
                         transition: { duration: 0.2 }
                       }}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.1 * index }}
-                      viewport={{ once: true }}
                     >
-                      {/* Node indicator dot */}
-                      <div 
-                        className={`absolute top-0 right-0 w-3 h-3 rounded-full mr-1 mt-1 
-                          ${activeStep === step.id ? 'bg-green-400 animate-pulse' : 'bg-gray-400'}`}
-                      ></div>
-                      
                       {/* Icon */}
                       <div 
-                        className="w-8 h-8 rounded-full flex items-center justify-center mb-1"
-                        style={{ backgroundColor: `${step.color}30` }}
+                        className="mt-[10px]"
+                        style={{ color: step.color }}
                       >
-                        <div style={{ color: step.color }}>
-                          {step.icon}
-                        </div>
+                        {step.icon}
                       </div>
                       
-                      {/* Step Title - No text wrapping with optimal width */}
-                      <span className="text-[10px] font-medium dark:text-white text-gray-700 text-center whitespace-nowrap">
+                      {/* Step Title */}
+                      <span 
+                        className="text-[14px] font-medium mt-[5px] text-center whitespace-nowrap"
+                        style={{ color: activeStep === step.id ? step.color : '#fff' }}
+                      >
                         {step.title}
                       </span>
-                      
-                      {/* Step Number */}
-                      <div className="absolute -top-2 -left-2 w-5 h-5 rounded-full dark:bg-gray-700 bg-gray-200 flex items-center justify-center dark:border-gray-600 border-gray-300 border text-xs dark:text-white text-gray-700">
-                        {step.id}
-                      </div>
                     </motion.button>
                   </div>
                 ))}
