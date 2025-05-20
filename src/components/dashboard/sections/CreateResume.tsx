@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 import { BookOpen, FileText, Image, Wand, University, Trophy, FileSearch } from "lucide-react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import ResumeGuidance from "@/components/dashboard/sections/resume/ResumeGuidance";
 import ResumeTemplates from "@/components/dashboard/sections/resume/ResumeTemplates";
 import MyResumes from "@/components/dashboard/sections/resume/MyResumes";
@@ -24,9 +24,7 @@ const resumeTabs = [
 ];
 
 const CreateResume = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-  
+  const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || "guidance";
   const [activeTab, setActiveTab] = useState(initialTab);
 
@@ -38,18 +36,12 @@ const CreateResume = () => {
     }
   }, [searchParams]);
 
-  // Update URL when active tab changes
-  const handleTabChange = (value: string) => {
-    setActiveTab(value);
-    setSearchParams({ tab: value });
-  };
-
   return (
     <div className="animate-fade-in">
       <Tabs 
         defaultValue={activeTab} 
         value={activeTab}
-        onValueChange={handleTabChange}
+        onValueChange={setActiveTab}
         className="w-full"
       >
         <div className="relative border-b border-gray-200 dark:border-gray-700">

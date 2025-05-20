@@ -89,25 +89,21 @@ const ResumeTemplates = () => {
   const handleUseTemplate = (templateId: string, templateName: string) => {
     setIsLoading(templateId);
     
-    // Simulate creating a new resume with the selected template
+    // Simulate loading
     setTimeout(() => {
       setIsLoading(null);
+      // Switch to myResumes tab and show toast notification
+      navigate('/dashboard');
       
-      // Store selected template in localStorage to use it in the MyResumes component
-      const existingResumes = JSON.parse(localStorage.getItem('userResumes') || '[]');
-      const newResume = {
-        id: Date.now().toString(),
-        type: templateId,
-        name: templateName,
-        lastUpdated: new Date().toISOString()
-      };
-      localStorage.setItem('userResumes', JSON.stringify([...existingResumes, newResume]));
-      localStorage.setItem('activeResumeId', newResume.id);
-      
-      // Navigate to myResumes tab
-      navigate('/dashboard?tab=myResumes');
-      
-      toast.success(`${templateName} template selected successfully`);
+      // Using setTimeout to ensure navigation happens before DOM manipulation
+      setTimeout(() => {
+        // Find and click the My Resumes tab
+        const myResumesTab = document.querySelector('[value="myResumes"]') as HTMLElement;
+        if (myResumesTab) {
+          myResumesTab.click();
+          toast.success(`${templateName} template selected successfully`);
+        }
+      }, 100);
     }, 1000);
   };
 
