@@ -1,102 +1,162 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface ProgressCircleProps {
   value: number;
   size?: "sm" | "md" | "lg";
-  color?: "red" | "green" | "blue" | "purple" | "orange";
-  label?: string;
   strokeWidth?: number;
-  isPercentage?: boolean;
+  color?: "purple" | "blue" | "green" | "red" | "yellow" | "gray";
+  showValue?: boolean;
+  label?: string;
+  className?: string;
+  valueClassName?: string;
+  labelClassName?: string;
 }
 
-const ProgressCircle = ({
+export const ProgressCircle: React.FC<ProgressCircleProps> = ({
   value,
   size = "md",
-  color = "blue",
-  label,
   strokeWidth = 4,
-  isPercentage = true
-}: ProgressCircleProps) => {
+  color = "purple",
+  showValue = true,
+  label,
+  className,
+  valueClassName,
+  labelClassName
+}) => {
+  const [progress, setProgress] = useState(0);
+  
+  useEffect(() => {
+    // Animate the progress
+    setProgress(0);
+    const timer = setTimeout(() => {
+      setProgress(value);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [value]);
+  
+  // Size configs
   const sizeMap = {
-    sm: 60,
-    md: 80,
-    lg: 100
-  };
-
-  const fontSizeMap = {
-    sm: "text-sm",
-    md: "text-lg",
-    lg: "text-xl"
-  };
-
-  const colorMap = {
-    red: {
-      stroke: "stroke-red-500",
-      text: "text-red-400",
-      bgStroke: "stroke-red-900/30"
+    sm: {
+      width: 64,
+      height: 64,
+      textSize: "text-lg",
+      labelSize: "text-xs"
     },
-    green: {
-      stroke: "stroke-green-500",
-      text: "text-green-400",
-      bgStroke: "stroke-green-900/30"
+    md: {
+      width: 80,
+      height: 80,
+      textSize: "text-xl",
+      labelSize: "text-sm"
+    },
+    lg: {
+      width: 120,
+      height: 120,
+      textSize: "text-3xl",
+      labelSize: "text-sm"
+    }
+  };
+  
+  // Color configs
+  const colorMap = {
+    purple: {
+      stroke: "stroke-purple-500",
+      bg: "stroke-purple-900/30",
+      text: "text-purple-400"
     },
     blue: {
       stroke: "stroke-blue-500",
-      text: "text-blue-400",
-      bgStroke: "stroke-blue-900/30"
+      bg: "stroke-blue-900/30",
+      text: "text-blue-400"
     },
-    purple: {
-      stroke: "stroke-purple-500",
-      text: "text-purple-400",
-      bgStroke: "stroke-purple-900/30"
+    green: {
+      stroke: "stroke-green-500",
+      bg: "stroke-green-900/30",
+      text: "text-green-400"
     },
-    orange: {
-      stroke: "stroke-orange-500",
-      text: "text-orange-400",
-      bgStroke: "stroke-orange-900/30"
+    red: {
+      stroke: "stroke-red-500",
+      bg: "stroke-red-900/30",
+      text: "text-red-400"
+    },
+    yellow: {
+      stroke: "stroke-yellow-500",
+      bg: "stroke-yellow-900/30",
+      text: "text-yellow-400"
+    },
+    gray: {
+      stroke: "stroke-gray-500",
+      bg: "stroke-gray-900/30",
+      text: "text-gray-400"
     }
   };
-
-  // SVG circle parameters
-  const actualSize = sizeMap[size];
-  const radius = (actualSize / 2) - strokeWidth;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (value / 100) * circumference;
-
+  
+  const selectedSize = sizeMap[size];
+  const selectedColor = colorMap[color];
+  
+  const radius = (selectedSize.width - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  
   return (
-    <div className="flex flex-col items-center">
-      <div className="relative" style={{ width: actualSize, height: actualSize }}>
-        {/* Background circle */}
-        <svg
-          width={actualSize}
-          height={actualSize}
-          viewBox={`0 0 ${actualSize} ${actualSize}`}
-          className="rotate-[-90deg]"
+    <div className={cn("flex flex-col items-center", className)}>
+      <div className="relative" style={{ width: selectedSize.width, height: selectedSize.height }}>
+        <svg 
+          width={selectedSize.width}
+          height={selectedSize.height}
+          viewBox={`0 0 ${selectedSize.width} ${selectedSize.height}`}
+          className="transform -rotate-90"
         >
+          {/* Background circle */}
           <circle
-            cx={actualSize / 2}
-            cy={actualSize / 2}
+            cx={selectedSize.width / 2}
+            cy={selectedSize.height / 2}
             r={radius}
             strokeWidth={strokeWidth}
-            className={`fill-transparent ${colorMap[color].bgStroke}`}
+            fill="none"
+            className={selectedColor.bg}
           />
-          <circle
-            cx={actualSize / 2}
-            cy={actualSize / 2}
+          
+          {/* Progress circle */}
+          <motion.circle
+            cx={selectedSize.width / 2}
+            cy={selectedSize.height / 2}
             r={radius}
             strokeWidth={strokeWidth}
-            className={`fill-transparent ${colorMap[color].stroke}`}
+            fill="none"
             strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
+            className={selectedColor.stroke}
+            initial={{ strokeDashoffset: circumference }}
+            animate={{ strokeDashoffset }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            style={{
+              strokeDasharray: circumference
+            }}
           />
         </svg>
-        <div className={`absolute inset-0 flex items-center justify-center ${fontSizeMap[size]} ${colorMap[color].text} font-bold`}>
-          {isPercentage ? `${value}%` : value}
-        </div>
+        
+        {/* Text in the center of the circle */}
+        {showValue && (
+          <motion.div 
+            className="absolute inset-0 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <span className={cn(selectedSize.textSize, "font-semibold", selectedColor.text, valueClassName)}>
+              {progress}%
+            </span>
+          </motion.div>
+        )}
       </div>
-      {label && <div className="mt-2 text-sm text-gray-400">{label}</div>}
+      
+      {label && (
+        <span className={cn("mt-2", selectedSize.labelSize, "text-gray-300", labelClassName)}>
+          {label}
+        </span>
+      )}
     </div>
   );
 };
