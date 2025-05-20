@@ -40,9 +40,9 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
   // Size configs
   const sizeMap = {
     sm: {
-      width: 64,
-      height: 64,
-      textSize: "text-lg",
+      width: 60,
+      height: 60,
+      textSize: "text-sm",
       labelSize: "text-xs"
     },
     md: {
@@ -145,7 +145,7 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <span className={cn("font-semibold", selectedColor.text, valueClassName)}>
+            <span className={cn("font-semibold text-sm", selectedColor.text, valueClassName)}>
               {progress}%
             </span>
           </motion.div>

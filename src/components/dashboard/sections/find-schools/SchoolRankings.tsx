@@ -31,15 +31,15 @@ const SchoolRankings = ({ rankings }: SchoolRankingsProps) => {
         {Object.entries(rankings).map(([key, value]) => (
           <motion.div 
             key={key}
-            className="flex flex-col items-center"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
+            className="flex flex-col items-center"
           >
-            <div className={`w-10 h-10 ${rankingColors[key]} rounded-md flex items-center justify-center mb-1`}>
-              <span className="font-semibold text-sm">{rankingLabels[key]}</span>
+            <div className={`w-8 h-8 ${rankingColors[key]} rounded flex items-center justify-center`}>
+              <span className="font-semibold text-xs">{rankingLabels[key]}</span>
             </div>
-            <div className="text-center">
+            <div className="text-center mt-1">
               <span className="text-xs font-medium text-white">#{value}</span>
             </div>
           </motion.div>
