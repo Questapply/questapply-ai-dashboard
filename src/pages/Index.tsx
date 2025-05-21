@@ -19,6 +19,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Hero3 from "@/components/hero/Hero3";
 import RoadmapSection from "@/components/roadmap/RoadmapSection";
 import { SuccessStories } from "@/components/dashboard/sections";
+import CallToAction from "@/components/common/CallToAction";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -373,6 +374,9 @@ const Index = () => {
           <Hero3 isDarkMode={isDarkMode} />
         </div>
       </section>
+      
+      {/* Call to Action Section - NEW */}
+      <CallToAction isDarkMode={isDarkMode} />
       
       {/* Roadmap Section - Background already matched in the component */}
       <RoadmapSection />
