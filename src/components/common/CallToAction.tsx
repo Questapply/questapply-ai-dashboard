@@ -14,7 +14,7 @@ const CallToAction = ({ isDarkMode }: CallToActionProps) => {
     <section className="w-full bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.div 
-          className="text-center"
+          className="text-center mx-auto max-w-4xl bg-black/20 backdrop-blur-sm rounded-2xl p-12 border border-white/10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -22,24 +22,25 @@ const CallToAction = ({ isDarkMode }: CallToActionProps) => {
         >
           {/* Title - styled to match Hero section */}
           <motion.h2 
-            className="text-3xl md:text-4xl lg:text-[4.5rem] font-bold text-center mb-4 text-white"
+            className="text-3xl md:text-4xl lg:text-[4.5rem] font-bold text-center mb-4 text-white bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-teal-200"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            Ready to Begin Your Journey?
+            Ready to Transform Your University Journey?
           </motion.h2>
           
           {/* Subtitle - styled to match Hero section subtitle */}
           <motion.p 
-            className="text-lg md:text-xl text-center mb-12 text-purple-200 max-w-3xl mx-auto"
+            className="text-lg md:text-xl text-center mb-12 text-gray-200 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            Take the first step towards your dream education abroad with QuestApply
+            Join thousands of students who discovered their talents and got accepted 
+            to their dream universities with QuestApply.
           </motion.p>
 
           {/* CTA Button - using same styles as hero button */}
@@ -52,9 +53,10 @@ const CallToAction = ({ isDarkMode }: CallToActionProps) => {
           >
             <Link to="/auth?mode=signup">
               <Button 
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white text-lg px-8 py-6 h-auto flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
+                variant="cta"
+                className="text-lg px-8 py-6 h-auto flex items-center gap-2"
               >
-                Begin Your Journey
+                Get Started Now
                 <ArrowRight className="h-5 w-5" />
               </Button>
             </Link>
