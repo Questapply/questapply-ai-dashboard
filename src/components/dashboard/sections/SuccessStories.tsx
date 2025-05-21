@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
@@ -145,8 +146,27 @@ const SuccessStories = () => {
     <section className="w-full bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Section Title - Styled to match Heroes section */}
+        <motion.h2 
+          className="text-3xl md:text-4xl lg:text-[4.5rem] font-bold text-center mb-4 text-white"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          Success Stories
+        </motion.h2>
         
-        
+        {/* Subtitle - Styled to match Heroes section subtitle */}
+        <motion.p 
+          className="text-lg md:text-xl text-center mb-16 text-purple-200 max-w-3xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          viewport={{ once: true }}
+        >
+          Don't just take our word for it. Hear from students who transformed their university
+          application journey with QuestApply.
+        </motion.p>
         
         {/* Testimonials Container */}
         <div className="w-full max-w-[1216px] mx-auto">
