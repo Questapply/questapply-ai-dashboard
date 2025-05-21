@@ -9,7 +9,7 @@ import { Sparkles } from "lucide-react";
 const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [mounted, setMounted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number | null>(null);
 
   useEffect(() => {
@@ -98,7 +98,7 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
     };
   }, []);
 
-  const starVariants = {
+  const sparkleVariants = {
     initial: { opacity: 0.3 },
     animate: { 
       opacity: [0.3, 1, 0.3],
@@ -154,7 +154,7 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
     }
   };
 
-  const sparkleVariants = {
+  const sparkleItemVariants = {
     initial: { opacity: 0.2, scale: 0.8 },
     animate: { 
       opacity: [0.2, 1, 0.2],
@@ -169,32 +169,55 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
 
   return (
     <section 
-      className="relative py-20 md:py-28 overflow-hidden" 
       ref={containerRef}
+      className="relative py-20 md:py-24 overflow-hidden bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900"
     >
       {/* Enhanced Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-950 via-indigo-900 to-blue-950" />
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900" />
       
       {/* Enhanced Particle Animation Canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0" />
       
-      {/* Cosmic Accents - Light Beams */}
-      <div className="absolute top-0 left-1/4 w-1 h-40 bg-gradient-to-b from-purple-500/10 to-transparent transform -skew-x-12"></div>
-      <div className="absolute top-0 right-1/3 w-2 h-60 bg-gradient-to-b from-indigo-400/10 to-transparent transform skew-x-12"></div>
-      <div className="absolute bottom-0 right-1/4 w-1 h-32 bg-gradient-to-t from-blue-500/10 to-transparent"></div>
+      {/* Cosmic Accents - Star sparkles */}
+      <motion.div 
+        className="absolute top-10 left-1/4 text-white opacity-70"
+        variants={sparkleVariants}
+        initial="initial"
+        animate="animate"
+      >
+        <Sparkles className="w-6 h-6" />
+      </motion.div>
+      <motion.div 
+        className="absolute top-20 right-1/4 text-white opacity-60"
+        variants={sparkleVariants}
+        initial="initial"
+        animate="animate"
+        transition={{ delay: 0.5 }}
+      >
+        <Sparkles className="w-4 h-4" />
+      </motion.div>
+      <motion.div 
+        className="absolute bottom-16 right-1/3 text-white opacity-50"
+        variants={sparkleVariants}
+        initial="initial"
+        animate="animate"
+        transition={{ delay: 1 }}
+      >
+        <Sparkles className="w-5 h-5" />
+      </motion.div>
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
-          initial="hidden" 
-          whileInView="visible" 
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true }}
           className="flex flex-col items-center justify-center"
         >
           <GradientCard 
             variant="glowing" 
-            className="w-full max-w-4xl mx-auto px-8 py-16 md:py-20 flex flex-col items-center justify-center border-purple-500/30 shadow-xl"
+            className="w-full max-w-4xl mx-auto px-8 py-14 md:py-16 flex flex-col items-center justify-center border-purple-500/30 shadow-xl"
           >
-            {/* Decorative Stars with enhanced animation */}
+            {/* Decorative Sparkles at the top - matching image */}
             <motion.div 
               variants={sparkleContainerVariants}
               initial="initial"
@@ -204,7 +227,7 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
               {[1, 2, 3, 4, 5].map((i) => (
                 <motion.div
                   key={i}
-                  variants={sparkleVariants}
+                  variants={sparkleItemVariants}
                   custom={i}
                   className={`text-white ${i % 2 === 0 ? 'mt-2' : 'mb-2'}`}
                 >
@@ -216,7 +239,7 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
             {/* Title with enhanced glow effect */}
             <motion.h2 
               variants={mainTextVariants}
-              className="text-4xl md:text-5xl xl:text-6xl font-bold text-center mb-6 md:mb-8 text-white drop-shadow-[0_0_8px_rgba(183,148,244,0.8)] font-heading tracking-tight"
+              className="text-4xl md:text-5xl xl:text-6xl font-bold text-center mb-6 md:mb-8 text-white drop-shadow-[0_0_10px_rgba(183,148,244,0.8)] font-heading tracking-tight"
             >
               Begin Your Academic Journey Today
             </motion.h2>
@@ -224,7 +247,7 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
             {/* Description with enhanced styling */}
             <motion.p
               variants={mainTextVariants}
-              className="text-lg md:text-xl text-purple-100 dark:text-purple-100 text-center mb-10 max-w-2xl mx-auto leading-relaxed"
+              className="text-lg md:text-xl text-purple-100 text-center mb-10 max-w-2xl mx-auto leading-relaxed"
             >
               QuestApply uses AI to match you with your ideal universities, streamline your application process, 
               and maximize your chances of acceptance at top institutions worldwide.
@@ -251,9 +274,6 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
             {/* Trust badges */}
             <motion.div 
               variants={staggerChildren}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
               className="mt-10 pt-6 border-t border-purple-500/20 w-full flex flex-wrap justify-center gap-6 items-center"
             >
               <motion.div variants={mainTextVariants} className="text-purple-200/80 text-sm flex items-center">

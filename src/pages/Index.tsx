@@ -375,14 +375,14 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Call to Action Section - NEW */}
-      <CallToAction isDarkMode={isDarkMode} />
-      
       {/* Roadmap Section - Background already matched in the component */}
       <RoadmapSection />
       
       {/* Success Stories Section */}
       <SuccessStories />
+      
+      {/* Call to Action Section - Moved to after Success Stories section */}
+      <CallToAction isDarkMode={isDarkMode} />
 
       {/* Footer */}
       <footer className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-purple-100 dark:border-purple-900/50">
