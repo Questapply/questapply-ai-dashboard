@@ -19,7 +19,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Hero3 from "@/components/hero/Hero3";
 import RoadmapSection from "@/components/roadmap/RoadmapSection";
 import { SuccessStories } from "@/components/dashboard/sections";
-import CallToAction from "@/components/common/CallToAction";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -381,9 +380,6 @@ const Index = () => {
       {/* Success Stories Section */}
       <SuccessStories />
 
-      {/* Call to Action Section */}
-      <CallToAction isDarkMode={isDarkMode} />
-      
       {/* Footer */}
       <footer className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-purple-100 dark:border-purple-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

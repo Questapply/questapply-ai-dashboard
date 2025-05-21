@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -140,37 +141,4 @@
   position: relative;
   animation: highlight-pulse 1.5s infinite;
   z-index: 10;
-}
-
-/* Cosmic particles animation for CTA section */
-.cosmic-particles {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
-  background-size: 50px 50px;
-  animation: particles-animation 150s linear infinite;
-}
-
-@keyframes particles-animation {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 500px 500px;
-  }
-}
-
-/* Button glow animation */
-@keyframes button-glow {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-button-glow {
-  animation: button-glow 2s linear infinite;
 }
