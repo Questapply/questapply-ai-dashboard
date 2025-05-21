@@ -98,6 +98,7 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
     };
   }, []);
 
+  // Animation variants
   const sparkleVariants = {
     initial: { opacity: 0.3 },
     animate: { 
@@ -111,7 +112,7 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
   };
   
   const buttonVariants = {
-    initial: { scale: 1, boxShadow: "0px 0px 0px 0px rgba(0, 221, 235, 0)" },
+    initial: { scale: 1 },
     hover: { 
       scale: 1.05,
       boxShadow: "0px 0px 20px 5px rgba(79, 70, 229, 0.4)",
@@ -140,29 +141,6 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
       opacity: 1,
       transition: {
         staggerChildren: 0.3
-      }
-    }
-  };
-
-  const sparkleContainerVariants = {
-    initial: { opacity: 1 },
-    animate: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.5
-      }
-    }
-  };
-
-  const sparkleItemVariants = {
-    initial: { opacity: 0.2, scale: 0.8 },
-    animate: { 
-      opacity: [0.2, 1, 0.2],
-      scale: [0.8, 1.2, 0.8],
-      transition: { 
-        duration: 2,
-        repeat: Infinity,
-        repeatType: "loop" as const
       }
     }
   };
@@ -215,45 +193,30 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
         >
           <GradientCard 
             variant="glowing" 
-            className="w-full max-w-4xl mx-auto px-8 py-14 md:py-16 flex flex-col items-center justify-center border-purple-500/30 shadow-xl"
+            className="w-full max-w-4xl mx-auto px-8 py-12 md:py-14 flex flex-col items-center justify-center border-purple-500/30 shadow-xl"
           >
-            {/* Decorative Sparkles at the top - matching image */}
-            <motion.div 
-              variants={sparkleContainerVariants}
-              initial="initial"
-              animate="animate"
-              className="flex space-x-6 mb-4"
-            >
-              {[1, 2, 3, 4, 5].map((i) => (
-                <motion.div
-                  key={i}
-                  variants={sparkleItemVariants}
-                  custom={i}
-                  className={`text-white ${i % 2 === 0 ? 'mt-2' : 'mb-2'}`}
-                >
-                  <Sparkles className={`h-${i % 2 === 0 ? '5' : '4'} w-${i % 2 === 0 ? '5' : '4'}`} />
-                </motion.div>
-              ))}
+            {/* Decorative sparkles at the top */}
+            <motion.div className="text-white mb-6">
+              <Sparkles className="h-6 w-6" />
             </motion.div>
             
-            {/* Title with enhanced glow effect */}
+            {/* Shorter, impactful title */}
             <motion.h2 
               variants={mainTextVariants}
-              className="text-4xl md:text-5xl xl:text-6xl font-bold text-center mb-6 md:mb-8 text-white drop-shadow-[0_0_10px_rgba(183,148,244,0.8)] font-heading tracking-tight"
+              className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 text-white drop-shadow-[0_0_8px_rgba(183,148,244,0.8)] font-heading tracking-tight"
             >
-              Begin Your Academic Journey Today
+              Begin Your Journey Today
             </motion.h2>
             
-            {/* Description with enhanced styling */}
+            {/* Concise description */}
             <motion.p
               variants={mainTextVariants}
-              className="text-lg md:text-xl text-purple-100 text-center mb-10 max-w-2xl mx-auto leading-relaxed"
+              className="text-lg md:text-xl text-purple-100 text-center mb-8 max-w-2xl mx-auto"
             >
-              QuestApply uses AI to match you with your ideal universities, streamline your application process, 
-              and maximize your chances of acceptance at top institutions worldwide.
+              Get matched with ideal universities and maximize your chances of acceptance with our AI-powered platform.
             </motion.p>
             
-            {/* CTA Button with enhanced effects */}
+            {/* CTA Button with hero section matching color */}
             <motion.div variants={mainTextVariants}>
               <Link to="/auth?mode=signup">
                 <motion.div
@@ -263,18 +226,18 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
                   className="inline-block"
                 >
                   <Button 
-                    className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-700 hover:via-purple-700 hover:to-indigo-800 text-white text-lg py-7 px-10 rounded-md shadow-[0_4px_20px_rgba(105,79,255,0.5)] transition-all duration-300"
+                    className="bg-cyan-500 hover:bg-cyan-600 text-white text-lg py-6 px-8 rounded-md shadow-[0_4px_20px_rgba(56,189,248,0.5)] transition-all duration-300"
                   >
-                    Create Your Free Account
+                    Begin Your Journey
                   </Button>
                 </motion.div>
               </Link>
             </motion.div>
             
-            {/* Trust badges */}
+            {/* Trust badges in a cleaner layout */}
             <motion.div 
               variants={staggerChildren}
-              className="mt-10 pt-6 border-t border-purple-500/20 w-full flex flex-wrap justify-center gap-6 items-center"
+              className="mt-8 pt-5 border-t border-purple-500/20 w-full flex flex-wrap justify-center gap-x-8 gap-y-2 items-center"
             >
               <motion.div variants={mainTextVariants} className="text-purple-200/80 text-sm flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
