@@ -10,47 +10,22 @@ import {
   User, 
   FileText, 
   Send, 
-  Calendar, 
-  ListOrdered 
+  Calendar,
+  Activity
 } from "lucide-react";
-import FilterDropdown from "@/components/dashboard/filters/FilterDropdown";
-import {
-  countryOptions,
-  degreeLevelOptions,
-  areaOfStudyOptions,
-  programOptions,
-  orderBySchoolOptions,
-  filterIcons
-} from "@/components/dashboard/sections/FilterData";
-import { schools } from "@/components/dashboard/sections/find-schools/SchoolsData";
-import SchoolCard from "@/components/dashboard/sections/find-schools/SchoolCard";
-import { FindSchools } from "@/components/dashboard/sections";
+import FindSchools from "@/components/dashboard/sections/FindSchools";
+import FindPrograms from "@/components/dashboard/sections/FindPrograms";
+import FindProfessors from "@/components/dashboard/sections/FindProfessors";
 import { cn } from "@/lib/utils";
 
 const RoadmapSection = () => {
   // States for tracking active step and selected programs
   const [activeStep, setActiveStep] = useState<number | null>(null);
-  const [filters, setFilters] = useState({
-    country: "United States",
-    degreeLevel: "PhD",
-    areaOfStudy: "Engineering & Technology",
-    program: "Computer Science",
-    orderBy: "QS Ranking",
-    deadline: "Fall",
-    englishTest: "TOEFL",
-    englishScore: "100",
-    gpa: "3.7",
-    gre: "320",
-    researchInterest: "AI",
-    title: "Professor"
-  });
-  const [selectedPrograms, setSelectedPrograms] = useState<number[]>([]);
-  const [showProgramCards, setShowProgramCards] = useState(false);
-  const [showProfessorCards, setShowProfessorCards] = useState(false);
-  const [showSchoolCards, setShowSchoolCards] = useState(false);
+  const [showFindSchools, setShowFindSchools] = useState(false);
+  const [showFindPrograms, setShowFindPrograms] = useState(false);
+  const [showFindProfessors, setShowFindProfessors] = useState(false);
   const [showApplyPopup, setShowApplyPopup] = useState(false);
   const [showApplicationForm, setShowApplicationForm] = useState(false);
-  const [showFindSchools, setShowFindSchools] = useState(false);
 
   // Step data with new color scheme
   const steps = [
@@ -103,33 +78,23 @@ const RoadmapSection = () => {
     setActiveStep(stepId);
     
     // Reset all display states
-    setShowSchoolCards(false);
-    setShowProgramCards(false);
-    setShowProfessorCards(false);
+    setShowFindSchools(false);
+    setShowFindPrograms(false);
+    setShowFindProfessors(false);
     setShowApplyPopup(false);
     setShowApplicationForm(false);
-    setShowFindSchools(false);
     
     // Handle specific step actions without auto-scrolling
     if (stepId === 1) {
       setShowFindSchools(true);
     } else if (stepId === 2) {
-      setTimeout(() => setShowProgramCards(true), 800);
+      setShowFindPrograms(true);
     } else if (stepId === 3) {
-      setTimeout(() => setShowProfessorCards(true), 800);
+      setShowFindProfessors(true);
     } else if (stepId === 7) {
       // For Apply Now, show popup after a delay
       setTimeout(() => setShowApplyPopup(true), 800);
     }
-  };
-
-  // Handle selecting programs (for step 2)
-  const handleAddToList = (programId: number) => {
-    setSelectedPrograms(prev => 
-      prev.includes(programId) 
-        ? prev.filter(id => id !== programId) 
-        : [...prev, programId]
-    );
   };
 
   // Handle applying (for step 7)
@@ -183,7 +148,7 @@ const RoadmapSection = () => {
               {/* Updated Button Layout - with icons above text */}
               <div className="flex justify-center items-center my-6 px-3 py-2">
                 <div className="flex flex-wrap justify-center gap-2 w-full">
-                  {steps.map((step, index) => (
+                  {steps.map((step) => (
                     <React.Fragment key={step.id}>
                       {/* Button */}
                       <motion.button
@@ -244,193 +209,15 @@ const RoadmapSection = () => {
                   )}
                   
                   {activeStep === 1 && showFindSchools && (
-                    <div className="space-y-8 px-2">
-                      <FindSchools />
-                    </div>
+                    <FindSchools />
                   )}
                   
-                  {activeStep === 2 && (
-                    <div className="space-y-8 px-2">
-                      {/* Filters */}
-                      <motion.div 
-                        className="flex flex-wrap gap-2 p-4 bg-gray-800/50 rounded-lg"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        <FilterDropdown 
-                          label="Country" 
-                          icon={<span>{filterIcons.country}</span>}
-                          options={countryOptions}
-                          selectedValue="United States"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Degree Level" 
-                          icon={<span>{filterIcons.degreeLevel}</span>}
-                          options={degreeLevelOptions}
-                          selectedValue="PhD"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Area of Study" 
-                          icon={<span>{filterIcons.areaOfStudy}</span>}
-                          options={areaOfStudyOptions}
-                          selectedValue="Engineering & Technology"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Programs" 
-                          icon={<span>{filterIcons.programs}</span>}
-                          options={programOptions}
-                          selectedValue="Computer Science"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Deadline" 
-                          icon={<span><Calendar className="h-4 w-4" /></span>}
-                          options={[{label: "Fall", value: "Fall"}, {label: "Spring", value: "Spring"}]}
-                          selectedValue="Fall"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Order By" 
-                          icon={<span>{filterIcons.orderBy}</span>}
-                          options={[{label: "Deadline", value: "Deadline"}, {label: "Ranking", value: "Ranking"}]}
-                          selectedValue="Deadline"
-                          onSelect={() => {}}
-                        />
-                      </motion.div>
-                      
-                      {/* Program Results */}
-                      {showProgramCards && (
-                        <motion.div 
-                          className="space-y-4"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          {/* Program Cards (simplified version of SchoolCard) */}
-                          {[1, 2].map((id) => (
-                            <div key={id} className="border border-gray-700 rounded-lg p-6 bg-gray-800/50">
-                              <div className="flex justify-between items-start">
-                                <div>
-                                  <h3 className="text-xl font-semibold text-white">
-                                    {id === 1 ? "PhD in Computer Science" : "PhD in Artificial Intelligence"}
-                                  </h3>
-                                  <p className="text-purple-300">
-                                    {id === 1 ? "Stanford University" : "Massachusetts Institute of Technology"}
-                                  </p>
-                                  <div className="mt-2 text-gray-300">
-                                    <p>Deadline: Fall 2023</p>
-                                    <p>GRE Required: 320+</p>
-                                    <p>TOEFL Required: 100+</p>
-                                  </div>
-                                </div>
-                                <Button 
-                                  variant="outline" 
-                                  className={`${
-                                    selectedPrograms.includes(id) 
-                                      ? "bg-green-800/30 text-green-400 border-green-600"
-                                      : "bg-purple-900/30 text-purple-400 border-purple-800"
-                                  }`}
-                                  onClick={() => handleAddToList(id)}
-                                >
-                                  {selectedPrograms.includes(id) ? "Added to List ✓" : "Add to List"}
-                                </Button>
-                              </div>
-                            </div>
-                          ))}
-                        </motion.div>
-                      )}
-                    </div>
+                  {activeStep === 2 && showFindPrograms && (
+                    <FindPrograms />
                   )}
                   
-                  {activeStep === 3 && (
-                    <div className="space-y-8 px-2">
-                      {/* Filters */}
-                      <motion.div 
-                        className="flex flex-wrap gap-2 p-4 bg-gray-800/50 rounded-lg"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        <FilterDropdown 
-                          label="Country" 
-                          icon={<span>{filterIcons.country}</span>}
-                          options={countryOptions}
-                          selectedValue="United States"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Area of Study" 
-                          icon={<span>{filterIcons.areaOfStudy}</span>}
-                          options={areaOfStudyOptions}
-                          selectedValue="Engineering & Technology"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Programs" 
-                          icon={<span>{filterIcons.programs}</span>}
-                          options={programOptions}
-                          selectedValue="Computer Science"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Research Interest" 
-                          icon={<span><BookOpen className="h-4 w-4" /></span>}
-                          options={[{label: "AI", value: "AI"}, {label: "Machine Learning", value: "Machine Learning"}]}
-                          selectedValue="AI"
-                          onSelect={() => {}}
-                        />
-                        
-                        <FilterDropdown 
-                          label="Title" 
-                          icon={<span><User className="h-4 w-4" /></span>}
-                          options={[{label: "Professor", value: "Professor"}, {label: "Associate Professor", value: "Associate Professor"}]}
-                          selectedValue="Professor"
-                          onSelect={() => {}}
-                        />
-                      </motion.div>
-                      
-                      {/* Professor Results */}
-                      {showProfessorCards && (
-                        <motion.div 
-                          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          {/* Professor Cards */}
-                          {[1, 2, 3, 4].map((id) => (
-                            <div key={id} className="border border-gray-700 rounded-lg p-4 bg-gray-800/50 flex items-center space-x-4">
-                              <div className="w-16 h-16 rounded-full bg-purple-900/50 flex items-center justify-center text-purple-300 font-bold text-xl">
-                                {id === 1 ? "AN" : id === 2 ? "FL" : id === 3 ? "YB" : "ST"}
-                              </div>
-                              <div>
-                                <h3 className="text-lg font-semibold text-white">
-                                  {id === 1 ? "Dr. Andrew Ng" : id === 2 ? "Dr. Fei-Fei Li" : id === 3 ? "Dr. Yoshua Bengio" : "Dr. Sebastian Thrun"}
-                                </h3>
-                                <p className="text-purple-300">
-                                  {id === 1 || id === 2 ? "Stanford University" : id === 3 ? "University of Montreal" : "Stanford University"}
-                                </p>
-                                <p className="text-gray-300 text-sm">
-                                  {id === 1 ? "Machine Learning" : id === 2 ? "Computer Vision" : id === 3 ? "Deep Learning" : "Robotics & AI"}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
-                        </motion.div>
-                      )}
-                    </div>
+                  {activeStep === 3 && showFindProfessors && (
+                    <FindProfessors />
                   )}
                   
                   {activeStep === 4 && (
@@ -586,4 +373,3 @@ const RoadmapSection = () => {
 };
 
 export default RoadmapSection;
-
