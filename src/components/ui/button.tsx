@@ -23,6 +23,8 @@ const buttonVariants = cva(
         sop: "bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600 shadow-sm hover:shadow-md whitespace-nowrap px-2.5",
         cv: "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 shadow-sm hover:shadow-md whitespace-nowrap px-2.5",
         match: "bg-gradient-to-r from-green-500 to-teal-500 text-white hover:from-green-600 hover:to-teal-600 shadow-sm hover:shadow-md truncate dark:text-white text-white px-2.5",
+        schools: "bg-gradient-to-r from-green-500 to-teal-500 text-white hover:from-green-600 hover:to-teal-600 shadow-sm hover:shadow-md",
+        programs: "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg",
       },
       size: {
         default: "h-10 px-3 py-2",
