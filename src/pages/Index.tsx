@@ -1,8 +1,9 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ListOrdered, Shield, HelpCircle, Sun, Moon, FileText, BookOpen, Sparkles, MessageSquare, Layers, GraduationCap, Landmark, University, Search, FilePen, FileLock, Check, Users } from "lucide-react";
+import { ListOrdered, Shield, HelpCircle, Sun, Moon, FileText, BookOpen, Sparkles, MessageSquare, Layers, GraduationCap, Landmark, University } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import QuestApplyLogo from "@/components/common/QuestApplyLogo";
 import WordQuestGame from "@/components/game/WordQuestGame";
@@ -17,7 +18,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Hero3 from "@/components/hero/Hero3";
 import RoadmapSection from "@/components/roadmap/RoadmapSection";
-import { Card } from "@/components/ui/card";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -374,76 +374,7 @@ const Index = () => {
       </section>
       
       {/* Roadmap Section - Background already matched in the component */}
-      <section className="py-16 px-4 bg-white dark:bg-gray-900">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Your Study Abroad Roadmap</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300">Follow these steps to guide your educational journey abroad</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4 mb-8">
-            {/* Find Schools Card with Green background */}
-            <Card variant="green" className="p-4 md:p-6 flex flex-col items-center justify-center text-center">
-              <Button variant="schools" size="lg" className="w-full mb-4 h-16">
-                <Search className="w-5 h-5 mr-2" />
-                Find Schools
-              </Button>
-              <p className="text-sm text-gray-700 dark:text-gray-200">Explore and filter educational institutions worldwide</p>
-            </Card>
-            
-            {/* Other roadmap cards */}
-            <div className="p-4 md:p-6 flex flex-col items-center justify-center text-center bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
-              <Button variant="default" size="lg" className="w-full mb-4 h-16">
-                <BookOpen className="w-5 h-5 mr-2" />
-                Find Programs
-              </Button>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Discover academic programs that match your interests</p>
-            </div>
-            
-            <div className="p-4 md:p-6 flex flex-col items-center justify-center text-center bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
-              <Button variant="default" size="lg" className="w-full mb-4 h-16">
-                <Users className="w-5 h-5 mr-2" />
-                Find Professors
-              </Button>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Connect with potential academic advisors</p>
-            </div>
-            
-            <div className="p-4 md:p-6 flex flex-col items-center justify-center text-center bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
-              <Button variant="default" size="lg" className="w-full mb-4 h-16">
-                <FileText className="w-5 h-5 mr-2" />
-                Create Resume
-              </Button>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Build an impressive academic CV</p>
-            </div>
-            
-            <div className="p-4 md:p-6 flex flex-col items-center justify-center text-center bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
-              <Button variant="default" size="lg" className="w-full mb-4 h-16">
-                <FilePen className="w-5 h-5 mr-2" />
-                Create SOP
-              </Button>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Craft a compelling Statement of Purpose</p>
-            </div>
-            
-            <div className="p-4 md:p-6 flex flex-col items-center justify-center text-center bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
-              <Button variant="default" size="lg" className="w-full mb-4 h-16">
-                <FileLock className="w-5 h-5 mr-2" />
-                Create LOR
-              </Button>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Get help with Letters of Recommendation</p>
-            </div>
-            
-            <div className="p-4 md:p-6 flex flex-col items-center justify-center text-center bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
-              <Button variant="default" size="lg" className="w-full mb-4 h-16">
-                <Check className="w-5 h-5 mr-2" />
-                Apply Now
-              </Button>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Submit your applications with confidence</p>
-            </div>
-          </div>
-          
-          <RoadmapSection />
-        </div>
-      </section>
+      <RoadmapSection />
 
       {/* Footer */}
       <footer className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-purple-100 dark:border-purple-900/50">
