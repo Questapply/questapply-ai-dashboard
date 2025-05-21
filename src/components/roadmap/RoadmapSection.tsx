@@ -16,7 +16,8 @@ import {
   Download,
   Share,
   Eye,
-  Plus
+  Plus,
+  Star
 } from "lucide-react";
 import FindSchools from "@/components/dashboard/sections/FindSchools";
 import FindPrograms from "@/components/dashboard/sections/FindPrograms";
@@ -24,6 +25,7 @@ import FindProfessors from "@/components/dashboard/sections/FindProfessors";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const RoadmapSection = () => {
   // States for tracking active step and selected programs
@@ -35,6 +37,7 @@ const RoadmapSection = () => {
   const [showApplicationForm, setShowApplicationForm] = useState(false);
   const [selectedResume, setSelectedResume] = useState("academic");
   const [viewingSection, setViewingSection] = useState("");
+  const [activeSOPTab, setActiveSOPTab] = useState("samples");
 
   // Step data with blue color scheme
   const steps = [
@@ -79,6 +82,52 @@ const RoadmapSection = () => {
       title: "Apply Now", 
       icon: <Send className="h-5 w-5" />,
       color: "#0EA5E9" 
+    }
+  ];
+
+  // SOP samples data
+  const sopSamples = [
+    {
+      id: 1,
+      title: "Computer Science Ph.D.",
+      university: "Stanford University",
+      content: "My interest in computer science began when I built my first program at age 13...",
+      rating: 5
+    },
+    {
+      id: 2,
+      title: "Molecular Biology Master's",
+      university: "MIT",
+      content: "The complex mechanisms of cellular function have fascinated me since my undergraduate research...",
+      rating: 5
+    },
+    {
+      id: 3,
+      title: "Economics Ph.D.",
+      university: "Harvard University",
+      content: "Working at the intersection of behavioral economics and public policy has shown me...",
+      rating: 4
+    },
+    {
+      id: 4,
+      title: "Mechanical Engineering Master's",
+      university: "UC Berkeley",
+      content: "My experience designing sustainable energy solutions has prepared me to contribute to...",
+      rating: 4
+    },
+    {
+      id: 5,
+      title: "Psychology Ph.D.",
+      university: "University of Michigan",
+      content: "Through my clinical experience and research in cognitive development, I've observed...",
+      rating: 5
+    },
+    {
+      id: 6,
+      title: "Business MBA",
+      university: "Wharton School",
+      content: "Leading teams in technology startups has honed my understanding of organizational...",
+      rating: 4
     }
   ];
 
@@ -146,6 +195,23 @@ const RoadmapSection = () => {
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 }
+  };
+
+  // Render star ratings
+  const renderRating = (rating: number) => {
+    return (
+      <div className="flex">
+        {[...Array(5)].map((_, i) => (
+          <Star 
+            key={i} 
+            className={cn(
+              "h-4 w-4", 
+              i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+            )} 
+          />
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -459,21 +525,114 @@ const RoadmapSection = () => {
                   
                   {activeStep === 5 && (
                     <motion.div 
-                      className="bg-gray-800/50 p-6 rounded-lg mx-2"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
+                      transition={{ duration: 0.3 }}
+                      className="p-4 md:p-6 mx-auto"
                     >
-                      <h3 className="text-xl font-semibold text-white mb-4">Create Statement of Purpose</h3>
-                      <div className="flex space-x-2 overflow-x-auto pb-2">
-                        {["Guidance", "Templates", "My SOP", "AI Improvement", "University Match", "Success Stories"].map((tab) => (
-                          <div key={tab} className="px-4 py-2 bg-gray-700 rounded-md text-white whitespace-nowrap">
-                            {tab}
+                      {/* SOP Tabs */}
+                      <div className="flex overflow-x-auto pb-2 mb-6 border-b border-gray-200 dark:border-gray-700 gap-2">
+                        {[
+                          { id: "guidance", icon: <BookOpen className="w-4 h-4" />, label: "Guidance" },
+                          { id: "samples", icon: <FileText className="w-4 h-4" />, label: "Samples", active: true },
+                          { id: "mySop", icon: <FileText className="w-4 h-4" />, label: "My SOP" },
+                          { id: "aiImprovement", icon: <Activity className="w-4 h-4" />, label: "AI Improvement" },
+                          { id: "universityMatch", icon: <User className="w-4 h-4" />, label: "Match with University" },
+                          { id: "successStories", icon: <BookOpen className="w-4 h-4" />, label: "Success Stories" },
+                          { id: "aiHumanizer", icon: <User className="w-4 h-4" />, label: "AI Humanizer" }
+                        ].map((tab) => (
+                          <div 
+                            key={tab.id}
+                            onClick={() => setActiveSOPTab(tab.id)}
+                            className={`
+                              px-4 py-3 flex items-center gap-2 whitespace-nowrap relative font-medium cursor-pointer transition-all duration-300
+                              ${(tab.active || activeSOPTab === tab.id) ? 'text-blue-500 dark:text-blue-400 border-b-2 border-blue-500 -mb-px' : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'}
+                            `}
+                          >
+                            {tab.icon}
+                            {tab.label}
                           </div>
                         ))}
                       </div>
-                      <div className="mt-6 text-center text-purple-300">
-                        <p>Craft compelling statements that showcase your academic journey and future goals</p>
+
+                      {/* SOP Samples Content */}
+                      <div className="space-y-6">
+                        <div>
+                          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Sample Statements of Purpose</h2>
+                          
+                          {/* Filters */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <div>
+                              <h3 className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Degree Level</h3>
+                              <Select defaultValue="all">
+                                <SelectTrigger className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                                  <SelectValue placeholder="All Degrees" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="all">All Degrees</SelectItem>
+                                  <SelectItem value="phd">PhD</SelectItem>
+                                  <SelectItem value="masters">Master's</SelectItem>
+                                  <SelectItem value="mba">MBA</SelectItem>
+                                  <SelectItem value="bachelors">Bachelor's</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            
+                            <div>
+                              <h3 className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Field of Study</h3>
+                              <Select defaultValue="all">
+                                <SelectTrigger className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                                  <SelectValue placeholder="All Fields" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="all">All Fields</SelectItem>
+                                  <SelectItem value="cs">Computer Science</SelectItem>
+                                  <SelectItem value="biology">Biology</SelectItem>
+                                  <SelectItem value="economics">Economics</SelectItem>
+                                  <SelectItem value="engineering">Engineering</SelectItem>
+                                  <SelectItem value="psychology">Psychology</SelectItem>
+                                  <SelectItem value="business">Business</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          
+                          {/* Sample SOPs */}
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {sopSamples.map((sample) => (
+                              <motion.div
+                                key={sample.id}
+                                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                                className="rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
+                              >
+                                <div className="h-2 bg-gradient-to-r from-purple-500 to-blue-500"></div>
+                                <div className="p-5">
+                                  <div className="flex justify-between items-start mb-2">
+                                    <h3 className="font-semibold text-lg text-gray-900 dark:text-white">{sample.title}</h3>
+                                    {renderRating(sample.rating)}
+                                  </div>
+                                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{sample.university}</p>
+                                  <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3 mb-4">{sample.content}</p>
+                                  <div className="flex justify-between items-center">
+                                    <Button size="sm" variant="outline" className="text-purple-600 border-purple-200 hover:bg-purple-50 dark:text-purple-400 dark:border-purple-800 dark:hover:bg-purple-900/20">
+                                      Read More
+                                    </Button>
+                                    <button className="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400">
+                                      <Share className="h-4 w-4" />
+                                    </button>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                          
+                          {/* Load More Button */}
+                          <div className="flex justify-center mt-8">
+                            <Button variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800">
+                              Load More Samples
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     </motion.div>
                   )}
