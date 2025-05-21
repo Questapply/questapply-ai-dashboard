@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -380,26 +379,12 @@ const Index = () => {
       <RoadmapSection />
       
       {/* Success Stories Section */}
-      <section className="bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-            Success Stories
-          </h2>
-          <p className="text-lg text-purple-200 mb-8">
-            Don't just take our word for it. Hear from students who transformed their university
-            application journey with QuestApply.
-          </p>
-          
-          <div className="mt-12">
-            <SuccessStories />
-          </div>
-        </div>
-      </section>
+      <SuccessStories />
       
-      {/* Call to Action Section */}
+      {/* Call to Action Section - Moved to after Success Stories section */}
       <CallToAction isDarkMode={isDarkMode} />
 
-      {/* Footer Section */}
+      {/* New Footer Section */}
       <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
