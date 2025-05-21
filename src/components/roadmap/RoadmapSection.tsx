@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -220,9 +219,9 @@ const RoadmapSection = () => {
   return (
     <div className="w-full bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 dark:from-purple-800 dark:via-indigo-900 dark:to-purple-900 light:from-purple-200 light:via-indigo-100 light:to-purple-100 py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        {/* Section Title - Styled to match "AI Meets Your Talent" */}
+        {/* Section Title - Updated font size to 4.5rem */}
         <motion.h2 
-          className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 dark:text-white text-gray-800"
+          className="text-3xl md:text-4xl lg:text-[4.5rem] font-bold text-center mb-4 dark:text-white text-gray-800"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -231,7 +230,7 @@ const RoadmapSection = () => {
           <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">AI-Powered</span> Roadmap to Success
         </motion.h2>
         
-        {/* Subtitle - Styled to match AI Meets Your Talent subtitle */}
+        {/* Subtitle - Kept the same */}
         <motion.p 
           className="text-lg md:text-xl text-center mb-16 dark:text-purple-200 text-purple-700"
           initial={{ opacity: 0, y: 20 }}
@@ -242,8 +241,8 @@ const RoadmapSection = () => {
           A smart, step-by-step guide that uses AI to help you reach your educational and career goals.
         </motion.p>
         
-        {/* Roadmap Container with width of 1152px */}
-        <div className="w-full max-w-[1152px] mx-auto"> 
+        {/* Roadmap Container - Updated width to 1216px */}
+        <div className="w-full max-w-[1216px] mx-auto"> 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
