@@ -26,6 +26,7 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import LORSamplesSection from "@/components/dashboard/sections/create-lor/LORSamplesSection";
 
 const RoadmapSection = () => {
   // States for tracking active step and selected programs
@@ -38,6 +39,7 @@ const RoadmapSection = () => {
   const [selectedResume, setSelectedResume] = useState("academic");
   const [viewingSection, setViewingSection] = useState("");
   const [activeSOPTab, setActiveSOPTab] = useState("samples");
+  const [activeLORTab, setActiveLORTab] = useState("samples");
 
   // Step data with blue color scheme
   const steps = [
@@ -639,22 +641,50 @@ const RoadmapSection = () => {
                   
                   {activeStep === 6 && (
                     <motion.div 
-                      className="bg-gray-800/50 p-6 rounded-lg mx-2"
+                      className="p-4 md:p-6"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
+                      transition={{ duration: 0.3 }}
                     >
-                      <h3 className="text-xl font-semibold text-white mb-4">Create Letter of Recommendation</h3>
-                      <div className="flex space-x-2 overflow-x-auto pb-2">
-                        {["Guidance", "LOR Samples", "My LORs", "AI Improvement", "Strengths Highlighter", "Professional Tone", "AI Humanizer"].map((tab) => (
-                          <div key={tab} className="px-4 py-2 bg-gray-700 rounded-md text-white whitespace-nowrap">
-                            {tab}
+                      {/* LOR section header */}
+                      <motion.h1
+                        className="text-3xl font-bold text-teal-500 dark:text-teal-400 mb-6"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        Letter of Recommendation
+                      </motion.h1>
+                      
+                      {/* LOR tabs */}
+                      <div className="flex overflow-x-auto pb-2 mb-6 space-x-1 border-b border-gray-200 dark:border-gray-700">
+                        {[
+                          { id: "guidance", icon: <BookOpen className="w-4 h-4" />, label: "Guidance" },
+                          { id: "samples", icon: <FileText className="w-4 h-4" />, label: "LOR Samples", active: true },
+                          { id: "mylors", icon: <FileText className="w-4 h-4" />, label: "My LORs" },
+                          { id: "improvement", icon: <Activity className="w-4 h-4" />, label: "AI Improvement" },
+                          { id: "strengths", icon: <Activity className="w-4 h-4" />, label: "Highlight Strengths" },
+                          { id: "tone", icon: <FileText className="w-4 h-4" />, label: "Professional Tone" },
+                          { id: "humanizer", icon: <User className="w-4 h-4" />, label: "AI Humanizer" }
+                        ].map((tab) => (
+                          <div 
+                            key={tab.id}
+                            onClick={() => setActiveLORTab(tab.id)}
+                            className={`
+                              px-4 py-3 flex items-center gap-2 whitespace-nowrap font-medium cursor-pointer transition-all duration-300
+                              ${(tab.active || activeLORTab === tab.id) ? 'text-teal-500 dark:text-teal-400 border-b-2 border-teal-500 dark:border-teal-400 -mb-px' : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'}
+                            `}
+                          >
+                            {tab.icon}
+                            {tab.label}
                           </div>
                         ))}
                       </div>
-                      <div className="mt-6 text-center text-purple-300">
-                        <p>Generate powerful recommendation letters that highlight your strengths and potential</p>
-                      </div>
+
+                      {/* LOR Samples content */}
+                      {activeLORTab === "samples" && (
+                        <LORSamplesSection />
+                      )}
                     </motion.div>
                   )}
                   
