@@ -41,11 +41,9 @@ const NavigationButtons = ({
     <div className="mb-8 flex overflow-x-auto pb-2 scrollbar-hide">
       <div className="flex space-x-2">
         <Button
-          variant={isQuestApplyAI ? "default" : "outline"}
+          variant={isQuestApplyAI ? "schools" : "outline"} 
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 relative ${
-            isQuestApplyAI 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+            isQuestApplyAI ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
           onClick={handleQuestApplyAI}
           size="sm"
@@ -58,11 +56,9 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "ai-talent-test" ? "default" : "outline"}
+          variant={activeSection === "ai-talent-test" ? "schools" : "outline"} 
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
-            activeSection === "ai-talent-test" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+            activeSection === "ai-talent-test" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
           onClick={() => handleSectionChange("ai-talent-test")}
           size="sm"
@@ -72,11 +68,9 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "find-schools" ? "default" : "outline"}
+          variant={activeSection === "find-schools" ? "schools" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
-            activeSection === "find-schools" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+            activeSection === "find-schools" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
           onClick={() => handleSectionChange("find-schools")}
           size="sm"
@@ -86,11 +80,9 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "find-programs" ? "default" : "outline"}
+          variant={activeSection === "find-programs" ? "schools" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
-            activeSection === "find-programs" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+            activeSection === "find-programs" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
           onClick={() => handleSectionChange("find-programs")}
           size="sm"
@@ -100,11 +92,9 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "find-professors" ? "default" : "outline"}
+          variant={activeSection === "find-professors" ? "schools" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
-            activeSection === "find-professors" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+            activeSection === "find-professors" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
           onClick={() => handleSectionChange("find-professors")}
           size="sm"
@@ -114,11 +104,9 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "create-resume" ? "default" : "outline"}
+          variant={activeSection === "create-resume" ? "schools" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
-            activeSection === "create-resume" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+            activeSection === "create-resume" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
           onClick={() => handleSectionChange("create-resume")}
           size="sm"
@@ -128,11 +116,9 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "create-sop" ? "default" : "outline"}
+          variant={activeSection === "create-sop" ? "schools" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
-            activeSection === "create-sop" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+            activeSection === "create-sop" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
           onClick={() => handleSectionChange("create-sop")}
           size="sm"
@@ -142,11 +128,9 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "create-lor" ? "default" : "outline"}
+          variant={activeSection === "create-lor" ? "schools" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
-            activeSection === "create-lor" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+            activeSection === "create-lor" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
           onClick={() => handleSectionChange("create-lor")}
           size="sm"
@@ -156,11 +140,9 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "apply-now" ? "default" : "outline"}
+          variant={activeSection === "apply-now" ? "schools" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
-            activeSection === "apply-now" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+            activeSection === "apply-now" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
           onClick={() => handleSectionChange("apply-now")}
           size="sm"
