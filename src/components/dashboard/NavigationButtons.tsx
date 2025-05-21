@@ -28,6 +28,7 @@ interface NavigationButtonsProps {
   handleQuestApplyAI: () => void;
   isQuestApplyAI: boolean;
   isDarkMode: boolean;
+  inline?: boolean; // Add inline prop for single line display
 }
 
 const NavigationButtons = ({
@@ -35,16 +36,17 @@ const NavigationButtons = ({
   handleSectionChange,
   handleQuestApplyAI,
   isQuestApplyAI,
-  isDarkMode
+  isDarkMode,
+  inline = false
 }: NavigationButtonsProps) => {
   return (
-    <div className="mb-8 flex overflow-x-auto pb-2 scrollbar-hide">
+    <div className={`${inline ? "mb-4" : "mb-8"} flex overflow-x-auto pb-2 scrollbar-hide no-scrollbar`}>
       <div className="flex space-x-2">
         <Button
           variant={isQuestApplyAI ? "blueButton" : "outline"} 
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 relative ${
             isQuestApplyAI ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
-          }`}
+          } ${inline ? "text-xs" : ""}`}
           onClick={handleQuestApplyAI}
           size="sm"
         >
@@ -59,7 +61,7 @@ const NavigationButtons = ({
           variant={activeSection === "ai-talent-test" ? "blueButton" : "outline"} 
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "ai-talent-test" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
-          }`}
+          } ${inline ? "text-xs" : ""}`}
           onClick={() => handleSectionChange("ai-talent-test")}
           size="sm"
         >
@@ -71,7 +73,7 @@ const NavigationButtons = ({
           variant={activeSection === "find-schools" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-schools" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
-          }`}
+          } ${inline ? "text-xs" : ""}`}
           onClick={() => handleSectionChange("find-schools")}
           size="sm"
         >
@@ -83,7 +85,7 @@ const NavigationButtons = ({
           variant={activeSection === "find-programs" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-programs" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
-          }`}
+          } ${inline ? "text-xs" : ""}`}
           onClick={() => handleSectionChange("find-programs")}
           size="sm"
         >
@@ -95,7 +97,7 @@ const NavigationButtons = ({
           variant={activeSection === "find-professors" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-professors" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
-          }`}
+          } ${inline ? "text-xs" : ""}`}
           onClick={() => handleSectionChange("find-professors")}
           size="sm"
         >
@@ -107,7 +109,7 @@ const NavigationButtons = ({
           variant={activeSection === "create-resume" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-resume" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
-          }`}
+          } ${inline ? "text-xs" : ""}`}
           onClick={() => handleSectionChange("create-resume")}
           size="sm"
         >
@@ -119,7 +121,7 @@ const NavigationButtons = ({
           variant={activeSection === "create-sop" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-sop" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
-          }`}
+          } ${inline ? "text-xs" : ""}`}
           onClick={() => handleSectionChange("create-sop")}
           size="sm"
         >
@@ -131,7 +133,7 @@ const NavigationButtons = ({
           variant={activeSection === "create-lor" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-lor" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
-          }`}
+          } ${inline ? "text-xs" : ""}`}
           onClick={() => handleSectionChange("create-lor")}
           size="sm"
         >
@@ -143,7 +145,7 @@ const NavigationButtons = ({
           variant={activeSection === "apply-now" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "apply-now" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
-          }`}
+          } ${inline ? "text-xs" : ""}`}
           onClick={() => handleSectionChange("apply-now")}
           size="sm"
         >

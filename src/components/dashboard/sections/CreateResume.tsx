@@ -44,8 +44,8 @@ const CreateResume = () => {
         onValueChange={setActiveTab}
         className="w-full"
       >
-        <div className="relative border-b border-gray-200 dark:border-gray-700">
-          <TabsList className="w-full h-auto px-2 py-1 bg-transparent overflow-x-auto flex justify-start">
+        <div className="relative border-b border-gray-200 dark:border-gray-700 overflow-x-auto no-scrollbar">
+          <TabsList className="w-full h-auto px-2 py-1 bg-transparent flex justify-start">
             {resumeTabs.map((tab) => (
               <TabsTrigger
                 key={tab.id}
