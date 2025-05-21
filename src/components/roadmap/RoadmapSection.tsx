@@ -20,8 +20,8 @@ import { cn } from "@/lib/utils";
 
 const RoadmapSection = () => {
   // States for tracking active step and selected programs
-  const [activeStep, setActiveStep] = useState<number | null>(1); // Set default to Find Schools (1)
-  const [showFindSchools, setShowFindSchools] = useState(true); // Default to showing Find Schools
+  const [activeStep, setActiveStep] = useState<number | null>(null);
+  const [showFindSchools, setShowFindSchools] = useState(false);
   const [showFindPrograms, setShowFindPrograms] = useState(false);
   const [showFindProfessors, setShowFindProfessors] = useState(false);
   const [showApplyPopup, setShowApplyPopup] = useState(false);
@@ -29,13 +29,6 @@ const RoadmapSection = () => {
 
   // Step data with new color scheme
   const steps = [
-    { 
-      id: 0,
-      title: "QuestApply AI",
-      icon: <Search className="h-5 w-5" />,
-      color: "#6366f1",
-      isNew: true
-    },
     { 
       id: 1, 
       title: "Find Schools", 
@@ -152,29 +145,49 @@ const RoadmapSection = () => {
               variant="talent-section" 
               className="p-4 md:p-6 shadow-xl w-full dark:bg-gray-800 bg-white/90"
             >
-              {/* Updated Button Layout - to match dashboard navigation buttons */}
-              <div className="mb-8 flex overflow-x-auto pb-2 scrollbar-hide">
-                <div className="flex space-x-2">
+              {/* Updated Button Layout - with icons above text */}
+              <div className="flex justify-center items-center my-6 px-3 py-2">
+                <div className="flex flex-wrap justify-center gap-2 w-full">
                   {steps.map((step) => (
-                    <Button
-                      key={step.id}
-                      variant={activeStep === step.id ? "schools" : "outline"}
-                      className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 relative ${
-                        activeStep === step.id 
-                          ? "bg-gradient-to-r from-green-500 to-teal-500 text-white hover:from-green-600 hover:to-teal-600 shadow hover:shadow-md" 
-                          : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
-                      }`}
-                      onClick={() => handleStepClick(step.id)}
-                      size="sm"
-                    >
-                      {step.icon}
-                      <span>{step.title}</span>
-                      {step.isNew && (
-                        <span className="absolute -top-2 -right-2 px-1 py-0.5 text-[9px] font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full animate-pulse">
-                          NEW
+                    <React.Fragment key={step.id}>
+                      {/* Button */}
+                      <motion.button
+                        className={cn(
+                          "relative flex flex-col items-center justify-center px-4 py-4 rounded-md text-sm md:text-base transition-all duration-300",
+                          "border border-gray-200 dark:border-gray-700",
+                          activeStep === step.id 
+                            ? "bg-purple-600 text-white border-purple-700 shadow-md shadow-purple-500/20" 
+                            : "bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:border-purple-200 dark:hover:border-purple-600"
+                        )}
+                        onClick={() => handleStepClick(step.id)}
+                        whileHover={{ 
+                          y: -2,
+                          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" 
+                        }}
+                        style={{
+                          width: `calc(${100 / steps.length}% - 8px)`,
+                          minWidth: '130px',
+                          maxWidth: '160px',
+                          height: '90px' // Increased height to accommodate vertical layout
+                        }}
+                      >
+                        {/* Icon - Now positioned above text */}
+                        <span 
+                          className={cn(
+                            "flex items-center justify-center h-8 w-8 rounded-md mb-2",
+                            activeStep === step.id ? "text-white" : ""
+                          )}
+                          style={{ color: activeStep === step.id ? "#ffffff" : step.color }}
+                        >
+                          {step.icon}
                         </span>
-                      )}
-                    </Button>
+                        
+                        {/* Step Title */}
+                        <span className="font-medium whitespace-nowrap text-center">
+                          {step.title}
+                        </span>
+                      </motion.button>
+                    </React.Fragment>
                   ))}
                 </div>
               </div>
@@ -347,32 +360,6 @@ const RoadmapSection = () => {
                           </div>
                         </motion.div>
                       )}
-                    </motion.div>
-                  )}
-                  
-                  {activeStep === 0 && (
-                    <motion.div 
-                      className="bg-gray-800/50 p-6 rounded-lg mx-2"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <h3 className="text-xl font-semibold text-white mb-4">QuestApply AI</h3>
-                      <div className="mt-6 text-center text-purple-300">
-                        <p>Get personalized recommendations and assistance with your study abroad journey.</p>
-                        <div className="mt-4 max-w-lg mx-auto">
-                          <div className="relative">
-                            <input
-                              type="text" 
-                              placeholder="Ask me anything about studying abroad..."
-                              className="w-full rounded-full px-4 py-3 pr-12 bg-gray-700 border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 p-2 rounded-full">
-                              <Send className="h-4 w-4 text-white" />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
                     </motion.div>
                   )}
                 </ScrollArea>
