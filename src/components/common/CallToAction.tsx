@@ -22,7 +22,7 @@ const CallToAction = ({ isDarkMode }: CallToActionProps) => {
         >
           {/* Title - styled to match Hero section */}
           <motion.h2 
-            className="text-3xl md:text-4xl lg:text-[4.5rem] font-bold text-center mb-4 text-white bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-teal-200"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 text-white"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -53,8 +53,7 @@ const CallToAction = ({ isDarkMode }: CallToActionProps) => {
           >
             <Link to="/auth?mode=signup">
               <Button 
-                variant="cta"
-                className="text-lg px-8 py-6 h-auto flex items-center gap-2"
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white text-lg px-8 py-6 h-auto flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Get Started Now
                 <ArrowRight className="h-5 w-5" />
