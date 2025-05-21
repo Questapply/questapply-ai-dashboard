@@ -26,7 +26,8 @@ const buttonVariants = cva(
         schools: "bg-gradient-to-r from-green-500 to-teal-500 text-white hover:from-green-600 hover:to-teal-600 shadow-sm hover:shadow-md",
         programs: "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg",
         blueButton: "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 shadow-sm hover:shadow-md",
-        cta: "bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300", // Added CTA variant
+        cta: "bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300",
+        cosmic: "bg-gradient-to-r from-[#7F00FF] to-[#00DDEB] hover:from-[#9500FF] hover:to-[#00F0FF] text-white font-bold rounded-[10px] transform hover:scale-110 transition-all duration-300",
       },
       size: {
         default: "h-10 px-3 py-2",
