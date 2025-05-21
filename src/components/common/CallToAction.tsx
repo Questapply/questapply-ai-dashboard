@@ -85,7 +85,7 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
       transition: { 
         duration: 3,
         repeat: Infinity,
-        repeatType: "loop"
+        repeatType: "loop" as const
       }
     }
   };
