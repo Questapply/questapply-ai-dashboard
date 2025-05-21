@@ -44,8 +44,8 @@ const NavigationButtons = ({
           variant={isQuestApplyAI ? "default" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 relative ${
             isQuestApplyAI 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+              ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
+              : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
           }`}
           onClick={handleQuestApplyAI}
           size="sm"
@@ -61,8 +61,8 @@ const NavigationButtons = ({
           variant={activeSection === "ai-talent-test" ? "default" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "ai-talent-test" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+              ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
+              : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
           }`}
           onClick={() => handleSectionChange("ai-talent-test")}
           size="sm"
@@ -75,8 +75,8 @@ const NavigationButtons = ({
           variant={activeSection === "find-schools" ? "default" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-schools" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+              ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
+              : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
           }`}
           onClick={() => handleSectionChange("find-schools")}
           size="sm"
@@ -89,8 +89,8 @@ const NavigationButtons = ({
           variant={activeSection === "find-programs" ? "default" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-programs" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+              ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
+              : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
           }`}
           onClick={() => handleSectionChange("find-programs")}
           size="sm"
@@ -103,8 +103,8 @@ const NavigationButtons = ({
           variant={activeSection === "find-professors" ? "default" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-professors" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+              ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
+              : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
           }`}
           onClick={() => handleSectionChange("find-professors")}
           size="sm"
@@ -117,8 +117,8 @@ const NavigationButtons = ({
           variant={activeSection === "create-resume" ? "default" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-resume" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+              ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
+              : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
           }`}
           onClick={() => handleSectionChange("create-resume")}
           size="sm"
@@ -131,8 +131,8 @@ const NavigationButtons = ({
           variant={activeSection === "create-sop" ? "default" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-sop" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+              ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
+              : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
           }`}
           onClick={() => handleSectionChange("create-sop")}
           size="sm"
@@ -145,8 +145,8 @@ const NavigationButtons = ({
           variant={activeSection === "create-lor" ? "default" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-lor" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+              ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
+              : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
           }`}
           onClick={() => handleSectionChange("create-lor")}
           size="sm"
@@ -159,8 +159,8 @@ const NavigationButtons = ({
           variant={activeSection === "apply-now" ? "default" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "apply-now" 
-              ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 shadow hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700/50" 
-              : `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50`
+              ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
+              : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
           }`}
           onClick={() => handleSectionChange("apply-now")}
           size="sm"
