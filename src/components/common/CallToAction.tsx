@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -8,12 +8,15 @@ import { Sparkles } from "lucide-react";
 
 const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [mounted, setMounted] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const animationFrameId = useRef<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
     
     // Create the particle canvas effect
-    const canvas = document.getElementById("particles") as HTMLCanvasElement;
+    const canvas = canvasRef.current;
     if (!canvas) return;
     
     const ctx = canvas.getContext("2d");
@@ -21,7 +24,7 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
     
     // Set canvas size
     const resizeCanvas = () => {
-      const container = document.querySelector(".cta-container");
+      const container = containerRef.current;
       if (container) {
         canvas.width = container.clientWidth;
         canvas.height = container.clientHeight;
@@ -32,17 +35,31 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
     window.addEventListener("resize", resizeCanvas);
     
     // Create particles
-    const particles: {x: number; y: number; size: number; speedX: number; speedY: number; opacity: number;}[] = [];
-    const particleCount = 50;
+    const particles: {
+      x: number; 
+      y: number; 
+      size: number; 
+      speedX: number; 
+      speedY: number; 
+      opacity: number;
+      color: string;
+    }[] = [];
+    
+    const particleCount = 70;
+    const colors = ['rgba(255, 255, 255, ', 'rgba(168, 85, 247, ', 'rgba(99, 102, 241, '];
     
     for (let i = 0; i < particleCount; i++) {
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      const randomOpacity = Math.random() * 0.3 + 0.1;
+      
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 2 + 0.5,
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
-        opacity: Math.random() * 0.3 + 0.1
+        size: Math.random() * 3 + 0.5,
+        speedX: (Math.random() - 0.5) * 0.3,
+        speedY: (Math.random() - 0.5) * 0.3,
+        opacity: randomOpacity,
+        color: `${randomColor}${randomOpacity})`
       });
     }
     
@@ -64,17 +81,20 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
         // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
+        ctx.fillStyle = particle.color;
         ctx.fill();
       });
       
-      requestAnimationFrame(animate);
+      animationFrameId.current = requestAnimationFrame(animate);
     };
     
     animate();
     
     return () => {
       window.removeEventListener("resize", resizeCanvas);
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
     };
   }, []);
 
@@ -91,10 +111,10 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
   };
   
   const buttonVariants = {
-    initial: { scale: 1 },
+    initial: { scale: 1, boxShadow: "0px 0px 0px 0px rgba(0, 221, 235, 0)" },
     hover: { 
       scale: 1.05,
-      boxShadow: "0px 0px 15px 5px rgba(0, 221, 235, 0.3)",
+      boxShadow: "0px 0px 20px 5px rgba(79, 70, 229, 0.4)",
       transition: { 
         duration: 0.3,
         yoyo: Infinity
@@ -102,80 +122,155 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
     }
   };
 
+  const mainTextVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { 
+        duration: 0.7,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const staggerChildren = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3
+      }
+    }
+  };
+
+  const sparkleContainerVariants = {
+    initial: { opacity: 1 },
+    animate: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.5
+      }
+    }
+  };
+
+  const sparkleVariants = {
+    initial: { opacity: 0.2, scale: 0.8 },
+    animate: { 
+      opacity: [0.2, 1, 0.2],
+      scale: [0.8, 1.2, 0.8],
+      transition: { 
+        duration: 2,
+        repeat: Infinity,
+        repeatType: "loop" as const
+      }
+    }
+  };
+
   return (
-    <section className="relative py-16 md:py-24 overflow-hidden cta-container">
-      {/* Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900 to-blue-900 dark:from-purple-950 dark:to-blue-950" />
+    <section 
+      className="relative py-20 md:py-28 overflow-hidden" 
+      ref={containerRef}
+    >
+      {/* Enhanced Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-950 via-indigo-900 to-blue-950" />
       
-      {/* Particle Animation Canvas */}
-      <canvas id="particles" className="absolute inset-0 pointer-events-none" />
+      {/* Enhanced Particle Animation Canvas */}
+      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0" />
+      
+      {/* Cosmic Accents - Light Beams */}
+      <div className="absolute top-0 left-1/4 w-1 h-40 bg-gradient-to-b from-purple-500/10 to-transparent transform -skew-x-12"></div>
+      <div className="absolute top-0 right-1/3 w-2 h-60 bg-gradient-to-b from-indigo-400/10 to-transparent transform skew-x-12"></div>
+      <div className="absolute bottom-0 right-1/4 w-1 h-32 bg-gradient-to-t from-blue-500/10 to-transparent"></div>
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <GradientCard 
-          variant="glowing" 
-          className="w-full max-w-4xl mx-auto px-6 py-12 md:py-16 flex flex-col items-center justify-center"
+        <motion.div 
+          initial="hidden" 
+          whileInView="visible" 
+          viewport={{ once: true }}
+          className="flex flex-col items-center justify-center"
         >
-          {/* Decorative Stars */}
-          <div className="flex space-x-5 mb-2">
-            {[0, 1, 2].map((i) => (
-              <motion.div
-                key={i}
-                variants={starVariants}
-                initial="initial"
-                animate="animate"
-                custom={i}
-                className="text-white opacity-50"
-              >
-                <Sparkles className="h-5 w-5" />
-              </motion.div>
-            ))}
-          </div>
-          
-          {/* Title with glow effect */}
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-center mb-4 md:mb-6 text-white drop-shadow-[0_2px_4px_rgba(183,148,244,0.7)]"
+          <GradientCard 
+            variant="glowing" 
+            className="w-full max-w-4xl mx-auto px-8 py-16 md:py-20 flex flex-col items-center justify-center border-purple-500/30 shadow-xl"
           >
-            Ready to Reach Your Dream University?
-          </motion.h2>
-          
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-lg md:text-xl text-purple-100 dark:text-purple-200 text-center mb-8 max-w-2xl"
-          >
-            Let QuestApply's AI guide you to top universities with personalized recommendations and automated applications!
-          </motion.p>
-          
-          {/* CTA Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            viewport={{ once: true }}
-          >
-            <Link to="/auth?mode=signup">
-              <motion.div
-                variants={buttonVariants}
-                initial="initial"
-                whileHover="hover"
-                className="inline-block"
-              >
-                <Button 
-                  className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white text-lg py-6 px-8 rounded-md shadow-lg transform transition-all duration-300 animate-pulse"
+            {/* Decorative Stars with enhanced animation */}
+            <motion.div 
+              variants={sparkleContainerVariants}
+              initial="initial"
+              animate="animate"
+              className="flex space-x-6 mb-4"
+            >
+              {[1, 2, 3, 4, 5].map((i) => (
+                <motion.div
+                  key={i}
+                  variants={sparkleVariants}
+                  custom={i}
+                  className={`text-white ${i % 2 === 0 ? 'mt-2' : 'mb-2'}`}
                 >
-                  Start Your Journey Now
-                </Button>
+                  <Sparkles className={`h-${i % 2 === 0 ? '5' : '4'} w-${i % 2 === 0 ? '5' : '4'}`} />
+                </motion.div>
+              ))}
+            </motion.div>
+            
+            {/* Title with enhanced glow effect */}
+            <motion.h2 
+              variants={mainTextVariants}
+              className="text-4xl md:text-5xl xl:text-6xl font-bold text-center mb-6 md:mb-8 text-white drop-shadow-[0_0_8px_rgba(183,148,244,0.8)] font-heading tracking-tight"
+            >
+              Begin Your Academic Journey Today
+            </motion.h2>
+            
+            {/* Description with enhanced styling */}
+            <motion.p
+              variants={mainTextVariants}
+              className="text-lg md:text-xl text-purple-100 dark:text-purple-100 text-center mb-10 max-w-2xl mx-auto leading-relaxed"
+            >
+              QuestApply uses AI to match you with your ideal universities, streamline your application process, 
+              and maximize your chances of acceptance at top institutions worldwide.
+            </motion.p>
+            
+            {/* CTA Button with enhanced effects */}
+            <motion.div variants={mainTextVariants}>
+              <Link to="/auth?mode=signup">
+                <motion.div
+                  variants={buttonVariants}
+                  initial="initial"
+                  whileHover="hover"
+                  className="inline-block"
+                >
+                  <Button 
+                    className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-700 hover:via-purple-700 hover:to-indigo-800 text-white text-lg py-7 px-10 rounded-md shadow-[0_4px_20px_rgba(105,79,255,0.5)] transition-all duration-300"
+                  >
+                    Create Your Free Account
+                  </Button>
+                </motion.div>
+              </Link>
+            </motion.div>
+            
+            {/* Trust badges */}
+            <motion.div 
+              variants={staggerChildren}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="mt-10 pt-6 border-t border-purple-500/20 w-full flex flex-wrap justify-center gap-6 items-center"
+            >
+              <motion.div variants={mainTextVariants} className="text-purple-200/80 text-sm flex items-center">
+                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+                No credit card required
               </motion.div>
-            </Link>
-          </motion.div>
-        </GradientCard>
+              <motion.div variants={mainTextVariants} className="text-purple-200/80 text-sm flex items-center">
+                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+                Join 10,000+ students
+              </motion.div>
+              <motion.div variants={mainTextVariants} className="text-purple-200/80 text-sm flex items-center">
+                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+                Success rate 94%
+              </motion.div>
+            </motion.div>
+          </GradientCard>
+        </motion.div>
       </div>
     </section>
   );
