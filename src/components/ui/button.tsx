@@ -26,7 +26,6 @@ const buttonVariants = cva(
         schools: "bg-gradient-to-r from-green-500 to-teal-500 text-white hover:from-green-600 hover:to-teal-600 shadow-sm hover:shadow-md",
         programs: "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg",
         blueButton: "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 shadow-sm hover:shadow-md",
-        heroButton: "bg-[#00D1E8] hover:bg-[#00B5C9] text-white shadow-[0_4px_20px_rgba(0,209,232,0.5)]",
       },
       size: {
         default: "h-10 px-3 py-2",
