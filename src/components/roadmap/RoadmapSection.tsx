@@ -323,8 +323,8 @@ const RoadmapSection = () => {
                       transition={{ duration: 0.3 }}
                       className="p-6"
                     >
-                      {/* Tabs navigation - matching dashboard appearance */}
-                      <div className="flex overflow-x-auto pb-2 mb-4 scrollbar-hide border-b border-gray-200 dark:border-gray-700">
+                      {/* Tabs navigation - matching dashboard appearance without horizontal scroll */}
+                      <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6 w-full">
                         {[
                           { id: "guidance", icon: <BookOpen className="w-4 h-4" />, label: "Guidance" },
                           { id: "template", icon: <FileText className="w-4 h-4" />, label: "Choose Template" },
@@ -520,8 +520,8 @@ const RoadmapSection = () => {
                       transition={{ duration: 0.3 }}
                       className="p-4 md:p-6 mx-auto"
                     >
-                      {/* SOP Tabs */}
-                      <div className="flex overflow-x-auto pb-2 mb-6 border-b border-gray-200 dark:border-gray-700 gap-2">
+                      {/* SOP Tabs - without horizontal scroll */}
+                      <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6 w-full">
                         {[
                           { id: "guidance", icon: <BookOpen className="w-4 h-4" />, label: "Guidance" },
                           { id: "samples", icon: <FileText className="w-4 h-4" />, label: "Samples", active: true },
@@ -645,7 +645,7 @@ const RoadmapSection = () => {
                       </motion.h1>
                       
                       {/* Modified LOR tabs to remove horizontal scrolling and disable most buttons */}
-                      <div className="flex flex-wrap mb-6 border-b border-gray-200 dark:border-gray-700">
+                      <div className="flex w-full mb-6 border-b border-gray-200 dark:border-gray-700">
                         {[
                           { id: "guidance", icon: <BookOpen className="w-4 h-4" />, label: "Guidance" },
                           { id: "samples", icon: <FileText className="w-4 h-4" />, label: "LOR Samples", active: true },
