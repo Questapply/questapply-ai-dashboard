@@ -5,12 +5,14 @@ import { cn } from "@/lib/utils"
 
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { variant?: "default" | "programs" }
+  React.HTMLAttributes<HTMLDivElement> & { variant?: "default" | "programs" | "blue" }
 >(({ className, variant = "default", ...props }, ref) => {
   const getVariantClasses = () => {
     switch (variant) {
       case "programs":
         return "bg-white dark:bg-gray-800/90 border border-gray-100 dark:border-gray-700";
+      case "blue":
+        return "bg-white dark:bg-gray-800/90 border border-blue-100 dark:border-blue-900";
       default:
         return "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700";
     }

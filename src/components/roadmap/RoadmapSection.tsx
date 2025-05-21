@@ -33,43 +33,43 @@ const RoadmapSection = () => {
       id: 1, 
       title: "Find Schools", 
       icon: <Search className="h-5 w-5" />,
-      color: "#6366f1"
+      color: "#0EA5E9"
     },
     { 
       id: 2, 
       title: "Find Programs", 
       icon: <BookOpen className="h-5 w-5" />,
-      color: "#ec4899" 
+      color: "#0EA5E9" 
     },
     { 
       id: 3, 
       title: "Find Professors", 
       icon: <User className="h-5 w-5" />,
-      color: "#f97316" 
+      color: "#0EA5E9" 
     },
     { 
       id: 4, 
       title: "Create Resume", 
       icon: <FileText className="h-5 w-5" />,
-      color: "#10b981" 
+      color: "#0EA5E9" 
     },
     { 
       id: 5, 
       title: "Create SOP", 
       icon: <FileText className="h-5 w-5" />,
-      color: "#0ea5e9" 
+      color: "#0EA5E9" 
     },
     { 
       id: 6, 
       title: "Create LOR", 
       icon: <FileText className="h-5 w-5" />,
-      color: "#14b8a6" 
+      color: "#0EA5E9" 
     },
     { 
       id: 7, 
       title: "Apply Now", 
       icon: <Send className="h-5 w-5" />,
-      color: "#84cc16" 
+      color: "#0EA5E9" 
     }
   ];
 
@@ -156,8 +156,8 @@ const RoadmapSection = () => {
                           "relative flex flex-col items-center justify-center px-4 py-4 rounded-md text-sm md:text-base transition-all duration-300",
                           "border border-gray-200 dark:border-gray-700",
                           activeStep === step.id 
-                            ? "bg-purple-600 text-white border-purple-700 shadow-md shadow-purple-500/20" 
-                            : "bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:border-purple-200 dark:hover:border-purple-600"
+                            ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-blue-700 shadow-md shadow-blue-500/20" 
+                            : "bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-200 dark:hover:border-blue-600"
                         )}
                         onClick={() => handleStepClick(step.id)}
                         whileHover={{ 

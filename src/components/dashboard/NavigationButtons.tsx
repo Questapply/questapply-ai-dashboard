@@ -41,7 +41,7 @@ const NavigationButtons = ({
     <div className="mb-8 flex overflow-x-auto pb-2 scrollbar-hide">
       <div className="flex space-x-2">
         <Button
-          variant={isQuestApplyAI ? "schools" : "outline"} 
+          variant={isQuestApplyAI ? "blueButton" : "outline"} 
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 relative ${
             isQuestApplyAI ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
@@ -56,7 +56,7 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "ai-talent-test" ? "schools" : "outline"} 
+          variant={activeSection === "ai-talent-test" ? "blueButton" : "outline"} 
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "ai-talent-test" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
@@ -68,7 +68,7 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "find-schools" ? "schools" : "outline"}
+          variant={activeSection === "find-schools" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-schools" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
@@ -80,7 +80,7 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "find-programs" ? "schools" : "outline"}
+          variant={activeSection === "find-programs" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-programs" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
@@ -92,7 +92,7 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "find-professors" ? "schools" : "outline"}
+          variant={activeSection === "find-professors" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-professors" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
@@ -104,7 +104,7 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "create-resume" ? "schools" : "outline"}
+          variant={activeSection === "create-resume" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-resume" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
@@ -116,7 +116,7 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "create-sop" ? "schools" : "outline"}
+          variant={activeSection === "create-sop" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-sop" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
@@ -128,7 +128,7 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "create-lor" ? "schools" : "outline"}
+          variant={activeSection === "create-lor" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "create-lor" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
@@ -140,7 +140,7 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "apply-now" ? "schools" : "outline"}
+          variant={activeSection === "apply-now" ? "blueButton" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "apply-now" ? "" : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
           }`}
