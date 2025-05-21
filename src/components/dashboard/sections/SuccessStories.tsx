@@ -15,35 +15,6 @@ interface Testimonial {
 }
 
 const testimonials: Testimonial[] = [
-  // Left Half Column (First Column)
-  {
-    id: 10,
-    name: "Ethan Rivera",
-    role: "FinTech Graduate",
-    avatar: "https://randomuser.me/api/portraits/men/41.jpg",
-    testimonial: "QuestApply's professor matching algorithm led me to connect with a leading researcher in my field.",
-    rating: 5,
-    avatarFallback: "ER"
-  },
-  {
-    id: 11,
-    name: "Zoe Adams",
-    role: "Design Student",
-    avatar: "https://randomuser.me/api/portraits/women/62.jpg",
-    testimonial: "The AI-powered application review saved me hours of stress and helped me submit my best work.",
-    rating: 5,
-    avatarFallback: "ZA"
-  },
-  {
-    id: 12,
-    name: "Ryan Cooper",
-    role: "Law School Applicant",
-    avatar: "https://randomuser.me/api/portraits/men/29.jpg",
-    testimonial: "QuestApply's personal statement feedback transformed my narrative and helped me stand out.",
-    rating: 5,
-    avatarFallback: "RC"
-  },
-  
   // First Column
   {
     id: 1,
@@ -129,35 +100,6 @@ const testimonials: Testimonial[] = [
     testimonial: "The scholarship matching feature led me to a fellowship I didn't even know existed. Now my education is fully funded!",
     rating: 5,
     avatarFallback: "DK"
-  },
-
-  // Right Half Column (Fifth Column)
-  {
-    id: 13,
-    name: "Natasha Lee",
-    role: "Biomedical Researcher",
-    avatar: "https://randomuser.me/api/portraits/women/49.jpg",
-    testimonial: "The scholarship database surfaced funding opportunities I never would have found on my own. Incredible resource!",
-    rating: 5,
-    avatarFallback: "NL"
-  },
-  {
-    id: 14,
-    name: "Jordan Patel",
-    role: "Architecture Student",
-    avatar: "https://randomuser.me/api/portraits/men/72.jpg",
-    testimonial: "QuestApply organized my portfolio submissions in a way that showcased my best work to admission committees.",
-    rating: 5,
-    avatarFallback: "JP"
-  },
-  {
-    id: 15,
-    name: "Harper Williams",
-    role: "Psychology PhD Student",
-    avatar: "https://randomuser.me/api/portraits/women/37.jpg",
-    testimonial: "The mock interview feature with AI feedback prepared me for challenging admission interviews. Game changer!",
-    rating: 5,
-    avatarFallback: "HW"
   }
 ];
 
@@ -171,11 +113,9 @@ const SuccessStories = () => {
   };
 
   // Duplicate testimonials for infinite scroll effect
-  const duplicatedLeftHalfColumn = [...testimonials.slice(0, 3), ...testimonials.slice(0, 3)];
-  const duplicatedFirstColumn = [...testimonials.slice(3, 6), ...testimonials.slice(3, 6)];
-  const duplicatedSecondColumn = [...testimonials.slice(6, 9), ...testimonials.slice(6, 9)];
-  const duplicatedThirdColumn = [...testimonials.slice(9, 12), ...testimonials.slice(9, 12)];
-  const duplicatedRightHalfColumn = [...testimonials.slice(12, 15), ...testimonials.slice(12, 15)];
+  const duplicatedFirstColumn = [...testimonials.slice(0, 3), ...testimonials.slice(0, 3)];
+  const duplicatedSecondColumn = [...testimonials.slice(3, 6), ...testimonials.slice(3, 6)];
+  const duplicatedThirdColumn = [...testimonials.slice(6, 9), ...testimonials.slice(6, 9)];
   
   // Animation settings
   const upwardAnimation = {
@@ -203,9 +143,9 @@ const SuccessStories = () => {
   };
 
   return (
-    <section className="w-full bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 py-20 overflow-hidden">
-      <div className="max-w-[calc(100vw-40px)] mx-auto">
-        {/* Section Title */}
+    <section className="w-full bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 py-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        {/* Section Title - Styled to match Heroes section */}
         <motion.h2 
           className="text-3xl md:text-4xl lg:text-[4.5rem] font-bold text-center mb-4 text-white"
           initial={{ opacity: 0, y: 20 }}
@@ -216,7 +156,7 @@ const SuccessStories = () => {
           Success Stories
         </motion.h2>
         
-        {/* Subtitle */}
+        {/* Subtitle - Styled to match Heroes section subtitle */}
         <motion.p 
           className="text-lg md:text-xl text-center mb-16 text-purple-200 max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
@@ -228,183 +168,118 @@ const SuccessStories = () => {
           application journey with QuestApply.
         </motion.p>
         
-        {/* Testimonials Container - Full width */}
-        <div className="w-full flex justify-between">
-          {/* Left Half Column (First Column) - 125px width */}
-          <div className="w-[125px] h-[700px] overflow-hidden relative">
-            <motion.div 
-              className="space-y-8"
-              animate={downwardAnimation}
-            >
-              {duplicatedLeftHalfColumn.map((testimonial, index) => (
-                <div 
-                  key={`left-half-${testimonial.id}-${index}`}
-                  className="ml-auto pr-0"
-                >
+        {/* Testimonials Container */}
+        <div className="w-full max-w-[1216px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            {/* First Column - Cards Go Up */}
+            <div className="space-y-8 overflow-hidden h-[700px] relative">
+              <motion.div 
+                className="space-y-8"
+                animate={upwardAnimation}
+              >
+                {duplicatedFirstColumn.map((testimonial, index) => (
                   <div 
-                    className="bg-black/90 backdrop-blur-md border border-white/10 rounded-l-xl rounded-r-none p-6 h-[300px] shadow-xl hover:border-purple-500/50 transition-all duration-300 w-[250px]"
+                    key={`${testimonial.id}-${index}`}
+                    className="md:mt-0"
                   >
-                    <div className="mb-4">
-                      <p className="text-white line-clamp-4">"{testimonial.testimonial}"</p>
-                      <div className="flex items-center mt-6">
-                        <Avatar className="h-12 w-12 mr-4 border-2 border-purple-300 dark:border-purple-700">
-                          <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                          <AvatarFallback className="bg-purple-200 text-purple-800">{testimonial.avatarFallback}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                          <p className="text-sm text-cyan-400">{testimonial.role}</p>
+                    <div 
+                      className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-6 h-full shadow-xl dark:bg-black/80 dark:border-gray-800/50 hover:border-purple-500/50 transition-all duration-300"
+                    >
+                      <div className="mb-4">
+                        <p className="text-white dark:text-gray-200 mb-6">"{testimonial.testimonial}"</p>
+                        <div className="flex items-center">
+                          <Avatar className="h-12 w-12 mr-4 border-2 border-purple-300 dark:border-purple-700">
+                            <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                            <AvatarFallback className="bg-purple-200 text-purple-800">{testimonial.avatarFallback}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <h4 className="font-semibold text-white dark:text-white">{testimonial.name}</h4>
+                            <p className="text-sm text-cyan-400">{testimonial.role}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex mt-3">
-                      {renderStars(testimonial.rating)}
+                      <div className="flex mt-3">
+                        {renderStars(testimonial.rating)}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
+                ))}
+              </motion.div>
+            </div>
 
-          {/* First Column - 250px width */}
-          <div className="w-[250px] h-[700px] overflow-hidden relative">
-            <motion.div 
-              className="space-y-8"
-              animate={upwardAnimation}
-            >
-              {duplicatedFirstColumn.map((testimonial, index) => (
-                <div 
-                  key={`first-${testimonial.id}-${index}`}
-                >
+            {/* Second Column - Cards Go Down */}
+            <div className="space-y-8 overflow-hidden h-[700px] relative">
+              <motion.div 
+                className="space-y-8"
+                animate={downwardAnimation}
+              >
+                {duplicatedSecondColumn.map((testimonial, index) => (
                   <div 
-                    className="bg-black/90 backdrop-blur-md border border-white/10 rounded-xl p-6 h-[300px] shadow-xl hover:border-purple-500/50 transition-all duration-300"
+                    key={`${testimonial.id}-${index}`}
+                    className="md:mt-0"
                   >
-                    <div className="mb-4">
-                      <p className="text-white line-clamp-4">"{testimonial.testimonial}"</p>
-                      <div className="flex items-center mt-6">
-                        <Avatar className="h-12 w-12 mr-4 border-2 border-purple-300 dark:border-purple-700">
-                          <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                          <AvatarFallback className="bg-purple-200 text-purple-800">{testimonial.avatarFallback}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                          <p className="text-sm text-cyan-400">{testimonial.role}</p>
+                    <div 
+                      className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-6 h-full shadow-xl dark:bg-black/80 dark:border-gray-800/50 hover:border-purple-500/50 transition-all duration-300"
+                    >
+                      <div className="mb-4">
+                        <p className="text-white dark:text-gray-200 mb-6">"{testimonial.testimonial}"</p>
+                        <div className="flex items-center">
+                          <Avatar className="h-12 w-12 mr-4 border-2 border-purple-300 dark:border-purple-700">
+                            <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                            <AvatarFallback className="bg-purple-200 text-purple-800">{testimonial.avatarFallback}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <h4 className="font-semibold text-white dark:text-white">{testimonial.name}</h4>
+                            <p className="text-sm text-cyan-400">{testimonial.role}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex mt-3">
-                      {renderStars(testimonial.rating)}
+                      <div className="flex mt-3">
+                        {renderStars(testimonial.rating)}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
+                ))}
+              </motion.div>
+            </div>
 
-          {/* Second Column - 250px width */}
-          <div className="w-[250px] h-[700px] overflow-hidden relative">
-            <motion.div 
-              className="space-y-8"
-              animate={downwardAnimation}
-            >
-              {duplicatedSecondColumn.map((testimonial, index) => (
-                <div 
-                  key={`second-${testimonial.id}-${index}`}
-                >
+            {/* Third Column - Cards Go Up */}
+            <div className="space-y-8 overflow-hidden h-[700px] relative">
+              <motion.div 
+                className="space-y-8"
+                animate={upwardAnimation}
+              >
+                {duplicatedThirdColumn.map((testimonial, index) => (
                   <div 
-                    className="bg-black/90 backdrop-blur-md border border-white/10 rounded-xl p-6 h-[300px] shadow-xl hover:border-purple-500/50 transition-all duration-300"
+                    key={`${testimonial.id}-${index}`}
+                    className="md:mt-0"
                   >
-                    <div className="mb-4">
-                      <p className="text-white line-clamp-4">"{testimonial.testimonial}"</p>
-                      <div className="flex items-center mt-6">
-                        <Avatar className="h-12 w-12 mr-4 border-2 border-purple-300 dark:border-purple-700">
-                          <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                          <AvatarFallback className="bg-purple-200 text-purple-800">{testimonial.avatarFallback}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                          <p className="text-sm text-cyan-400">{testimonial.role}</p>
+                    <div 
+                      className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-6 h-full shadow-xl dark:bg-black/80 dark:border-gray-800/50 hover:border-purple-500/50 transition-all duration-300"
+                    >
+                      <div className="mb-4">
+                        <p className="text-white dark:text-gray-200 mb-6">"{testimonial.testimonial}"</p>
+                        <div className="flex items-center">
+                          <Avatar className="h-12 w-12 mr-4 border-2 border-purple-300 dark:border-purple-700">
+                            <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                            <AvatarFallback className="bg-purple-200 text-purple-800">{testimonial.avatarFallback}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <h4 className="font-semibold text-white dark:text-white">{testimonial.name}</h4>
+                            <p className="text-sm text-cyan-400">{testimonial.role}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex mt-3">
-                      {renderStars(testimonial.rating)}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Third Column - 250px width */}
-          <div className="w-[250px] h-[700px] overflow-hidden relative">
-            <motion.div 
-              className="space-y-8"
-              animate={upwardAnimation}
-            >
-              {duplicatedThirdColumn.map((testimonial, index) => (
-                <div 
-                  key={`third-${testimonial.id}-${index}`}
-                >
-                  <div 
-                    className="bg-black/90 backdrop-blur-md border border-white/10 rounded-xl p-6 h-[300px] shadow-xl hover:border-purple-500/50 transition-all duration-300"
-                  >
-                    <div className="mb-4">
-                      <p className="text-white line-clamp-4">"{testimonial.testimonial}"</p>
-                      <div className="flex items-center mt-6">
-                        <Avatar className="h-12 w-12 mr-4 border-2 border-purple-300 dark:border-purple-700">
-                          <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                          <AvatarFallback className="bg-purple-200 text-purple-800">{testimonial.avatarFallback}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                          <p className="text-sm text-cyan-400">{testimonial.role}</p>
-                        </div>
+                      <div className="flex mt-3">
+                        {renderStars(testimonial.rating)}
                       </div>
                     </div>
-                    <div className="flex mt-3">
-                      {renderStars(testimonial.rating)}
-                    </div>
                   </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Right Half Column (Fifth Column) - 125px width */}
-          <div className="w-[125px] h-[700px] overflow-hidden relative">
-            <motion.div 
-              className="space-y-8"
-              animate={downwardAnimation}
-            >
-              {duplicatedRightHalfColumn.map((testimonial, index) => (
-                <div 
-                  key={`right-half-${testimonial.id}-${index}`}
-                  className="mr-auto pl-0"
-                >
-                  <div 
-                    className="bg-black/90 backdrop-blur-md border border-white/10 rounded-r-xl rounded-l-none p-6 h-[300px] shadow-xl hover:border-purple-500/50 transition-all duration-300 w-[250px] ml-[-125px]"
-                  >
-                    <div className="mb-4">
-                      <p className="text-white line-clamp-4">"{testimonial.testimonial}"</p>
-                      <div className="flex items-center mt-6">
-                        <Avatar className="h-12 w-12 mr-4 border-2 border-purple-300 dark:border-purple-700">
-                          <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                          <AvatarFallback className="bg-purple-200 text-purple-800">{testimonial.avatarFallback}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                          <p className="text-sm text-cyan-400">{testimonial.role}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex mt-3">
-                      {renderStars(testimonial.rating)}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
+                ))}
+              </motion.div>
+            </div>
+            
           </div>
         </div>
       </div>
