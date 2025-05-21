@@ -5,7 +5,7 @@ import { CardContent } from "@/components/ui/card";
 import AnimatedCard from "@/components/ui/animated-card";
 import { Mail, MapPin, Globe, Heart, Send, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import SchoolFilters from "./find-schools/SchoolFilters";
+import FilterDropdown from "../filters/FilterDropdown";
 import {
   countryOptions,
   usStatesOptions,
@@ -67,7 +67,7 @@ const professors = [
 ];
 
 const FindProfessors = () => {
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({});
   const [favorites, setFavorites] = useState<Record<number, boolean>>(
     professors.reduce((acc, professor) => ({...acc, [professor.id]: professor.favorite}), {})
   );
@@ -77,13 +77,11 @@ const FindProfessors = () => {
   const [reminderDialogOpen, setReminderDialogOpen] = useState(false);
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
 
-  const toggleFilter = (filterId: string) => {
-    setActiveFilters(prev => {
-      if (prev.includes(filterId)) {
-        return prev.filter(id => id !== filterId);
-      }
-      return [...prev, filterId];
-    });
+  const handleFilterSelect = (filterName: string, value: string) => {
+    setSelectedFilters(prev => ({
+      ...prev,
+      [filterName]: value
+    }));
   };
 
   const toggleFavorite = (professorId: number) => {
@@ -179,12 +177,78 @@ const FindProfessors = () => {
         </div>
       </motion.div>
 
-      {/* Filters - updated to use SchoolFilters component with professors filter type */}
-      <SchoolFilters 
-        activeFilters={activeFilters}
-        toggleFilter={toggleFilter}
-        filterType="professors"
-      />
+      {/* Filters - replaced with dropdown filters */}
+      <motion.div 
+        className="mb-8"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-500">
+            <path d="M3 4.5h18M7 12h10M11 19.5h2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <h2 className="font-semibold text-gray-700 dark:text-gray-200">Filters</h2>
+        </div>
+        
+        <div className="flex flex-wrap gap-2">
+          <FilterDropdown 
+            label="Country" 
+            icon={<span>{filterIcons.country}</span>}
+            options={countryOptions}
+            onSelect={(value) => handleFilterSelect("country", value)}
+            selectedValue={selectedFilters.country}
+          />
+          
+          <FilterDropdown 
+            label="State" 
+            icon={<span>{filterIcons.state}</span>}
+            options={usStatesOptions}
+            onSelect={(value) => handleFilterSelect("state", value)}
+            selectedValue={selectedFilters.state}
+          />
+          
+          <FilterDropdown 
+            label="Schools" 
+            icon={<span>{filterIcons.schools}</span>}
+            options={schoolsOptions}
+            onSelect={(value) => handleFilterSelect("school", value)}
+            selectedValue={selectedFilters.school}
+          />
+          
+          <FilterDropdown 
+            label="Area of Study" 
+            icon={<span>{filterIcons.areaOfStudy}</span>}
+            options={areaOfStudyOptions}
+            onSelect={(value) => handleFilterSelect("areaOfStudy", value)}
+            selectedValue={selectedFilters.areaOfStudy}
+          />
+          
+          <FilterDropdown 
+            label="Programs" 
+            icon={<span>{filterIcons.programs}</span>}
+            options={programOptions}
+            onSelect={(value) => handleFilterSelect("program", value)}
+            selectedValue={selectedFilters.program}
+          />
+          
+          <FilterDropdown 
+            label="Research Interest" 
+            icon={<span>{filterIcons.researchInterest}</span>}
+            options={researchInterestOptions}
+            onSelect={(value) => handleFilterSelect("researchInterest", value)}
+            selectedValue={selectedFilters.researchInterest}
+          />
+          
+          <FilterDropdown 
+            label="Title" 
+            icon={<span>{filterIcons.title}</span>}
+            options={professorTitleOptions}
+            onSelect={(value) => handleFilterSelect("title", value)}
+            selectedValue={selectedFilters.title}
+          />
+        </div>
+      </motion.div>
 
       {/* Professors List */}
       <motion.div 
