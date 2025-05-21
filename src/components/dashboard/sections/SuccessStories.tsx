@@ -82,14 +82,18 @@ const SuccessStories = () => {
         {/* Testimonials Container */}
         <div className="w-full max-w-[1216px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* First Testimonial - Lower position */}
-            <div className="md:mt-24">
+            {/* First Testimonial - Moving Down */}
+            <motion.div 
+              className="md:mt-0"
+              initial={{ opacity: 0, y: -50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+              viewport={{ once: true }}
+              animate={{ y: 24 }}
+            >
               <motion.div 
-                className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-6 h-full shadow-xl dark:bg-gray-900/50 dark:border-gray-700/50"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
+                className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-6 h-full shadow-xl dark:bg-black/80 dark:border-gray-800/50"
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
               >
                 <div className="mb-4">
                   <p className="text-white dark:text-gray-200 mb-6">"{testimonials[0].testimonial}"</p>
@@ -108,16 +112,20 @@ const SuccessStories = () => {
                   {renderStars(testimonials[0].rating)}
                 </div>
               </motion.div>
-            </div>
+            </motion.div>
 
-            {/* Second Testimonial - Higher position */}
-            <div className="md:-mt-12">
+            {/* Second Testimonial - Moving Up */}
+            <motion.div 
+              className="md:mt-0"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 100 }}
+              viewport={{ once: true }}
+              animate={{ y: -24 }}
+            >
               <motion.div 
-                className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-6 h-full shadow-xl dark:bg-gray-900/50 dark:border-gray-700/50"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
+                className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-6 h-full shadow-xl dark:bg-black/80 dark:border-gray-800/50"
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
               >
                 <div className="mb-4">
                   <p className="text-white dark:text-gray-200 mb-6">"{testimonials[1].testimonial}"</p>
@@ -136,16 +144,20 @@ const SuccessStories = () => {
                   {renderStars(testimonials[1].rating)}
                 </div>
               </motion.div>
-            </div>
+            </motion.div>
 
-            {/* Third Testimonial - Lower position */}
-            <div className="md:mt-24">
+            {/* Third Testimonial - Moving Down */}
+            <motion.div 
+              className="md:mt-0"
+              initial={{ opacity: 0, y: -50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4, type: "spring", stiffness: 100 }}
+              viewport={{ once: true }}
+              animate={{ y: 24 }}
+            >
               <motion.div 
-                className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-6 h-full shadow-xl dark:bg-gray-900/50 dark:border-gray-700/50"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                viewport={{ once: true }}
+                className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-6 h-full shadow-xl dark:bg-black/80 dark:border-gray-800/50"
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
               >
                 <div className="mb-4">
                   <p className="text-white dark:text-gray-200 mb-6">"{testimonials[2].testimonial}"</p>
@@ -164,7 +176,7 @@ const SuccessStories = () => {
                   {renderStars(testimonials[2].rating)}
                 </div>
               </motion.div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
