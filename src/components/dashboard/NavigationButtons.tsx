@@ -72,10 +72,10 @@ const NavigationButtons = ({
         </Button>
         
         <Button
-          variant={activeSection === "find-schools" ? "default" : "outline"}
+          variant={activeSection === "find-schools" ? "schools" : "outline"}
           className={`flex items-center gap-1.5 h-10 px-3 py-1 min-w-max transition-all duration-300 ${
             activeSection === "find-schools" 
-              ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:-translate-y-1" 
+              ? "" 
               : `${isDarkMode ? "hover:bg-teal-900/30" : "hover:bg-teal-100"}`
           }`}
           onClick={() => handleSectionChange("find-schools")}

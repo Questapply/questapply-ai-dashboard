@@ -9,6 +9,7 @@ import CreateLOR from "@/components/dashboard/sections/CreateLOR";
 import ApplyNow from "@/components/dashboard/sections/ApplyNow";
 import { Section } from "@/utils/FilterUtils";
 import { motion } from "framer-motion";
+import { Card } from "@/components/ui/card";
 
 interface ContentSectionProps {
   activeSection: Section;
@@ -49,12 +50,19 @@ const ContentSection = ({ activeSection, isQuestApplyAI }: ContentSectionProps) 
     );
   }
 
+  // For Find Schools section, use a green background in light mode
+  if (activeSection === "find-schools") {
+    return (
+      <Card variant="green" className="p-0 overflow-hidden">
+        <FindSchools />
+      </Card>
+    );
+  }
+
   // Render the appropriate section based on activeSection
   switch (activeSection) {
     case "ai-talent-test":
       return <AiTalentAssessment />;
-    case "find-schools":
-      return <FindSchools />;
     case "find-programs":
       return <FindPrograms />;
     case "find-professors":
