@@ -1,749 +1,291 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { GradientCard } from "@/components/ui/gradient-card";
-import { 
-  Search, 
-  BookOpen, 
-  User, 
-  FileText, 
-  Send, 
-  Calendar,
-  Activity,
-  Edit,
-  Download,
-  Share,
-  Eye,
-  Plus,
-  Star
-} from "lucide-react";
-import FindSchools from "@/components/dashboard/sections/FindSchools";
-import FindPrograms from "@/components/dashboard/sections/FindPrograms";
-import FindProfessors from "@/components/dashboard/sections/FindProfessors";
-import { cn } from "@/lib/utils";
-import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Info, FileText, MenuSquare, Sparkles, MessageSquare, User } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import LORSamplesSection from "./LORSamplesSection";
+import { ListOrdered, Shield, HelpCircle, Sun, Moon, BookOpen, Layers, GraduationCap, Landmark, University } from "lucide-react";
 
 const RoadmapSection = () => {
-  // States for tracking active step and selected programs
-  const [activeStep, setActiveStep] = useState<number | null>(null);
-  const [showFindSchools, setShowFindSchools] = useState(false);
-  const [showFindPrograms, setShowFindPrograms] = useState(false);
-  const [showFindProfessors, setShowFindProfessors] = useState(false);
-  const [showApplyPopup, setShowApplyPopup] = useState(false);
-  const [showApplicationForm, setShowApplicationForm] = useState(false);
-  const [selectedResume, setSelectedResume] = useState("academic");
-  const [viewingSection, setViewingSection] = useState("");
-  const [activeSOPTab, setActiveSOPTab] = useState("samples");
-
-  // Step data with blue color scheme
-  const steps = [
-    { 
-      id: 1, 
-      title: "Find Schools", 
-      icon: <Search className="h-5 w-5" />,
-      color: "#0EA5E9"
-    },
-    { 
-      id: 2, 
-      title: "Find Programs", 
-      icon: <BookOpen className="h-5 w-5" />,
-      color: "#0EA5E9" 
-    },
-    { 
-      id: 3, 
-      title: "Find Professors", 
-      icon: <User className="h-5 w-5" />,
-      color: "#0EA5E9" 
-    },
-    { 
-      id: 4, 
-      title: "Create Resume", 
-      icon: <FileText className="h-5 w-5" />,
-      color: "#0EA5E9" 
-    },
-    { 
-      id: 5, 
-      title: "Create SOP", 
-      icon: <FileText className="h-5 w-5" />,
-      color: "#0EA5E9" 
-    },
-    { 
-      id: 6, 
-      title: "Create LOR", 
-      icon: <FileText className="h-5 w-5" />,
-      color: "#0EA5E9" 
-    },
-    { 
-      id: 7, 
-      title: "Apply Now", 
-      icon: <Send className="h-5 w-5" />,
-      color: "#0EA5E9" 
-    }
-  ];
-
-  // SOP samples data
-  const sopSamples = [
-    {
-      id: 1,
-      title: "Computer Science Ph.D.",
-      university: "Stanford University",
-      content: "My interest in computer science began when I built my first program at age 13...",
-      rating: 5
-    },
-    {
-      id: 2,
-      title: "Molecular Biology Master's",
-      university: "MIT",
-      content: "The complex mechanisms of cellular function have fascinated me since my undergraduate research...",
-      rating: 5
-    },
-    {
-      id: 3,
-      title: "Economics Ph.D.",
-      university: "Harvard University",
-      content: "Working at the intersection of behavioral economics and public policy has shown me...",
-      rating: 4
-    },
-    {
-      id: 4,
-      title: "Mechanical Engineering Master's",
-      university: "UC Berkeley",
-      content: "My experience designing sustainable energy solutions has prepared me to contribute to...",
-      rating: 4
-    },
-    {
-      id: 5,
-      title: "Psychology Ph.D.",
-      university: "University of Michigan",
-      content: "Through my clinical experience and research in cognitive development, I've observed...",
-      rating: 5
-    },
-    {
-      id: 6,
-      title: "Business MBA",
-      university: "Wharton School",
-      content: "Leading teams in technology startups has honed my understanding of organizational...",
-      rating: 4
-    }
-  ];
-
-  // Resume sections data for the Create Resume step
-  const resumeSections = [
-    { id: "personal", title: "Personal Information", complete: true },
-    { id: "summary", title: "Summary", complete: true },
-    { id: "research", title: "Research Interests", complete: true },
-    { id: "education", title: "Education", complete: true },
-    { id: "experience", title: "Professional History", complete: true },
-    { id: "publications", title: "Publications", complete: false },
-    { id: "skills", title: "Certifications and Skills", complete: true },
-    { id: "awards", title: "Honors and Awards", complete: false },
-    { id: "memberships", title: "Memberships", complete: false },
-    { id: "interests", title: "Interests and Hobbies", complete: true },
-    { id: "references", title: "References", complete: false }
-  ];
-
-  // Handle step click
-  const handleStepClick = (stepId: number) => {
-    setActiveStep(stepId);
-    
-    // Reset all display states
-    setShowFindSchools(false);
-    setShowFindPrograms(false);
-    setShowFindProfessors(false);
-    setShowApplyPopup(false);
-    setShowApplicationForm(false);
-    
-    // Handle specific step actions without auto-scrolling
-    if (stepId === 1) {
-      setShowFindSchools(true);
-    } else if (stepId === 2) {
-      setShowFindPrograms(true);
-    } else if (stepId === 3) {
-      setShowFindProfessors(true);
-    } else if (stepId === 7) {
-      // For Apply Now, show popup after a delay
-      setTimeout(() => setShowApplyPopup(true), 800);
-    }
-  };
-
-  // Handle applying (for step 7)
-  const handleApplyNow = () => {
-    setShowApplyPopup(false);
-    setShowApplicationForm(true);
-  };
-
-  const handleSubmitWithUs = () => {
-    // In a real app, this would handle the submission form
-    console.log("Submit with us clicked");
-  };
-
-  // Animation variants
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-  
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
-  };
-
-  // Render star ratings
-  const renderRating = (rating: number) => {
-    return (
-      <div className="flex">
-        {[...Array(5)].map((_, i) => (
-          <Star 
-            key={i} 
-            className={cn(
-              "h-4 w-4", 
-              i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-            )} 
-          />
-        ))}
-      </div>
-    );
-  };
+  const [activeLORTab, setActiveLORTab] = useState("samples");
 
   return (
-    <div className="w-full bg-gradient-to-br from-purple-800 via-indigo-900 to-purple-900 dark:from-purple-800 dark:via-indigo-900 dark:to-purple-900 light:from-purple-200 light:via-indigo-100 light:to-purple-100 py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Section Title - Styled to match "AI Meets Your Talent" */}
-        <motion.h2 
-          className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 dark:text-white text-gray-800"
+    <section className="bg-white dark:bg-gray-900 py-24 px-4">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">AI-Powered</span> Roadmap to Success
-        </motion.h2>
-        
-        {/* Subtitle - Styled to match AI Meets Your Talent subtitle */}
-        <motion.p 
-          className="text-lg md:text-xl text-center mb-16 dark:text-purple-200 text-purple-700"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{ once: true }}
+          className="text-center mb-16"
         >
-          A smart, step-by-step guide that uses AI to help you reach your educational and career goals.
-        </motion.p>
-        
-        {/* Roadmap Container with width of 1152px */}
-        <div className="w-full max-w-[1152px] mx-auto"> 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            viewport={{ once: true }}
-          >
-            <GradientCard 
-              variant="talent-section" 
-              className="p-4 md:p-6 shadow-xl w-full dark:bg-gray-800 bg-white/90"
-            >
-              {/* Updated Button Layout - with icons above text */}
-              <div className="flex justify-center items-center my-6 px-3 py-2">
-                <div className="flex flex-wrap justify-center gap-2 w-full">
-                  {steps.map((step) => (
-                    <React.Fragment key={step.id}>
-                      {/* Button */}
-                      <motion.button
-                        className={cn(
-                          "relative flex flex-col items-center justify-center px-4 py-4 rounded-md text-sm md:text-base transition-all duration-300",
-                          "border border-gray-200 dark:border-gray-700",
-                          activeStep === step.id 
-                            ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-blue-700 shadow-md shadow-blue-500/20" 
-                            : "bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-200 dark:hover:border-blue-600"
-                        )}
-                        onClick={() => handleStepClick(step.id)}
-                        whileHover={{ 
-                          y: -2,
-                          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" 
-                        }}
-                        style={{
-                          width: `calc(${100 / steps.length}% - 8px)`,
-                          minWidth: '130px',
-                          maxWidth: '160px',
-                          height: '90px' // Increased height to accommodate vertical layout
-                        }}
-                      >
-                        {/* Icon - Now positioned above text */}
-                        <span 
-                          className={cn(
-                            "flex items-center justify-center h-8 w-8 rounded-md mb-2",
-                            activeStep === step.id ? "text-white" : ""
-                          )}
-                          style={{ color: activeStep === step.id ? "#ffffff" : step.color }}
-                        >
-                          {step.icon}
-                        </span>
-                        
-                        {/* Step Title */}
-                        <span className="font-medium whitespace-nowrap text-center">
-                          {step.title}
-                        </span>
-                      </motion.button>
-                    </React.Fragment>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Dynamic Content Area - Fixed height with scrolling */}
-              <div className="mt-6">
-                <ScrollArea className="h-[600px] rounded-md px-1">
-                  {activeStep === null && (
-                    <motion.div 
-                      className="text-center py-8"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <p className="text-purple-200 text-lg dark:text-purple-200 text-purple-700">
-                        Click on any step above to see a demonstration of our application process
-                      </p>
-                    </motion.div>
-                  )}
-                  
-                  {activeStep === 1 && showFindSchools && (
-                    <FindSchools />
-                  )}
-                  
-                  {activeStep === 2 && showFindPrograms && (
-                    <FindPrograms />
-                  )}
-                  
-                  {activeStep === 3 && showFindProfessors && (
-                    <FindProfessors />
-                  )}
-                  
-                  {activeStep === 4 && (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                      className="p-6"
-                    >
-                      {/* Tabs navigation - matching dashboard appearance */}
-                      <div className="flex overflow-x-auto pb-2 mb-4 scrollbar-hide border-b border-gray-200 dark:border-gray-700">
-                        {[
-                          { id: "guidance", icon: <BookOpen className="w-4 h-4" />, label: "Guidance" },
-                          { id: "template", icon: <FileText className="w-4 h-4" />, label: "Choose Template" },
-                          { id: "myResumes", icon: <FileText className="w-4 h-4" />, label: "My Resumes", active: true },
-                          { id: "aiImprovement", icon: <Activity className="w-4 h-4" />, label: "AI Improvement" },
-                          { id: "universityMatch", icon: <User className="w-4 h-4" />, label: "Match with University" },
-                          { id: "successStories", icon: <BookOpen className="w-4 h-4" />, label: "Success Stories" },
-                          { id: "atsAnalysis", icon: <FileText className="w-4 h-4" />, label: "ATS Analysis" }
-                        ].map((tab) => (
-                          <div 
-                            key={tab.id}
-                            className={`
-                              px-4 py-3 flex items-center gap-2 whitespace-nowrap relative font-medium transition-all duration-300
-                              ${tab.active ? 'text-blue-500 dark:text-blue-400 border-b-2 border-blue-500 -mb-px' : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'}
-                            `}
-                          >
-                            {tab.icon}
-                            {tab.label}
-                          </div>
-                        ))}
-                      </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            Your Application Roadmap
+          </h2>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            Follow these steps to complete your graduate school application journey
+          </p>
+        </motion.div>
 
-                      <motion.div 
-                        className="flex justify-between items-center mb-6"
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">My Resumes</h2>
-                        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                          <Plus className="h-4 w-4 mr-2" />
-                          Create New Resume
-                        </Button>
-                      </motion.div>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="md:col-span-1">
-                          <motion.div 
-                            className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700"
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5 }}
-                          >
-                            <div className="p-5 border-b border-gray-200 dark:border-gray-700">
-                              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">My Documents</h3>
-                            </div>
-                            <div className="p-0">
-                              {/* Left sidebar tabs */}
-                              <div className="flex flex-col w-full rounded-none border-none bg-transparent h-auto">
-                                <div 
-                                  className="justify-start py-3 px-5 text-left border-l-2 border-blue-600 data-[state=active]:border-blue-600 data-[state=active]:bg-blue-50 data-[state=active]:dark:bg-blue-900/20 rounded-none bg-blue-50 dark:bg-blue-900/20"
-                                >
-                                  Academic CV
-                                </div>
-                                <div 
-                                  className="justify-start py-3 px-5 text-left border-l-2 border-transparent rounded-none text-gray-600 dark:text-gray-300"
-                                >
-                                  Professional Resume
-                                </div>
-                              </div>
-                            </div>
-                          </motion.div>
-                        </div>
-                        
-                        <div className="md:col-span-2">
-                          <motion.div 
-                            className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700"
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5 }}
-                          >
-                            <div className="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                              <div>
-                                <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
-                                  Academic CV
-                                </h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">Last updated: May 16, 2025</p>
-                              </div>
-                              <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 rounded text-xs font-medium">
-                                7/11 Complete
-                              </div>
-                            </div>
-                            
-                            <div className="p-5">
-                              <div className="flex space-x-4 mb-6">
-                                <Button size="sm">
-                                  <Edit className="h-4 w-4 mr-2" />
-                                  Edit
-                                </Button>
-                                <Button size="sm" variant="outline">
-                                  <Download className="h-4 w-4 mr-2" />
-                                  Download
-                                </Button>
-                                <Button size="sm" variant="outline">
-                                  <Share className="h-4 w-4 mr-2" />
-                                  Share
-                                </Button>
-                              </div>
-                              
-                              <h4 className="text-md font-medium text-gray-800 dark:text-gray-200 mb-4">Sections</h4>
-                              
-                              <motion.div 
-                                className="grid grid-cols-1 sm:grid-cols-2 gap-3"
-                                variants={container}
-                                initial="hidden"
-                                animate="show"
-                              >
-                                {resumeSections.map((section) => (
-                                  <motion.div 
-                                    key={section.id}
-                                    variants={item}
-                                    whileHover={{ scale: 1.02 }}
-                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                  >
-                                    <Dialog>
-                                      <DialogTrigger asChild>
-                                        <Card 
-                                          className="cursor-pointer border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-200"
-                                        >
-                                          <CardContent className="p-4 flex justify-between items-center">
-                                            <div>
-                                              <h5 className="font-medium text-gray-900 dark:text-white">{section.title}</h5>
-                                              <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                {section.complete ? "Complete" : "Not complete"}
-                                              </p>
-                                            </div>
-                                            <div className={`w-2 h-2 rounded-full ${section.complete ? "bg-green-500" : "bg-amber-500"}`}></div>
-                                            <Eye className="h-4 w-4 text-gray-400" />
-                                          </CardContent>
-                                        </Card>
-                                      </DialogTrigger>
-                                      <DialogContent className="sm:max-w-md">
-                                        <DialogHeader>
-                                          <DialogTitle>{section.title}</DialogTitle>
-                                        </DialogHeader>
-                                        <div className="py-4">
-                                          {section.id === "personal" && (
-                                            <div className="space-y-4">
-                                              <div>
-                                                <h3 className="font-semibold">Dr. Sarah Johnson</h3>
-                                                <p className="text-sm text-gray-500">Neuroscience Researcher</p>
-                                              </div>
-                                              <div className="grid grid-cols-2 gap-4 text-sm">
-                                                <div>
-                                                  <p className="text-gray-500">Email:</p>
-                                                  <p>sarah.johnson@university.edu</p>
-                                                </div>
-                                                <div>
-                                                  <p className="text-gray-500">Phone:</p>
-                                                  <p>(123) 456-7890</p>
-                                                </div>
-                                                <div>
-                                                  <p className="text-gray-500">Address:</p>
-                                                  <p>123 University Ave, Boston, MA</p>
-                                                </div>
-                                                <div>
-                                                  <p className="text-gray-500">LinkedIn:</p>
-                                                  <p>linkedin.com/in/sarahjohnson</p>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          )}
-                                          {section.id !== "personal" && (
-                                            <p className="text-gray-500">
-                                              {section.complete 
-                                                ? "This section has been completed. Click Edit to modify its contents."
-                                                : "This section needs to be completed. Click Edit to add content."}
-                                            </p>
-                                          )}
-                                        </div>
-                                        <div className="flex justify-end">
-                                          <Button>
-                                            <Edit className="h-4 w-4 mr-2" />
-                                            Edit Section
-                                          </Button>
-                                        </div>
-                                      </DialogContent>
-                                    </Dialog>
-                                  </motion.div>
-                                ))}
-                              </motion.div>
-                            </div>
-                          </motion.div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                  
-                  {activeStep === 5 && (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                      className="p-4 md:p-6 mx-auto"
-                    >
-                      {/* SOP Tabs */}
-                      <div className="flex overflow-x-auto pb-2 mb-6 border-b border-gray-200 dark:border-gray-700 gap-2">
-                        {[
-                          { id: "guidance", icon: <BookOpen className="w-4 h-4" />, label: "Guidance" },
-                          { id: "samples", icon: <FileText className="w-4 h-4" />, label: "Samples", active: true },
-                          { id: "mySop", icon: <FileText className="w-4 h-4" />, label: "My SOP" },
-                          { id: "aiImprovement", icon: <Activity className="w-4 h-4" />, label: "AI Improvement" },
-                          { id: "universityMatch", icon: <User className="w-4 h-4" />, label: "Match with University" },
-                          { id: "successStories", icon: <BookOpen className="w-4 h-4" />, label: "Success Stories" },
-                          { id: "aiHumanizer", icon: <User className="w-4 h-4" />, label: "AI Humanizer" }
-                        ].map((tab) => (
-                          <div 
-                            key={tab.id}
-                            onClick={() => setActiveSOPTab(tab.id)}
-                            className={`
-                              px-4 py-3 flex items-center gap-2 whitespace-nowrap relative font-medium cursor-pointer transition-all duration-300
-                              ${(tab.active || activeSOPTab === tab.id) ? 'text-blue-500 dark:text-blue-400 border-b-2 border-blue-500 -mb-px' : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'}
-                            `}
-                          >
-                            {tab.icon}
-                            {tab.label}
-                          </div>
-                        ))}
-                      </div>
+        {/* Roadmap steps before Create LOR */}
+        {/* Step 1: Explore Programs */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mb-20"
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div className="p-6 md:p-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-teal-500 dark:text-teal-400 mb-4">
+                Explore Programs
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Start by exploring different graduate programs and universities that align with your academic and career goals.
+              </p>
+              <ul className="list-disc list-inside mt-4 text-gray-600 dark:text-gray-300">
+                <li>Research universities and programs</li>
+                <li>Attend virtual info sessions</li>
+                <li>Connect with current students</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
 
-                      {/* SOP Samples Content */}
-                      <div className="space-y-6">
-                        <div>
-                          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Sample Statements of Purpose</h2>
-                          
-                          {/* Filters */}
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                            <div>
-                              <h3 className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Degree Level</h3>
-                              <Select defaultValue="all">
-                                <SelectTrigger className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                                  <SelectValue placeholder="All Degrees" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="all">All Degrees</SelectItem>
-                                  <SelectItem value="phd">PhD</SelectItem>
-                                  <SelectItem value="masters">Master's</SelectItem>
-                                  <SelectItem value="mba">MBA</SelectItem>
-                                  <SelectItem value="bachelors">Bachelor's</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            
-                            <div>
-                              <h3 className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Field of Study</h3>
-                              <Select defaultValue="all">
-                                <SelectTrigger className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                                  <SelectValue placeholder="All Fields" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="all">All Fields</SelectItem>
-                                  <SelectItem value="cs">Computer Science</SelectItem>
-                                  <SelectItem value="biology">Biology</SelectItem>
-                                  <SelectItem value="economics">Economics</SelectItem>
-                                  <SelectItem value="engineering">Engineering</SelectItem>
-                                  <SelectItem value="psychology">Psychology</SelectItem>
-                                  <SelectItem value="business">Business</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                          </div>
-                          
-                          {/* Sample SOPs */}
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {sopSamples.map((sample) => (
-                              <motion.div
-                                key={sample.id}
-                                whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                                className="rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
-                              >
-                                <div className="h-2 bg-gradient-to-r from-purple-500 to-blue-500"></div>
-                                <div className="p-5">
-                                  <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-semibold text-lg text-gray-900 dark:text-white">{sample.title}</h3>
-                                    {renderRating(sample.rating)}
-                                  </div>
-                                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{sample.university}</p>
-                                  <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3 mb-4">{sample.content}</p>
-                                  <div className="flex justify-between items-center">
-                                    <Button size="sm" variant="outline" className="text-purple-600 border-purple-200 hover:bg-purple-50 dark:text-purple-400 dark:border-purple-800 dark:hover:bg-purple-900/20">
-                                      Read More
-                                    </Button>
-                                    <button className="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400">
-                                      <Share className="h-4 w-4" />
-                                    </button>
-                                  </div>
-                                </div>
-                              </motion.div>
-                            ))}
-                          </div>
-                          
-                          {/* Load More Button */}
-                          <div className="flex justify-center mt-8">
-                            <Button variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800">
-                              Load More Samples
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                  
-                  {activeStep === 6 && (
-                    <motion.div 
-                      className="bg-gray-800/50 p-6 rounded-lg mx-2"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <h3 className="text-xl font-semibold text-white mb-4">Create Letter of Recommendation</h3>
-                      <div className="flex space-x-2 overflow-x-auto pb-2">
-                        {["Guidance", "LOR Samples", "My LORs", "AI Improvement", "Strengths Highlighter", "Professional Tone", "AI Humanizer"].map((tab) => (
-                          <div key={tab} className="px-4 py-2 bg-gray-700 rounded-md text-white whitespace-nowrap">
-                            {tab}
-                          </div>
-                        ))}
-                      </div>
-                      <div className="mt-6 text-center text-purple-300">
-                        <p>Generate powerful recommendation letters that highlight your strengths and potential</p>
-                      </div>
-                    </motion.div>
-                  )}
-                  
-                  {activeStep === 7 && (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className="px-2"
-                    >
-                      {!showApplyPopup && !showApplicationForm && (
-                        <div className="bg-gray-800/50 p-6 rounded-lg text-center">
-                          <h3 className="text-xl font-semibold text-white mb-4">Apply Now</h3>
-                          <p className="text-purple-300">Click to see your selected programs and begin the application process</p>
-                        </div>
-                      )}
-                      
-                      {showApplyPopup && (
-                        <motion.div 
-                          className="bg-gray-800/50 p-6 rounded-lg"
-                          initial={{ scale: 0.95 }}
-                          animate={{ scale: 1 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <h3 className="text-xl font-semibold text-white mb-4">Selected Programs</h3>
-                          <div className="space-y-4 mb-6">
-                            {[
-                              { id: 1, title: "PhD in Computer Science", school: "Stanford University" },
-                              { id: 2, title: "PhD in Artificial Intelligence", school: "Massachusetts Institute of Technology" }
-                            ].map((program) => (
-                              <div key={program.id} className="border border-gray-700 rounded-lg p-4 bg-gray-700/50">
-                                <div className="flex justify-between items-center">
-                                  <div>
-                                    <h4 className="text-lg font-medium text-white">{program.title}</h4>
-                                    <p className="text-purple-300">{program.school}</p>
-                                  </div>
-                                  <Button 
-                                    variant="outline" 
-                                    className="bg-green-800/30 text-green-400 border-green-600"
-                                    onClick={handleApplyNow}
-                                  >
-                                    Apply Now
-                                  </Button>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                      
-                      {showApplicationForm && (
-                        <motion.div 
-                          className="bg-gray-800/50 p-6 rounded-lg"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          <h3 className="text-xl font-semibold text-white mb-6">Application Options</h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="border border-gray-700 rounded-lg p-6 bg-gradient-to-br from-purple-900/30 to-indigo-900/30 hover:from-purple-900/40 hover:to-indigo-900/40 transition-all">
-                              <h4 className="text-lg font-medium text-white mb-2">Apply Yourself</h4>
-                              <p className="text-gray-300 mb-4">Apply directly through the university's website using our guidance.</p>
-                              <Button className="w-full bg-purple-800 hover:bg-purple-700 text-white">
-                                Continue
-                              </Button>
-                            </div>
-                            
-                            <div 
-                              className="border border-indigo-600/30 rounded-lg p-6 bg-gradient-to-br from-indigo-900/30 to-blue-900/30 hover:from-indigo-900/40 hover:to-blue-900/40 transition-all"
-                              onClick={handleSubmitWithUs}
-                            >
-                              <h4 className="text-lg font-medium text-white mb-2">Submit with Us</h4>
-                              <p className="text-gray-300 mb-4">We handle the entire application process on your behalf.</p>
-                              <Button className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white">
-                                Submit with Us
-                              </Button>
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </motion.div>
-                  )}
-                </ScrollArea>
-              </div>
-            </GradientCard>
-          </motion.div>
-        </div>
+        {/* Step 2: Prepare Application Documents */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mb-20"
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div className="p-6 md:p-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-teal-500 dark:text-teal-400 mb-4">
+                Prepare Application Documents
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Gather and prepare all necessary application documents, including transcripts, test scores, and letters of recommendation.
+              </p>
+              <ul className="list-disc list-inside mt-4 text-gray-600 dark:text-gray-300">
+                <li>Request transcripts from previous institutions</li>
+                <li>Prepare for and take standardized tests (GRE, GMAT, TOEFL, IELTS)</li>
+                <li>Draft a compelling statement of purpose</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Step 3: Craft Statement of Purpose */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mb-20"
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div className="p-6 md:p-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-teal-500 dark:text-teal-400 mb-4">
+                Craft Statement of Purpose
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Write a clear and concise statement of purpose that highlights your academic and research experiences, as well as your goals for graduate study.
+              </p>
+              <ul className="list-disc list-inside mt-4 text-gray-600 dark:text-gray-300">
+                <li>Outline your academic and research experiences</li>
+                <li>Clearly state your goals for graduate study</li>
+                <li>Proofread and edit for clarity and grammar</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Create Letter of Recommendation Step */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="mb-20"
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div className="p-6 md:p-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-teal-500 dark:text-teal-400 mb-4">
+                Letter of Recommendation
+              </h3>
+
+              <Tabs 
+                defaultValue="samples" 
+                value={activeLORTab}
+                onValueChange={setActiveLORTab}
+                className="w-full"
+              >
+                <TabsList className="w-full flex mb-6 overflow-x-auto space-x-1 border-b-0">
+                  <TabsTrigger 
+                    value="guidance" 
+                    className="flex items-center gap-1.5 flex-1 data-[state=active]:border-b-2 data-[state=active]:border-b-teal-500 data-[state=active]:text-teal-500 rounded-none border-b-2 border-transparent transition-all"
+                  >
+                    <Info className="w-4 h-4" />
+                    <span>Guidance</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="samples" 
+                    className="flex items-center gap-1.5 flex-1 data-[state=active]:border-b-2 data-[state=active]:border-b-teal-500 data-[state=active]:text-teal-500 rounded-none border-b-2 border-transparent transition-all"
+                  >
+                    <FileText className="w-4 h-4" />
+                    <span>LOR Samples</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="mylors" 
+                    className="flex items-center gap-1.5 flex-1 data-[state=active]:border-b-2 data-[state=active]:border-b-teal-500 data-[state=active]:text-teal-500 rounded-none border-b-2 border-transparent transition-all"
+                  >
+                    <MenuSquare className="w-4 h-4" />
+                    <span>My LORs</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="improvement" 
+                    className="flex items-center gap-1.5 flex-1 data-[state=active]:border-b-2 data-[state=active]:border-b-teal-500 data-[state=active]:text-teal-500 rounded-none border-b-2 border-transparent transition-all"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    <span>AI Improvement</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="strengths" 
+                    className="flex items-center gap-1.5 flex-1 data-[state=active]:border-b-2 data-[state=active]:border-b-teal-500 data-[state=active]:text-teal-500 rounded-none border-b-2 border-transparent transition-all"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    <span>Highlight Strengths</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="tone" 
+                    className="flex items-center gap-1.5 flex-1 data-[state=active]:border-b-2 data-[state=active]:border-b-teal-500 data-[state=active]:text-teal-500 rounded-none border-b-2 border-transparent transition-all"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    <span>Professional Tone</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="humanizer" 
+                    className="flex items-center gap-1.5 flex-1 data-[state=active]:border-b-2 data-[state=active]:border-b-teal-500 data-[state=active]:text-teal-500 rounded-none border-b-2 border-transparent transition-all"
+                  >
+                    <User className="w-4 h-4" />
+                    <span>AI Humanizer</span>
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="guidance" className="pt-4">
+                  <div className="text-center p-8">
+                    <p className="text-gray-600 dark:text-gray-300">Guidance content will appear here</p>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="samples" className="pt-4">
+                  <LORSamplesSection />
+                </TabsContent>
+                
+                <TabsContent value="mylors" className="pt-4">
+                  <div className="text-center p-8">
+                    <p className="text-gray-600 dark:text-gray-300">Your saved LORs will appear here</p>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="improvement" className="pt-4">
+                  <div className="text-center p-8">
+                    <p className="text-gray-600 dark:text-gray-300">AI improvement tools will appear here</p>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="strengths" className="pt-4">
+                  <div className="text-center p-8">
+                    <p className="text-gray-600 dark:text-gray-300">Strengths highlighter will appear here</p>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="tone" className="pt-4">
+                  <div className="text-center p-8">
+                    <p className="text-gray-600 dark:text-gray-300">Professional tone adjustments will appear here</p>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="humanizer" className="pt-4">
+                  <div className="text-center p-8">
+                    <p className="text-gray-600 dark:text-gray-300">AI humanizer tools will appear here</p>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Step 5: Submit Applications */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+          className="mb-20"
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div className="p-6 md:p-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-teal-500 dark:text-teal-400 mb-4">
+                Submit Applications
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Carefully review and submit your applications before the deadlines.
+              </p>
+              <ul className="list-disc list-inside mt-4 text-gray-600 dark:text-gray-300">
+                <li>Double-check all application requirements</li>
+                <li>Submit applications before the deadlines</li>
+                <li>Pay application fees</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Step 6: Prepare for Interviews */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="mb-20"
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div className="p-6 md:p-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-teal-500 dark:text-teal-400 mb-4">
+                Prepare for Interviews
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                If selected, prepare for interviews by practicing common questions and researching the faculty and program.
+              </p>
+              <ul className="list-disc list-inside mt-4 text-gray-600 dark:text-gray-300">
+                <li>Research faculty and program</li>
+                <li>Practice common interview questions</li>
+                <li>Prepare questions to ask the interviewer</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Step 7: Await Decisions */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.9 }}
+          className="mb-20"
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div className="p-6 md:p-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-teal-500 dark:text-teal-400 mb-4">
+                Await Decisions
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                After submitting your applications, await decisions from the universities.
+              </p>
+              <ul className="list-disc list-inside mt-4 text-gray-600 dark:text-gray-300">
+                <li>Check your email regularly for updates</li>
+                <li>Prepare for potential interview requests</li>
+                <li>Consider your options once decisions are received</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
       </div>
-    </div>
+    </section>
   );
 };
 
