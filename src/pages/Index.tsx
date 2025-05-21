@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -20,6 +19,7 @@ import Hero3 from "@/components/hero/Hero3";
 import RoadmapSection from "@/components/roadmap/RoadmapSection";
 import { SuccessStories } from "@/components/dashboard/sections";
 import CallToAction from "@/components/common/CallToAction";
+import Footer from "@/components/common/Footer";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -272,100 +272,7 @@ const Index = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/40 dark:bg-gray-900">
       {/* Header/Navigation */}
       <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-purple-100 dark:border-purple-900/50 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center">
-              <QuestApplyLogo variant="full" size="md" />
-              <div className="hidden md:flex ml-10 space-x-4">
-                <Link to="/dashboard" className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium">
-                  Dashboard
-                </Link>
-                <Link to="/ranking" className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium flex items-center">
-                  <ListOrdered className="h-4 w-4 mr-1" />
-                  Ranking
-                </Link>
-                <Link to="/blog" className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium flex items-center">
-                  <FileText className="h-4 w-4 mr-1" />
-                  Blog
-                </Link>
-                <button 
-                  onClick={openGame}
-                  className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium flex items-center group"
-                >
-                  <BookOpen className="h-4 w-4 mr-1 group-hover:animate-pulse" />
-                  <span>TOEFL Game</span>
-                  <motion.span 
-                    className="ml-1 inline-block text-xs bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full px-2"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1, duration: 0.5 }}
-                  >
-                    New!
-                  </motion.span>
-                </button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 px-3 py-2 text-sm font-medium flex items-center">
-                      <HelpCircle className="h-4 w-4 mr-1" />
-                      Help Center
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-2">
-                    <DropdownMenuItem className="focus:bg-purple-100 dark:focus:bg-purple-900/30 rounded-md">
-                      <Link to="/help-center?tab=faqs" className="flex items-center w-full px-2 py-1.5">
-                        FAQs
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="focus:bg-purple-100 dark:focus:bg-purple-900/30 rounded-md">
-                      <Link to="/help-center?tab=video-tutorials" className="flex items-center w-full px-2 py-1.5">
-                        Video Tutorials
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="focus:bg-purple-100 dark:focus:bg-purple-900/30 rounded-md">
-                      <Link to="/help-center?tab=support-ticket" className="flex items-center w-full px-2 py-1.5">
-                        Support Ticket
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              {/* Theme toggle switch */}
-              <div className="flex items-center space-x-2">
-                <Sun className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-yellow-500'}`} />
-                <Switch 
-                  checked={isDarkMode} 
-                  onCheckedChange={toggleTheme}
-                  className="data-[state=checked]:bg-blue-600"
-                />
-                <Moon className={`w-5 h-5 ${isDarkMode ? 'text-blue-400' : 'text-gray-400'}`} />
-              </div>
-            
-              <Link to="/pro">
-                <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2">
-                  <Shield className="h-4 w-4" />
-                  Pro
-                </Button>
-              </Link>
-              <Link to="/profile">
-                <Button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white border-none">
-                  Profile
-                </Button>
-              </Link>
-              <Link to="/auth?mode=login">
-                <Button variant="outline" className="border-purple-400 dark:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/50">
-                  Login
-                </Button>
-              </Link>
-              <Link to="/auth?mode=signup">
-                <Button className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white border-none">
-                  Sign Up
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
+        {/* ... keep existing code (header content) */}
       </header>
 
       {/* Main content - Hero section with Background matching */}
@@ -384,14 +291,8 @@ const Index = () => {
       {/* Call to Action Section - Moved to after Success Stories section */}
       <CallToAction isDarkMode={isDarkMode} />
 
-      {/* Footer */}
-      <footer className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-purple-100 dark:border-purple-900/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-gray-500 dark:text-gray-400">
-            <p>&copy; 2023 QuestApply. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      {/* Footer - New attractive footer */}
+      <Footer />
       
       {/* TOEFL Game Dialog */}
       <WordQuestGame open={isGameOpen} onOpenChange={setIsGameOpen} />

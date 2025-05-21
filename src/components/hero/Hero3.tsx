@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -274,7 +273,7 @@ const Hero3 = ({ isDarkMode }: { isDarkMode: boolean }) => {
           The first AI platform that identifies your unique talents and connects you to top universities with incredible speed and accuracy.
         </p>
         <Button 
-          className="mt-10 px-10 py-2.5 h-auto text-lg text-white bg-cyan-500 hover:bg-cyan-600 rounded-md"
+          className="mt-10 px-10 py-2.5 h-auto text-lg text-white bg-[#00D1E8] hover:bg-[#00B5C9] rounded-md shadow-[0_4px_20px_rgba(0,209,232,0.5)]"
           size="lg"
         >
           Begin Your Journey

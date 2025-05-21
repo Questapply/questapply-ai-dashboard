@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -159,17 +158,7 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
       {/* Cosmic Accents - Star sparkles */}
       <motion.div 
         className="absolute top-10 left-1/4 text-white opacity-70"
-        variants={{
-          initial: { opacity: 0.3 },
-          animate: { 
-            opacity: [0.3, 1, 0.3],
-            transition: { 
-              duration: 3,
-              repeat: Infinity,
-              repeatType: "loop" as const
-            }
-          }
-        }}
+        variants={sparkleVariants}
         initial="initial"
         animate="animate"
       >
@@ -232,17 +221,7 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
             
             {/* Shorter, impactful title */}
             <motion.h2 
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { 
-                    duration: 0.7,
-                    ease: "easeOut"
-                  }
-                }
-              }}
+              variants={mainTextVariants}
               className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 text-white drop-shadow-[0_0_8px_rgba(183,148,244,0.8)] font-heading tracking-tight"
             >
               Begin Your Journey Today
@@ -250,53 +229,23 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
             
             {/* Concise description */}
             <motion.p
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { 
-                    duration: 0.7,
-                    ease: "easeOut"
-                  }
-                }
-              }}
+              variants={mainTextVariants}
               className="text-lg md:text-xl text-purple-100 text-center mb-8 max-w-2xl mx-auto"
             >
               Get matched with ideal universities and maximize your chances of acceptance with our AI-powered platform.
             </motion.p>
             
-            {/* CTA Button with consistent cyan color in both light and dark mode */}
-            <motion.div variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { 
-                  duration: 0.7,
-                  ease: "easeOut"
-                }
-              }
-            }}>
+            {/* CTA Button with bright cyan color in both light and dark mode */}
+            <motion.div variants={mainTextVariants}>
               <Link to="/auth?mode=signup">
                 <motion.div
-                  variants={{
-                    initial: { scale: 1 },
-                    hover: { 
-                      scale: 1.05,
-                      boxShadow: "0px 0px 20px 5px rgba(56, 189, 248, 0.4)",
-                      transition: { 
-                        duration: 0.3,
-                        yoyo: Infinity
-                      }
-                    }
-                  }}
+                  variants={buttonVariants}
                   initial="initial"
                   whileHover="hover"
                   className="inline-block"
                 >
                   <Button 
-                    className="bg-cyan-500 hover:bg-cyan-600 text-white text-lg py-6 px-8 rounded-md shadow-[0_4px_20px_rgba(56,189,248,0.5)] transition-all duration-300 dark:bg-cyan-500 dark:hover:bg-cyan-600 dark:text-white dark:shadow-[0_4px_20px_rgba(56,189,248,0.5)]"
+                    className="bg-[#00D1E8] hover:bg-[#00B5C9] text-white text-lg py-6 px-8 rounded-md shadow-[0_4px_20px_rgba(0,209,232,0.5)] transition-all duration-300"
                   >
                     Begin Your Journey
                   </Button>
@@ -306,56 +255,18 @@ const CallToAction = ({ isDarkMode }: { isDarkMode: boolean }) => {
             
             {/* Trust badges in a cleaner layout */}
             <motion.div 
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.3
-                  }
-                }
-              }}
+              variants={staggerChildren}
               className="mt-8 pt-5 border-t border-purple-500/20 w-full flex flex-wrap justify-center gap-x-8 gap-y-2 items-center"
             >
-              <motion.div variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { 
-                    duration: 0.7,
-                    ease: "easeOut"
-                  }
-                }
-              }} className="text-purple-200/80 text-sm flex items-center">
+              <motion.div variants={mainTextVariants} className="text-purple-200/80 text-sm flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
                 No credit card required
               </motion.div>
-              <motion.div variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { 
-                    duration: 0.7,
-                    ease: "easeOut"
-                  }
-                }
-              }} className="text-purple-200/80 text-sm flex items-center">
+              <motion.div variants={mainTextVariants} className="text-purple-200/80 text-sm flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
                 Join 10,000+ students
               </motion.div>
-              <motion.div variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { 
-                    duration: 0.7,
-                    ease: "easeOut"
-                  }
-                }
-              }} className="text-purple-200/80 text-sm flex items-center">
+              <motion.div variants={mainTextVariants} className="text-purple-200/80 text-sm flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
                 Success rate 94%
               </motion.div>
