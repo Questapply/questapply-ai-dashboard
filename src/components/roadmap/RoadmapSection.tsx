@@ -656,8 +656,8 @@ const RoadmapSection = () => {
                         Letter of Recommendation
                       </motion.h1>
                       
-                      {/* LOR tabs */}
-                      <div className="flex overflow-x-auto pb-2 mb-6 space-x-1 border-b border-gray-200 dark:border-gray-700">
+                      {/* Modified LOR tabs to remove horizontal scrolling and disable most buttons */}
+                      <div className="flex flex-wrap mb-6 border-b border-gray-200 dark:border-gray-700">
                         {[
                           { id: "guidance", icon: <BookOpen className="w-4 h-4" />, label: "Guidance" },
                           { id: "samples", icon: <FileText className="w-4 h-4" />, label: "LOR Samples", active: true },
@@ -669,10 +669,12 @@ const RoadmapSection = () => {
                         ].map((tab) => (
                           <div 
                             key={tab.id}
-                            onClick={() => setActiveLORTab(tab.id)}
+                            // Only allow clicks on samples tab, all others are disabled
+                            onClick={tab.id === "samples" ? () => setActiveLORTab("samples") : undefined}
                             className={`
-                              px-4 py-3 flex items-center gap-2 whitespace-nowrap font-medium cursor-pointer transition-all duration-300
-                              ${(tab.active || activeLORTab === tab.id) ? 'text-teal-500 dark:text-teal-400 border-b-2 border-teal-500 dark:border-teal-400 -mb-px' : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'}
+                              px-4 py-3 flex items-center gap-2 whitespace-nowrap font-medium transition-all duration-300
+                              ${tab.id === "samples" ? "cursor-pointer" : "cursor-default opacity-70"}
+                              ${(tab.active || activeLORTab === tab.id) ? 'text-teal-500 dark:text-teal-400 border-b-2 border-teal-500 dark:border-teal-400 -mb-px' : 'text-gray-600 dark:text-gray-300'}
                             `}
                           >
                             {tab.icon}
@@ -681,10 +683,8 @@ const RoadmapSection = () => {
                         ))}
                       </div>
 
-                      {/* LOR Samples content */}
-                      {activeLORTab === "samples" && (
-                        <LORSamplesSection />
-                      )}
+                      {/* LOR Samples content - only showing this tab */}
+                      <LORSamplesSection />
                     </motion.div>
                   )}
                   
