@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Filter } from "lucide-react";
+import { Filter, Flag, MapPin, School, GraduationCap, Book, Layers, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
 import FilterDropdown from "@/components/dashboard/filters/FilterDropdown";
 import { 
@@ -41,61 +41,68 @@ const SchoolFilters = ({ activeFilters, toggleFilter }: SchoolFiltersProps) => {
         <h2 className="font-semibold text-gray-700 dark:text-gray-200">Filters</h2>
       </div>
       
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <FilterDropdown 
           label="Country" 
-          icon={<span>{filterIcons.country}</span>}
+          icon={<Flag className="h-4 w-4" />}
           options={countryOptions}
           onSelect={(value) => handleFilterSelect("country", value)}
           selectedValue={selectedFilters.country}
+          buttonClassName="!py-1.5"
         />
         
         <FilterDropdown 
           label="State" 
-          icon={<span>{filterIcons.state}</span>}
+          icon={<MapPin className="h-4 w-4" />}
           options={usStatesOptions}
           onSelect={(value) => handleFilterSelect("state", value)}
           selectedValue={selectedFilters.state}
+          buttonClassName="!py-1.5"
         />
         
         <FilterDropdown 
           label="Schools" 
-          icon={<span>{filterIcons.schools}</span>}
+          icon={<School className="h-4 w-4" />}
           options={schoolsOptions}
           onSelect={(value) => handleFilterSelect("school", value)}
           selectedValue={selectedFilters.school}
+          buttonClassName="!py-1.5"
         />
         
         <FilterDropdown 
           label="Degree Level" 
-          icon={<span>{filterIcons.degreeLevel}</span>}
+          icon={<GraduationCap className="h-4 w-4" />}
           options={degreeLevelOptions}
           onSelect={(value) => handleFilterSelect("degreeLevel", value)}
           selectedValue={selectedFilters.degreeLevel}
+          buttonClassName="!py-1.5"
         />
         
         <FilterDropdown 
           label="Area of Study" 
-          icon={<span>{filterIcons.areaOfStudy}</span>}
+          icon={<Book className="h-4 w-4" />}
           options={areaOfStudyOptions}
           onSelect={(value) => handleFilterSelect("areaOfStudy", value)}
           selectedValue={selectedFilters.areaOfStudy}
+          buttonClassName="!py-1.5"
         />
         
         <FilterDropdown 
           label="Programs" 
-          icon={<span>{filterIcons.programs}</span>}
+          icon={<Layers className="h-4 w-4" />}
           options={programOptions}
           onSelect={(value) => handleFilterSelect("program", value)}
           selectedValue={selectedFilters.program}
+          buttonClassName="!py-1.5"
         />
         
         <FilterDropdown 
           label="Order By" 
-          icon={<span>{filterIcons.orderBy}</span>}
+          icon={<BarChart3 className="h-4 w-4" />}
           options={orderBySchoolOptions}
           onSelect={(value) => handleFilterSelect("orderBy", value)}
           selectedValue={selectedFilters.orderBy}
+          buttonClassName="!py-1.5"
         />
       </div>
     </motion.div>
