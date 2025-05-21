@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -27,6 +26,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LORSamplesSection from "@/components/dashboard/sections/create-lor/LORSamplesSection";
+import RoadmapApplyNow from "./sections/apply-now/RoadmapApplyNow";
 
 const RoadmapSection = () => {
   // States for tracking active step and selected programs
@@ -167,8 +167,8 @@ const RoadmapSection = () => {
     } else if (stepId === 3) {
       setShowFindProfessors(true);
     } else if (stepId === 7) {
-      // For Apply Now, show popup after a delay
-      setTimeout(() => setShowApplyPopup(true), 800);
+      // For Apply Now, we'll show the component directly
+      setShowApplicationForm(true);
     }
   };
 
@@ -688,84 +688,8 @@ const RoadmapSection = () => {
                     </motion.div>
                   )}
                   
-                  {activeStep === 7 && (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className="px-2"
-                    >
-                      {!showApplyPopup && !showApplicationForm && (
-                        <div className="bg-gray-800/50 p-6 rounded-lg text-center">
-                          <h3 className="text-xl font-semibold text-white mb-4">Apply Now</h3>
-                          <p className="text-purple-300">Click to see your selected programs and begin the application process</p>
-                        </div>
-                      )}
-                      
-                      {showApplyPopup && (
-                        <motion.div 
-                          className="bg-gray-800/50 p-6 rounded-lg"
-                          initial={{ scale: 0.95 }}
-                          animate={{ scale: 1 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <h3 className="text-xl font-semibold text-white mb-4">Selected Programs</h3>
-                          <div className="space-y-4 mb-6">
-                            {[
-                              { id: 1, title: "PhD in Computer Science", school: "Stanford University" },
-                              { id: 2, title: "PhD in Artificial Intelligence", school: "Massachusetts Institute of Technology" }
-                            ].map((program) => (
-                              <div key={program.id} className="border border-gray-700 rounded-lg p-4 bg-gray-700/50">
-                                <div className="flex justify-between items-center">
-                                  <div>
-                                    <h4 className="text-lg font-medium text-white">{program.title}</h4>
-                                    <p className="text-purple-300">{program.school}</p>
-                                  </div>
-                                  <Button 
-                                    variant="outline" 
-                                    className="bg-green-800/30 text-green-400 border-green-600"
-                                    onClick={handleApplyNow}
-                                  >
-                                    Apply Now
-                                  </Button>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                      
-                      {showApplicationForm && (
-                        <motion.div 
-                          className="bg-gray-800/50 p-6 rounded-lg"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          <h3 className="text-xl font-semibold text-white mb-6">Application Options</h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="border border-gray-700 rounded-lg p-6 bg-gradient-to-br from-purple-900/30 to-indigo-900/30 hover:from-purple-900/40 hover:to-indigo-900/40 transition-all">
-                              <h4 className="text-lg font-medium text-white mb-2">Apply Yourself</h4>
-                              <p className="text-gray-300 mb-4">Apply directly through the university's website using our guidance.</p>
-                              <Button className="w-full bg-purple-800 hover:bg-purple-700 text-white">
-                                Continue
-                              </Button>
-                            </div>
-                            
-                            <div 
-                              className="border border-indigo-600/30 rounded-lg p-6 bg-gradient-to-br from-indigo-900/30 to-blue-900/30 hover:from-indigo-900/40 hover:to-blue-900/40 transition-all"
-                              onClick={handleSubmitWithUs}
-                            >
-                              <h4 className="text-lg font-medium text-white mb-2">Submit with Us</h4>
-                              <p className="text-gray-300 mb-4">We handle the entire application process on your behalf.</p>
-                              <Button className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white">
-                                Submit with Us
-                              </Button>
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </motion.div>
+                  {activeStep === 7 && showApplicationForm && (
+                    <RoadmapApplyNow />
                   )}
                 </ScrollArea>
               </div>
