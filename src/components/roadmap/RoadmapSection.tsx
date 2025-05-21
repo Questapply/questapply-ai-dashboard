@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -30,8 +31,8 @@ import RoadmapApplyNow from "./sections/apply-now/RoadmapApplyNow";
 
 const RoadmapSection = () => {
   // States for tracking active step and selected programs
-  const [activeStep, setActiveStep] = useState<number | null>(null);
-  const [showFindSchools, setShowFindSchools] = useState(false);
+  const [activeStep, setActiveStep] = useState<number>(1); // Default to step 1 (Find Schools)
+  const [showFindSchools, setShowFindSchools] = useState(true); // Start with Find Schools visible
   const [showFindPrograms, setShowFindPrograms] = useState(false);
   const [showFindProfessors, setShowFindProfessors] = useState(false);
   const [showApplyPopup, setShowApplyPopup] = useState(false);
@@ -303,19 +304,6 @@ const RoadmapSection = () => {
               {/* Dynamic Content Area - Fixed height with scrolling */}
               <div className="mt-6">
                 <ScrollArea className="h-[600px] rounded-md px-1">
-                  {activeStep === null && (
-                    <motion.div 
-                      className="text-center py-8"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <p className="text-purple-200 text-lg dark:text-purple-200 text-purple-700">
-                        Click on any step above to see a demonstration of our application process
-                      </p>
-                    </motion.div>
-                  )}
-                  
                   {activeStep === 1 && showFindSchools && (
                     <FindSchools />
                   )}
