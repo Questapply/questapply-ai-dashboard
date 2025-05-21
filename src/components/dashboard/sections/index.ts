@@ -8,3 +8,4 @@ export { default as CreateSOP } from './CreateSOP';
 export { default as FindProfessors } from './FindProfessors';
 export { default as FindPrograms } from './FindPrograms';
 export { default as FindSchools } from './FindSchools';
+export { default as SuccessStories } from './SuccessStories';

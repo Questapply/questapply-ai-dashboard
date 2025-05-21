@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Hero3 from "@/components/hero/Hero3";
 import RoadmapSection from "@/components/roadmap/RoadmapSection";
+import { SuccessStories } from "@/components/dashboard/sections";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -375,6 +376,9 @@ const Index = () => {
       
       {/* Roadmap Section - Background already matched in the component */}
       <RoadmapSection />
+      
+      {/* Success Stories Section */}
+      <SuccessStories />
 
       {/* Footer */}
       <footer className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-purple-100 dark:border-purple-900/50">
