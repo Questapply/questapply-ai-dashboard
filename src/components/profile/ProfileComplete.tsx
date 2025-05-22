@@ -1,8 +1,7 @@
-
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowRight, Party } from "lucide-react";
+import { Check, ArrowRight, PartyPopper } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import ProgressCircle from "@/components/ui/progress-circle";
 import { StepData } from "./ProfileTypes";
