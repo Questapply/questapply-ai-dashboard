@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { TestTube } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { standardizedTests } from "@/lib/test-options";
 import { TestData } from "./ProfileTypes";
 
@@ -171,59 +172,54 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
             </div>
             
             <div className="p-6 space-y-6">
-              <div className="flex flex-col gap-4">
-                {standardizedTests.map((test) => (
-                  <div key={test.id} className="border-b border-gray-100 dark:border-gray-700 pb-6 last:border-0 last:pb-0">
-                    <button 
-                      onClick={() => handleToggleTest(test.id)}
-                      className={`w-full text-left px-4 py-3 rounded-md flex items-center justify-between ${
-                        testData[test.id]?.active 
-                          ? "bg-purple-100 dark:bg-purple-900/30 border-purple-300 dark:border-purple-700" 
-                          : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
-                      } border`}
-                    >
-                      <span className="font-medium">{test.name} Scores</span>
-                      <span className={`transition-transform ${testData[test.id]?.active ? "rotate-180" : ""}`}>
-                        ▼
-                      </span>
-                    </button>
-                    
-                    <AnimatePresence>
-                      {testData[test.id]?.active && (
-                        <motion.div 
-                          initial={{ height: 0, opacity: 0, overflow: "hidden" }}
-                          animate={{ height: "auto", opacity: 1, overflow: "visible" }}
-                          exit={{ height: 0, opacity: 0, overflow: "hidden" }}
-                          transition={{ duration: 0.3 }}
-                          className="mt-4 pl-4"
-                        >
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{test.description}</p>
-                          
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {test.scoreFields.map((field) => (
-                              <div key={field.id} className="space-y-2">
-                                <Label htmlFor={`${test.id}-${field.id}`} className="text-sm text-gray-700 dark:text-gray-300">
-                                  {field.label}
-                                </Label>
-                                <Input
-                                  id={`${test.id}-${field.id}`}
-                                  value={testData[test.id]?.scores[field.id] || ''}
-                                  onChange={(e) => handleScoreChange(test.id, field.id, e.target.value)}
-                                  placeholder={`Enter your ${field.label}`}
-                                  className={errors[test.id]?.[field.id] ? 'border-red-500 dark:border-red-500' : ''}
-                                />
-                                {errors[test.id]?.[field.id] && (
-                                  <p className="text-red-500 text-sm">Required</p>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+              {standardizedTests.map((test) => (
+                <div key={test.id} className="border-b border-gray-100 dark:border-gray-700 pb-6 last:border-0 last:pb-0">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <span className="font-medium">I have {test.name} exam scores</span>
+                    </div>
+                    <Switch
+                      checked={testData[test.id]?.active || false}
+                      onCheckedChange={() => handleToggleTest(test.id)}
+                      className="data-[state=checked]:bg-blue-500"
+                    />
                   </div>
-                ))}
-              </div>
+                  
+                  <AnimatePresence>
+                    {testData[test.id]?.active && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0, overflow: "hidden" }}
+                        animate={{ height: "auto", opacity: 1, overflow: "visible" }}
+                        exit={{ height: 0, opacity: 0, overflow: "hidden" }}
+                        transition={{ duration: 0.3 }}
+                        className="mt-4 border border-dashed border-gray-200 dark:border-gray-700 p-4 rounded-md"
+                      >
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{test.description}</p>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {test.scoreFields.map((field) => (
+                            <div key={field.id} className="space-y-2">
+                              <Label htmlFor={`${test.id}-${field.id}`} className="text-sm text-gray-700 dark:text-gray-300">
+                                {field.label}
+                              </Label>
+                              <Input
+                                id={`${test.id}-${field.id}`}
+                                value={testData[test.id]?.scores[field.id] || ''}
+                                onChange={(e) => handleScoreChange(test.id, field.id, e.target.value)}
+                                placeholder={`Enter your ${field.label}`}
+                                className={errors[test.id]?.[field.id] ? 'border-red-500 dark:border-red-500' : ''}
+                              />
+                              {errors[test.id]?.[field.id] && (
+                                <p className="text-red-500 text-sm">Required</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
             </div>
           </div>
         </motion.div>
