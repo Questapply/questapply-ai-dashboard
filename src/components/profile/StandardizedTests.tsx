@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { TestTube } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import { standardizedTests } from "@/lib/test-options";
 import { TestData } from "./ProfileTypes";
 
@@ -15,6 +14,7 @@ interface StandardizedTestsProps {
 }
 
 const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) => {
+  const [selectedTest, setSelectedTest] = useState<string | null>(null);
   const [testData, setTestData] = useState<Record<string, { active: boolean, scores: Record<string, string> }>>(
     data.scores || 
     {
@@ -27,18 +27,22 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
   const [errors, setErrors] = useState<Record<string, any>>({});
 
   const handleToggleTest = (testId: string) => {
-    setTestData(prev => {
-      // Create a new object with all tests
-      const updatedTests = { ...prev };
+    if (selectedTest === testId) {
+      // Clicking the selected test deselects it
+      setSelectedTest(null);
+    } else {
+      // Selecting a new test
+      setSelectedTest(testId);
       
-      // Toggle the active state of the clicked test
-      updatedTests[testId] = {
-        ...updatedTests[testId],
-        active: !updatedTests[testId].active
-      };
-      
-      return updatedTests;
-    });
+      // Mark this test as active
+      setTestData(prev => ({
+        ...prev,
+        [testId]: {
+          ...prev[testId],
+          active: true
+        }
+      }));
+    }
   };
 
   const handleScoreChange = (testId: string, scoreField: string, value: string) => {
@@ -66,12 +70,10 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
   };
 
   const handleNext = () => {
-    // Find active tests
+    // If no test is selected/active, move to the next step
     const activeTests = Object.keys(testData).filter(test => testData[test].active);
     
-    // Validate if any test is active and has scores
     if (activeTests.length === 0) {
-      // No test selected, that's fine
       onNext({ type: "none", scores: {} });
       return;
     }
@@ -173,26 +175,31 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
             
             <div className="p-6 space-y-6">
               {standardizedTests.map((test) => (
-                <div key={test.id} className="border-b border-gray-100 dark:border-gray-700 pb-6 last:border-0 last:pb-0">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <span className="font-medium">I have {test.name} exam scores</span>
+                <div key={test.id} className="last:border-0 last:pb-0">
+                  {/* Test selection button */}
+                  <div 
+                    onClick={() => handleToggleTest(test.id)}
+                    className={`flex items-center justify-between p-4 cursor-pointer rounded-lg transition-colors duration-200 border ${
+                      selectedTest === test.id 
+                        ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-300 dark:border-purple-700' 
+                        : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className={`text-base font-medium ${selectedTest === test.id ? 'text-purple-700 dark:text-purple-300' : 'text-gray-700 dark:text-gray-300'}`}>
+                        {test.name} Exam
+                      </span>
                     </div>
-                    <Switch
-                      checked={testData[test.id]?.active || false}
-                      onCheckedChange={() => handleToggleTest(test.id)}
-                      className="data-[state=checked]:bg-blue-500"
-                    />
                   </div>
                   
                   <AnimatePresence>
-                    {testData[test.id]?.active && (
+                    {selectedTest === test.id && (
                       <motion.div 
                         initial={{ height: 0, opacity: 0, overflow: "hidden" }}
                         animate={{ height: "auto", opacity: 1, overflow: "visible" }}
                         exit={{ height: 0, opacity: 0, overflow: "hidden" }}
                         transition={{ duration: 0.3 }}
-                        className="mt-4 border border-dashed border-gray-200 dark:border-gray-700 p-4 rounded-md"
+                        className="mt-3 mb-6 border border-dashed border-gray-200 dark:border-gray-700 p-4 rounded-md"
                       >
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{test.description}</p>
                         
