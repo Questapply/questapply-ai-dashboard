@@ -36,18 +36,6 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
         active: !updatedTests[testId].active
       };
       
-      // If we're activating this test, deactivate all others
-      if (updatedTests[testId].active) {
-        Object.keys(updatedTests).forEach(key => {
-          if (key !== testId) {
-            updatedTests[key] = {
-              ...updatedTests[key],
-              active: false
-            };
-          }
-        });
-      }
-      
       return updatedTests;
     });
   };
@@ -153,9 +141,6 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
     }
   };
 
-  // Check if any test is active
-  const anyTestActive = Object.values(testData).some(test => test.active);
-
   return (
     <div className="p-8">
       <motion.div
@@ -241,12 +226,6 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
               </div>
             </div>
           </div>
-          
-          {!anyTestActive && (
-            <div className="text-center text-gray-500 italic mt-4">
-              No tests selected. You can continue without adding test scores if you haven't taken any standardized tests yet.
-            </div>
-          )}
         </motion.div>
 
         <motion.div variants={itemVariants} className="flex justify-between pt-6">
