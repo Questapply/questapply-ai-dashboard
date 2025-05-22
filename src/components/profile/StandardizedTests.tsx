@@ -225,7 +225,7 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="mt-4"
+                        className="mt-4 overflow-hidden"
                       >
                         <div className="mb-4">
                           <p className="text-sm text-gray-600 dark:text-gray-400">{test.description}</p>
