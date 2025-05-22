@@ -221,11 +221,12 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
                   <AnimatePresence>
                     {testData[test.id]?.active && (
                       <motion.div 
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="mt-4 overflow-hidden"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2, ease: "easeInOut" }}
+                        style={{ overflow: "hidden" }}
+                        className="mt-4"
                       >
                         <div className="mb-4">
                           <p className="text-sm text-gray-600 dark:text-gray-400">{test.description}</p>
