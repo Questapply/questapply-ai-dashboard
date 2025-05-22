@@ -201,48 +201,21 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
             
             <div className="p-6 space-y-6">
               {standardizedTests.map((test) => (
-                <div key={test.id} className={`border-b border-gray-100 dark:border-gray-800 pb-6 last:border-0 last:pb-0 ${testData[test.id]?.active ? 'bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4' : ''}`}>
-                  <div 
-                    className="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-lg transition-all"
-                    onClick={() => handleToggleTest(test.id)}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <TestTube className="w-5 h-5 text-amber-500 dark:text-amber-400" />
+                <div key={test.id} className="border-b border-gray-100 dark:border-gray-700 pb-6 last:border-0 last:pb-0">
+                  <div className="flex items-center justify-between">
+                    <div 
+                      className="flex items-center space-x-3 cursor-pointer"
+                      onClick={() => handleToggleTest(test.id)}
+                    >
                       <Label className="text-base font-medium cursor-pointer">
                         I have {test.name} exam scores
                       </Label>
                     </div>
-                    <div className="flex items-center">
-                      {testData[test.id]?.active ? (
-                        <svg 
-                          width="20" 
-                          height="20" 
-                          viewBox="0 0 24 24" 
-                          fill="none" 
-                          stroke="currentColor" 
-                          strokeWidth="2" 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          className="text-amber-500"
-                        >
-                          <path d="m18 15-6-6-6 6"/>
-                        </svg>
-                      ) : (
-                        <svg 
-                          width="20" 
-                          height="20" 
-                          viewBox="0 0 24 24" 
-                          fill="none" 
-                          stroke="currentColor" 
-                          strokeWidth="2" 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          className="text-gray-400"
-                        >
-                          <path d="m6 9 6 6 6-6"/>
-                        </svg>
-                      )}
-                    </div>
+                    <Switch 
+                      checked={testData[test.id]?.active || false}
+                      onCheckedChange={() => handleToggleTest(test.id)}
+                      className="data-[state=checked]:bg-blue-500"
+                    />
                   </div>
 
                   <AnimatePresence>
@@ -252,32 +225,30 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="mt-4 px-4"
+                        className="mt-4"
                       >
                         <div className="mb-4">
                           <p className="text-sm text-gray-600 dark:text-gray-400">{test.description}</p>
                         </div>
                         
-                        <div className="border border-gray-100 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-800/50">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {test.scoreFields.map((field) => (
-                              <div key={field.id} className="space-y-2">
-                                <Label htmlFor={`${test.id}-${field.id}`} className="text-sm text-gray-700 dark:text-gray-300">
-                                  {field.label}
-                                </Label>
-                                <Input
-                                  id={`${test.id}-${field.id}`}
-                                  value={testData[test.id]?.scores[field.id] || ''}
-                                  onChange={(e) => handleScoreChange(test.id, field.id, e.target.value)}
-                                  placeholder={`Enter your ${field.label}`}
-                                  className={errors[test.id]?.[field.id] ? 'border-red-500 dark:border-red-500' : ''}
-                                />
-                                {errors[test.id]?.[field.id] && (
-                                  <p className="text-red-500 text-sm">Required</p>
-                                )}
-                              </div>
-                            ))}
-                          </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {test.scoreFields.map((field) => (
+                            <div key={field.id} className="space-y-2">
+                              <Label htmlFor={`${test.id}-${field.id}`} className="text-sm text-gray-700 dark:text-gray-300">
+                                {field.label}
+                              </Label>
+                              <Input
+                                id={`${test.id}-${field.id}`}
+                                value={testData[test.id]?.scores[field.id] || ''}
+                                onChange={(e) => handleScoreChange(test.id, field.id, e.target.value)}
+                                placeholder={`Enter your ${field.label}`}
+                                className={errors[test.id]?.[field.id] ? 'border-red-500 dark:border-red-500' : ''}
+                              />
+                              {errors[test.id]?.[field.id] && (
+                                <p className="text-red-500 text-sm">Required</p>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       </motion.div>
                     )}
