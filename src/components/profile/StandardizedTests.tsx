@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { TestTube, ArrowRight } from "lucide-react";
+import { TestTube } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -225,10 +225,9 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2, ease: "easeInOut" }}
-                        style={{ overflow: "hidden" }}
-                        className="mt-4"
+                        className="overflow-hidden"
                       >
-                        <div className="mb-4">
+                        <div className="mt-4 mb-4">
                           <p className="text-sm text-gray-600 dark:text-gray-400">{test.description}</p>
                         </div>
                         
