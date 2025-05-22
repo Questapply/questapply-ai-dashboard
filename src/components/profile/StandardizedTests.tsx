@@ -28,17 +28,26 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
 
   const handleToggleTest = (testId: string) => {
     setTestData(prev => {
-      // First deactivate all tests
-      const updatedTests = Object.keys(prev).reduce((acc, key) => {
-        acc[key] = { ...prev[key], active: false };
-        return acc;
-      }, {} as Record<string, { active: boolean, scores: Record<string, string> }>);
+      // Create a new object with all tests
+      const updatedTests = { ...prev };
       
-      // Then activate only the clicked test
+      // Toggle the active state of the clicked test
       updatedTests[testId] = {
         ...updatedTests[testId],
-        active: !prev[testId].active
+        active: !updatedTests[testId].active
       };
+      
+      // If we're activating this test, deactivate all others
+      if (updatedTests[testId].active) {
+        Object.keys(updatedTests).forEach(key => {
+          if (key !== testId) {
+            updatedTests[key] = {
+              ...updatedTests[key],
+              active: false
+            };
+          }
+        });
+      }
       
       return updatedTests;
     });
@@ -192,21 +201,48 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
             
             <div className="p-6 space-y-6">
               {standardizedTests.map((test) => (
-                <div key={test.id} className={`border-b border-gray-100 dark:border-gray-800 pb-6 last:border-0 last:pb-0 ${testData[test.id]?.active ? 'bg-gray-50 dark:bg-gray-800/50 rounded-lg' : ''}`}>
-                  <div className="flex items-center justify-between">
-                    <div 
-                      className="flex items-center space-x-2 cursor-pointer py-2"
-                      onClick={() => handleToggleTest(test.id)}
-                    >
-                      <Label htmlFor={`test-${test.id}`} className="text-base font-medium cursor-pointer">
+                <div key={test.id} className={`border-b border-gray-100 dark:border-gray-800 pb-6 last:border-0 last:pb-0 ${testData[test.id]?.active ? 'bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4' : ''}`}>
+                  <div 
+                    className="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-lg transition-all"
+                    onClick={() => handleToggleTest(test.id)}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <TestTube className="w-5 h-5 text-amber-500 dark:text-amber-400" />
+                      <Label className="text-base font-medium cursor-pointer">
                         I have {test.name} exam scores
                       </Label>
                     </div>
-                    <Switch 
-                      id={`test-${test.id}`}
-                      checked={testData[test.id]?.active || false}
-                      onCheckedChange={() => handleToggleTest(test.id)}
-                    />
+                    <div className="flex items-center">
+                      {testData[test.id]?.active ? (
+                        <svg 
+                          width="20" 
+                          height="20" 
+                          viewBox="0 0 24 24" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          strokeWidth="2" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          className="text-amber-500"
+                        >
+                          <path d="m18 15-6-6-6 6"/>
+                        </svg>
+                      ) : (
+                        <svg 
+                          width="20" 
+                          height="20" 
+                          viewBox="0 0 24 24" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          strokeWidth="2" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          className="text-gray-400"
+                        >
+                          <path d="m6 9 6 6 6-6"/>
+                        </svg>
+                      )}
+                    </div>
                   </div>
 
                   <AnimatePresence>
@@ -216,7 +252,7 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="mt-4"
+                        className="mt-4 px-4"
                       >
                         <div className="mb-4">
                           <p className="text-sm text-gray-600 dark:text-gray-400">{test.description}</p>
