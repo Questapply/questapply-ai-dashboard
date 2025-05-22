@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { TestTube } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { standardizedTests } from "@/lib/test-options";
 import { TestData } from "./ProfileTypes";
 
@@ -202,22 +203,21 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
             <div className="p-6 space-y-6">
               {standardizedTests.map((test) => (
                 <div key={test.id} className="border-b border-gray-100 dark:border-gray-700 pb-6 last:border-0 last:pb-0">
+                  {/* Test toggle row */}
                   <div className="flex items-center justify-between">
-                    <div 
-                      className="flex items-center space-x-3 cursor-pointer"
-                      onClick={() => handleToggleTest(test.id)}
-                    >
-                      <Label className="text-base font-medium cursor-pointer">
+                    <div className="flex items-center gap-2">
+                      <Checkbox 
+                        id={`has-${test.id}`} 
+                        checked={testData[test.id]?.active || false}
+                        onCheckedChange={() => handleToggleTest(test.id)}
+                      />
+                      <Label htmlFor={`has-${test.id}`} className="text-base font-medium cursor-pointer">
                         I have {test.name} exam scores
                       </Label>
                     </div>
-                    <Switch 
-                      checked={testData[test.id]?.active || false}
-                      onCheckedChange={() => handleToggleTest(test.id)}
-                      className="data-[state=checked]:bg-blue-500"
-                    />
                   </div>
 
+                  {/* Test score fields */}
                   <AnimatePresence>
                     {testData[test.id]?.active && (
                       <motion.div 
