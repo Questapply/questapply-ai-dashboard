@@ -1,11 +1,12 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowRight } from "lucide-react";
+import { Check, ArrowRight, Party } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import ProgressCircle from "@/components/ui/progress-circle";
 import { StepData } from "./ProfileTypes";
+import confetti from 'canvas-confetti';
 
 interface ProfileCompleteProps {
   onNext: (data: any) => void;
@@ -16,6 +17,19 @@ const ProfileComplete: React.FC<ProfileCompleteProps> = ({ onNext, profileData }
   const handleNext = () => {
     onNext({}); // This will complete the process
   };
+
+  // Trigger confetti animation on component mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Animations
   const containerVariants = {
@@ -167,7 +181,7 @@ const ProfileComplete: React.FC<ProfileCompleteProps> = ({ onNext, profileData }
             onClick={handleNext}
             className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
           >
-            Go to Dashboard
+            Begin Your Journey
             <ArrowRight className="w-4 h-4" />
           </Button>
         </motion.div>

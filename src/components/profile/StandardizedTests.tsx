@@ -1,12 +1,14 @@
+
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { TestTube, ArrowRight } from "lucide-react";
+import { TestTube, ArrowRight, Check } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { standardizedTests } from "@/lib/test-options";
 import { TestData } from "./ProfileTypes";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 interface StandardizedTestsProps {
   onNext: (data: any) => void;
@@ -24,6 +26,7 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
   );
   
   const [errors, setErrors] = useState<Record<string, any>>({});
+  const [expandedTest, setExpandedTest] = useState<string | null>(null);
 
   const handleToggleTest = (testId: string) => {
     setTestData(prev => ({
@@ -33,6 +36,13 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
         active: !prev[testId].active
       }
     }));
+    
+    // If activating a test, expand its form
+    if (!testData[testId].active) {
+      setExpandedTest(testId);
+    } else {
+      setExpandedTest(null);
+    }
   };
 
   const handleScoreChange = (testId: string, scoreField: string, value: string) => {
@@ -46,6 +56,17 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
         }
       }
     }));
+    
+    // Clear error for this field if it exists
+    if (errors[testId]?.[scoreField]) {
+      setErrors(prev => ({
+        ...prev,
+        [testId]: {
+          ...prev[testId],
+          [scoreField]: false
+        }
+      }));
+    }
   };
 
   const handleNext = () => {
@@ -151,66 +172,87 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
           </p>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="space-y-8">
-          {standardizedTests.map((test) => (
-            <div key={test.id} className="space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-gray-200 dark:border-gray-800">
-                <div className="flex items-center space-x-2">
-                  <test.icon className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                  <Label htmlFor={`test-${test.id}`} className="text-lg">{test.name}</Label>
-                </div>
-                <Switch 
-                  id={`test-${test.id}`}
-                  checked={testData[test.id]?.active || false}
-                  onCheckedChange={() => handleToggleTest(test.id)}
-                />
-              </div>
-
-              {testData[test.id]?.active && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="pl-2 border-l-2 border-amber-200 dark:border-amber-800 space-y-4"
-                >
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{test.description}</p>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {test.scoreFields.map((field) => (
-                      <div key={field.id} className="space-y-2">
-                        <Label htmlFor={`${test.id}-${field.id}`}>{field.label}</Label>
-                        <Input
-                          id={`${test.id}-${field.id}`}
-                          value={testData[test.id]?.scores[field.id] || ''}
-                          onChange={(e) => handleScoreChange(test.id, field.id, e.target.value)}
-                          placeholder={`Enter your ${field.label}`}
-                          className={errors[test.id]?.[field.id] ? 'border-red-500 dark:border-red-500' : ''}
-                        />
-                        {errors[test.id]?.[field.id] && (
-                          <p className="text-red-500 text-sm">Required</p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
+        <motion.div variants={itemVariants} className="space-y-4 max-w-3xl mx-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+            <div className="text-lg font-medium text-gray-800 dark:text-gray-200 p-4 border-b border-gray-100 dark:border-gray-700">
+              GRE or GMAT or LSAT Scores
             </div>
-          ))}
+            
+            <div className="p-6 space-y-6">
+              {standardizedTests.map((test) => (
+                <div key={test.id} className="border-b border-gray-100 dark:border-gray-800 pb-6 last:border-0 last:pb-0">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-2">
+                      <Label htmlFor={`test-${test.id}`} className="text-base font-medium">
+                        I have {test.name} exam scores
+                      </Label>
+                    </div>
+                    <Switch 
+                      id={`test-${test.id}`}
+                      checked={testData[test.id]?.active || false}
+                      onCheckedChange={() => handleToggleTest(test.id)}
+                    />
+                  </div>
+
+                  {testData[test.id]?.active && (
+                    <AnimatePresence>
+                      <motion.div 
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="mt-2 mb-4">
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{test.description}</p>
+                        </div>
+                        
+                        <div className="border border-gray-100 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-800/50">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {test.scoreFields.map((field) => (
+                              <div key={field.id} className="space-y-2">
+                                <Label htmlFor={`${test.id}-${field.id}`} className="text-sm text-gray-700 dark:text-gray-300">{field.label}</Label>
+                                <Input
+                                  id={`${test.id}-${field.id}`}
+                                  value={testData[test.id]?.scores[field.id] || ''}
+                                  onChange={(e) => handleScoreChange(test.id, field.id, e.target.value)}
+                                  placeholder={`Enter your ${field.label}`}
+                                  className={errors[test.id]?.[field.id] ? 'border-red-500 dark:border-red-500' : ''}
+                                />
+                                {errors[test.id]?.[field.id] && (
+                                  <p className="text-red-500 text-sm">Required</p>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    </AnimatePresence>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
           
           {!anyTestActive && (
-            <div className="text-center text-gray-500 italic">
+            <div className="text-center text-gray-500 italic mt-4">
               No tests selected. You can continue without adding test scores if you haven't taken any standardized tests yet.
             </div>
           )}
         </motion.div>
 
-        <motion.div variants={itemVariants} className="flex justify-center pt-6">
+        <motion.div variants={itemVariants} className="flex justify-between pt-6">
+          <Button 
+            variant="outline"
+            onClick={() => onNext({ type: "none", scores: {} })}
+            className="px-8"
+          >
+            Previous step
+          </Button>
           <Button 
             onClick={handleNext}
-            className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+            className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-2"
           >
-            Continue
-            <ArrowRight className="w-4 h-4" />
+            Save and Continue
           </Button>
         </motion.div>
       </motion.div>

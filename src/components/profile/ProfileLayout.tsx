@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Sun, Moon, ArrowRight } from "lucide-react";
 import { Toggle } from "@/components/ui/toggle";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import StepNavigation from "./StepNavigation";
 import StepContent from "./StepContent";
 import { Step, StepData, ProfileStep } from "./ProfileTypes";
@@ -34,7 +34,7 @@ const ProfileLayout = () => {
     education: { degree: "", university: "", major: "", gpa: "" },
     goals: { country: "", level: "", field: "" },
     language: { test: "", score: "" },
-    tests: { type: "", scores: {} } // Fixed initialization to match TestData interface
+    tests: { type: "", scores: {} }
   });
 
   useEffect(() => {
@@ -64,21 +64,21 @@ const ProfileLayout = () => {
       [currentStep]: data
     }));
     
-    // If this is the last step, finalize the process
+    // If this is the last step, finalize the process and navigate to dashboard
+    if (currentStep === 'complete') {
+      navigate('/dashboard');
+      return;
+    }
+    
+    // If this is the second-to-last step, navigate to the complete step
     if (currentIndex === steps.length - 2) {
-      // Navigate to the complete step
       setCurrentStep('complete');
       
       // Show success toast
       toast({
-        title: "Profile Completed!",
-        description: "Your profile information has been saved successfully.",
+        title: "Profile Almost Complete!",
+        description: "Just one more step to finalize your profile.",
       });
-
-      // After some delay, navigate to dashboard
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 3000);
     } else if (currentIndex < steps.length - 2) {
       // Move to the next step
       setCurrentStep(steps[currentIndex + 1].id as ProfileStep);
