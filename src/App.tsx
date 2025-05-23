@@ -24,6 +24,8 @@ import Feedback from "@/pages/Feedback";
 import Blog from "@/pages/Blog";
 import BlogPost from "@/pages/BlogPost";
 import Notifications from "@/pages/Notifications";
+import ApplyWithUsPlans from "@/pages/ApplyWithUsPlans";
+import ApplyWithUsDashboard from "@/pages/ApplyWithUsDashboard";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
@@ -34,6 +36,9 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/apply-with-us/profile" element={<Profile />} />
+        <Route path="/apply-with-us/plans" element={<ApplyWithUsPlans />} />
+        <Route path="/apply-with-us/dashboard" element={<ApplyWithUsDashboard />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/professors" element={<Professors />} />
         <Route path="/applications" element={<Applications />} />

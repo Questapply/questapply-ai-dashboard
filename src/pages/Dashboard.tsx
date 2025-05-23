@@ -6,6 +6,7 @@ import NavigationButtons from "@/components/dashboard/NavigationButtons";
 import ContentSection from "@/components/dashboard/ContentSection";
 import ChatBox from "@/components/dashboard/ChatBox";
 import FeedbackPrompt from "@/components/feedback/FeedbackPrompt";
+import { Button } from "@/components/ui/button";
 import { getFilterOptions, Section } from "@/utils/FilterUtils";
 
 const Dashboard = () => {
@@ -77,6 +78,11 @@ const Dashboard = () => {
     localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
   };
 
+  // Handle navigation to Apply With Us profile
+  const navigateToApplyWithUs = () => {
+    navigate("/apply-with-us/profile");
+  };
+
   // Get filter options based on active section
   const filterOptions = getFilterOptions(activeSection, isQuestApplyAI);
 
@@ -88,7 +94,7 @@ const Dashboard = () => {
       setSidebarOpen={setSidebarOpen}
     >
       <div className="w-full max-w-full overflow-x-hidden">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
           <NavigationButtons 
             activeSection={activeSection}
             handleSectionChange={handleSectionChange}
@@ -97,7 +103,13 @@ const Dashboard = () => {
             isDarkMode={isDarkMode}
           />
           
-          {/* Hero Menu button removed */}
+          {/* Apply With Us Button */}
+          <Button 
+            onClick={navigateToApplyWithUs}
+            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-md px-6 py-2 font-medium shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            Apply With Us
+          </Button>
         </div>
         
         {/* Chat Box with Filters Inside */}

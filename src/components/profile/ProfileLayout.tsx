@@ -18,6 +18,9 @@ const steps: Step[] = [
   { id: 'goals', title: 'Study Abroad Goals', icon: "Globe" },
   { id: 'language', title: 'Language Proficiency', icon: "Languages" },
   { id: 'tests', title: 'Standardized Tests', icon: "TestTube" },
+  { id: 'priorities', title: 'Application Priorities', icon: "Target" },
+  { id: 'financial', title: 'Financial Status', icon: "DollarSign" },
+  { id: 'programs', title: 'Number of Programs', icon: "List" },
   { id: 'complete', title: 'Complete', icon: "Check" },
 ];
 
@@ -34,7 +37,10 @@ const ProfileLayout = () => {
     education: { degree: "", university: "", major: "", gpa: "" },
     goals: { country: "", level: "", field: "" },
     language: { test: "", score: "" },
-    tests: { type: "", scores: {} }
+    tests: { type: "", scores: {} },
+    priorities: { options: [] },
+    financial: { requiresFunding: false, budget: "" },
+    programs: { count: 0 }
   });
 
   useEffect(() => {
@@ -73,9 +79,9 @@ const ProfileLayout = () => {
       [currentStep]: data
     }));
     
-    // If this is the last step, finalize the process and navigate to dashboard
+    // If this is the last step, finalize the process and navigate to plans page
     if (currentStep === 'complete') {
-      navigate('/dashboard');
+      navigate('/apply-with-us/plans');
       return;
     }
     

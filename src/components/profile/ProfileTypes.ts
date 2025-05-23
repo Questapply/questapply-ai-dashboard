@@ -1,5 +1,5 @@
 
-export type ProfileStep = 'citizenship' | 'education' | 'goals' | 'language' | 'tests' | 'complete';
+export type ProfileStep = 'citizenship' | 'education' | 'goals' | 'language' | 'tests' | 'priorities' | 'financial' | 'programs' | 'complete';
 
 export interface Step {
   id: string;
@@ -35,12 +35,28 @@ export interface TestData {
   scores: Record<string, any>;
 }
 
+export interface PrioritiesData {
+  options: string[];
+}
+
+export interface FinancialData {
+  requiresFunding: boolean;
+  budget: string;
+}
+
+export interface ProgramsData {
+  count: number;
+}
+
 export interface StepData {
   citizenship: CitizenshipData;
   education: EducationData;
   goals: GoalsData;
   language: LanguageData;
   tests: TestData;
+  priorities: PrioritiesData;
+  financial: FinancialData;
+  programs: ProgramsData;
 }
 
 export interface ProfileCompleteProps {

@@ -1,7 +1,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Flag, School, Globe, Languages, TestTube, Check, Circle } from "lucide-react";
+import { Flag, School, Globe, Languages, TestTube, Check, Circle, Target, DollarSign, List } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Step, ProfileStep } from "./ProfileTypes";
 
@@ -29,6 +29,12 @@ const StepNavigation: React.FC<StepNavigationProps> = ({
         return <Languages className="h-5 w-5" />;
       case "TestTube":
         return <TestTube className="h-5 w-5" />;
+      case "Target":
+        return <Target className="h-5 w-5" />;
+      case "DollarSign":
+        return <DollarSign className="h-5 w-5" />;
+      case "List":
+        return <List className="h-5 w-5" />;
       case "Check":
         return <Check className="h-5 w-5" />;
       default:

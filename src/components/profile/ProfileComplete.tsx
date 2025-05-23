@@ -1,34 +1,14 @@
-import React, { useEffect } from "react";
+
+import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowRight, PartyPopper } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
-import ProgressCircle from "@/components/ui/progress-circle";
-import { StepData } from "./ProfileTypes";
-import confetti from 'canvas-confetti';
-
-interface ProfileCompleteProps {
-  onNext: (data: any) => void;
-  profileData: StepData;
-}
+import { CheckCircle, ArrowRight } from "lucide-react";
+import { ProfileCompleteProps } from "./ProfileTypes";
 
 const ProfileComplete: React.FC<ProfileCompleteProps> = ({ onNext, profileData }) => {
-  const handleNext = () => {
-    onNext({}); // This will complete the process
+  const handleContinue = () => {
+    onNext({ completed: true });
   };
-
-  // Trigger confetti animation on component mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   // Animations
   const containerVariants = {
@@ -46,47 +26,19 @@ const ProfileComplete: React.FC<ProfileCompleteProps> = ({ onNext, profileData }
     show: { opacity: 1, y: 0 }
   };
 
-  const successAnimation = {
-    hidden: { scale: 0, opacity: 0 },
+  const iconAnimation = {
+    hidden: { scale: 0, rotate: -45 },
     show: { 
-      scale: [0, 1.2, 1],
-      opacity: 1,
+      scale: 1, 
+      rotate: 0,
       transition: { 
         type: "spring",
         stiffness: 260,
         damping: 20,
-        delay: 0.3
+        delay: 0.1
       }
     }
   };
-
-  // Calculate completion percentage based on filled fields
-  const getProfileCompletion = () => {
-    const totalFields = 10; // Estimate of required fields across all sections
-    let filledFields = 0;
-    
-    // Count citizenship fields
-    if (profileData.citizenship.country) filledFields++;
-    if (profileData.citizenship.residence) filledFields++;
-    
-    // Count education fields
-    if (profileData.education.degree) filledFields++;
-    if (profileData.education.university) filledFields++;
-    if (profileData.education.major) filledFields++;
-    if (profileData.education.gpa) filledFields++;
-    
-    // Count goals fields
-    if (profileData.goals.country) filledFields++;
-    if (profileData.goals.level) filledFields++;
-    if (profileData.goals.field) filledFields++;
-    
-    // Language test count as one field regardless of which test
-    if (profileData.language.test) filledFields++;
-    
-    return Math.min(100, (filledFields / totalFields) * 100);
-  };
-
-  const completion = getProfileCompletion();
 
   return (
     <div className="p-8">
@@ -97,91 +49,61 @@ const ProfileComplete: React.FC<ProfileCompleteProps> = ({ onNext, profileData }
         className="space-y-8"
       >
         <motion.div variants={itemVariants} className="text-center">
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-4">
             <motion.div
-              variants={successAnimation}
-              className="w-24 h-24 rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center"
+              variants={iconAnimation}
+              className="w-24 h-24 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center"
             >
-              <Check className="w-12 h-12 text-white" />
+              <CheckCircle className="w-16 h-16 text-green-600 dark:text-green-400" />
             </motion.div>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Profile Complete!</h1>
           <p className="mt-3 text-gray-600 dark:text-gray-300 max-w-md mx-auto">
-            Great job! Your profile is now set up. We'll use this information to provide personalized recommendations for your study abroad journey.
+            Thank you for completing your profile. We now have all the information we need to help you find the perfect programs.
           </p>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="flex justify-center">
-          <ProgressCircle
-            value={completion}
-            size="lg"
-            color="blue"
-            strokeWidth={8}
-            label="Profile Completion"
-          />
-        </motion.div>
-
-        <motion.div variants={itemVariants} className="space-y-6 max-w-xl mx-auto">
-          <h3 className="text-xl font-medium text-center">Profile Summary</h3>
+        <motion.div 
+          variants={itemVariants} 
+          className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-6 rounded-xl border border-green-100 dark:border-green-800/30"
+        >
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white text-center mb-4">Your Profile Summary</h3>
           
-          <div className="space-y-4">
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
-              <div className="font-medium text-gray-700 dark:text-gray-300">Citizenship & Residence</div>
-              <div className="mt-2 flex justify-between">
-                <span className="text-gray-500">Citizenship:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{profileData.citizenship.country}</span>
-              </div>
-              <div className="mt-1 flex justify-between">
-                <span className="text-gray-500">Current Residence:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{profileData.citizenship.residence}</span>
-              </div>
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-300">Citizenship:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{profileData.citizenship.country}</span>
             </div>
-            
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
-              <div className="font-medium text-gray-700 dark:text-gray-300">Education</div>
-              <div className="mt-2 flex justify-between">
-                <span className="text-gray-500">Degree:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{profileData.education.degree}</span>
-              </div>
-              <div className="mt-1 flex justify-between">
-                <span className="text-gray-500">University:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{profileData.education.university}</span>
-              </div>
-              <div className="mt-1 flex justify-between">
-                <span className="text-gray-500">Major:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{profileData.education.major}</span>
-              </div>
-              <div className="mt-1 flex justify-between">
-                <span className="text-gray-500">GPA:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{profileData.education.gpa}</span>
-              </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-300">Highest Degree:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{profileData.education.degree}</span>
             </div>
-            
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
-              <div className="font-medium text-gray-700 dark:text-gray-300">Study Goals</div>
-              <div className="mt-2 flex justify-between">
-                <span className="text-gray-500">Destination:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{profileData.goals.country}</span>
-              </div>
-              <div className="mt-1 flex justify-between">
-                <span className="text-gray-500">Study Level:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{profileData.goals.level}</span>
-              </div>
-              <div className="mt-1 flex justify-between">
-                <span className="text-gray-500">Field of Study:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{profileData.goals.field}</span>
-              </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-300">Study Destination:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{profileData.goals.country}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-300">Funding Needs:</span>
+              <span className="font-medium text-gray-900 dark:text-white">
+                {profileData.financial.requiresFunding ? "Requires Full Funding" : `$${parseInt(profileData.financial.budget).toLocaleString()} Budget/Year`}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-300">Programs:</span>
+              <span className="font-medium text-gray-900 dark:text-white">
+                {profileData.programs.count} Applications
+              </span>
             </div>
           </div>
         </motion.div>
 
         <motion.div variants={itemVariants} className="flex justify-center pt-6">
           <Button 
-            onClick={handleNext}
-            className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+            onClick={handleContinue}
+            className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white px-8 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
           >
             Begin Your Journey
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-5 h-5" />
           </Button>
         </motion.div>
       </motion.div>
