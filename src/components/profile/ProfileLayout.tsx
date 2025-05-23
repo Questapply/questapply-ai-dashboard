@@ -58,7 +58,16 @@ const ProfileLayout = () => {
     // Find the current step index
     const currentIndex = steps.findIndex(step => step.id === currentStep);
     
-    // Update form data
+    // Check if this is a "back" navigation
+    if (data.type === "back") {
+      // Move back one step if possible
+      if (currentIndex > 0) {
+        setCurrentStep(steps[currentIndex - 1].id as ProfileStep);
+      }
+      return;
+    }
+    
+    // Update form data for forward navigation
     setFormData(prevData => ({
       ...prevData,
       [currentStep]: data

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -40,6 +39,11 @@ const LanguageProficiency: React.FC<LanguageProficiencyProps> = ({ onNext, data 
     if (!newErrors.test && !newErrors.score) {
       onNext({ test: selectedTest, score: requiresScore ? score : "N/A" });
     }
+  };
+
+  const handlePrevious = () => {
+    // Go back to the previous section (Study Goals)
+    onNext({ type: "back" });
   };
 
   // Animations
@@ -158,7 +162,14 @@ const LanguageProficiency: React.FC<LanguageProficiencyProps> = ({ onNext, data 
           </motion.div>
         )}
 
-        <motion.div variants={itemVariants} className="flex justify-center pt-6">
+        <motion.div variants={itemVariants} className="flex justify-between pt-6">
+          <Button 
+            variant="outline" 
+            onClick={handlePrevious} 
+            className="px-8"
+          >
+            Back
+          </Button>
           <Button 
             onClick={handleNext}
             className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"

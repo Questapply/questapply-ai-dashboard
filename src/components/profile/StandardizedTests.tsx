@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { TestData } from "./ProfileTypes";
@@ -138,7 +137,8 @@ const StandardizedTests: React.FC<StandardizedTestsProps> = ({ onNext, data }) =
   };
 
   const handlePrevious = () => {
-    onNext({ type: "none", scores: {} });
+    // Go back to the previous section (Language Proficiency)
+    onNext({ type: "back" });
   };
 
   // Animations

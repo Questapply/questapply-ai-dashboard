@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -59,6 +58,11 @@ const Education: React.FC<EducationProps> = ({ onNext, data }) => {
     if (!Object.values(newErrors).includes(true)) {
       onNext({ degree, university, major, gpa });
     }
+  };
+
+  const handlePrevious = () => {
+    // Go back to the previous section (Citizenship)
+    onNext({ type: "back" });
   };
 
   // Animations
@@ -175,7 +179,14 @@ const Education: React.FC<EducationProps> = ({ onNext, data }) => {
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="flex justify-center pt-6">
+        <motion.div variants={itemVariants} className="flex justify-between pt-6">
+          <Button 
+            variant="outline" 
+            onClick={handlePrevious} 
+            className="px-8"
+          >
+            Back
+          </Button>
           <Button 
             onClick={handleNext}
             className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
