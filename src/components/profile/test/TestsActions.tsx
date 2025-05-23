@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 interface TestsActionsProps {
   onPrevious: () => void;
@@ -17,13 +18,14 @@ const TestsActions: React.FC<TestsActionsProps> = ({ onPrevious, onNext, variant
         onClick={onPrevious} 
         className="px-8"
       >
-        Previous step
+        Back
       </Button>
-      <Button
+      <Button 
         onClick={onNext}
-        className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-2"
+        className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
       >
-        Save and Continue
+        Continue
+        <ArrowRight className="w-4 h-4" />
       </Button>
     </motion.div>
   );
