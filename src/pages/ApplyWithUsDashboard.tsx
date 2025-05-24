@@ -6,6 +6,7 @@ import { Sparkles, CheckCircle, Clock, FileText, Upload, Users, Send, Trophy, Gr
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import DocumentUpload from "@/components/apply-with-us/DocumentUpload";
 
 const ApplyWithUsDashboard = () => {
   const location = useLocation();
@@ -14,6 +15,7 @@ const ApplyWithUsDashboard = () => {
   const [plan, setPlan] = useState<string>("bronze");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeRoadmapTab, setActiveRoadmapTab] = useState<"before" | "after">("before");
+  const [activeBeforeStep, setActiveBeforeStep] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return document.documentElement.classList.contains('dark');
   });
@@ -105,6 +107,15 @@ const ApplyWithUsDashboard = () => {
     ]
   };
 
+  const handleStepClick = (stepId: string) => {
+    if (stepId === "upload-docs") {
+      setActiveBeforeStep(stepId);
+    } else {
+      setActiveBeforeStep(null);
+      // Handle other steps here as needed
+    }
+  };
+
   return (
     <DashboardLayout 
       isDarkMode={isDarkMode} 
@@ -188,7 +199,10 @@ const ApplyWithUsDashboard = () => {
               {roadmapSteps[activeRoadmapTab].map((step, stepIndex) => (
                 <Card 
                   key={step.id} 
-                  className="bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700"
+                  className={`bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700 cursor-pointer ${
+                    activeBeforeStep === step.id ? 'ring-2 ring-blue-500' : ''
+                  }`}
+                  onClick={() => handleStepClick(step.id)}
                 >
                   <CardHeader className="pb-2 px-3 pt-3">
                     <CardTitle className="flex items-center justify-between text-xs">
@@ -223,6 +237,13 @@ const ApplyWithUsDashboard = () => {
             </div>
           </div>
         </div>
+
+        {/* Document Upload Section */}
+        {activeBeforeStep === "upload-docs" && (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+            <DocumentUpload />
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );
