@@ -1,7 +1,9 @@
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import Sidebar from "@/components/dashboard/Sidebar";
 import UserAccountMenu from "@/components/dashboard/UserAccountMenu";
 import QuestApplyLogo from "@/components/common/QuestApplyLogo";
@@ -22,6 +24,7 @@ const DashboardLayout = ({
   sidebarOpen,
   setSidebarOpen
 }: DashboardLayoutProps) => {
+  const navigate = useNavigate();
   const [showFeedbackPrompt, setShowFeedbackPrompt] = useState(false);
   
   useEffect(() => {
@@ -29,6 +32,10 @@ const DashboardLayout = ({
     const shouldShowPrompt = Math.random() < 0.2;
     setShowFeedbackPrompt(shouldShowPrompt);
   }, []);
+
+  const handleApplyWithUs = () => {
+    navigate("/apply-with-us/profile");
+  };
   
   return (
     <div className={`flex min-h-screen w-full ${isDarkMode ? 'bg-gradient-to-br from-gray-900 to-black' : 'bg-gradient-to-br from-blue-50 to-teal-100'}`}>
@@ -40,28 +47,39 @@ const DashboardLayout = ({
         {/* Top Navigation */}
         <nav className={`${isDarkMode ? 'bg-gray-900/80' : 'bg-white/80'} backdrop-blur-md border-b ${isDarkMode ? 'border-blue-900/50' : 'border-blue-100'} p-4 sticky top-0 z-10`}>
           <div className="flex justify-between items-center">
-            <button
-              className={`md:hidden ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            <div className="flex items-center">
+              <button
+                className={`md:hidden ${isDarkMode ? 'text-gray-200' : 'text-gray-700'} mr-4`}
+                onClick={() => setSidebarOpen(!sidebarOpen)}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-            <div className="ml-4 md:ml-0 flex-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
               <QuestApplyLogo variant="full" size="md" />
             </div>
+
+            {/* Centered Apply With Us Button */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
+              <Button 
+                onClick={handleApplyWithUs}
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
+              >
+                Apply With Us
+              </Button>
+            </div>
+            
             <div className="flex items-center gap-4">
               {/* Theme toggle switch */}
               <div className="flex items-center space-x-2">
@@ -80,6 +98,16 @@ const DashboardLayout = ({
               {/* User Account Menu */}
               <UserAccountMenu />
             </div>
+          </div>
+
+          {/* Mobile Apply With Us Button */}
+          <div className="md:hidden mt-4 flex justify-center">
+            <Button 
+              onClick={handleApplyWithUs}
+              className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              Apply With Us
+            </Button>
           </div>
         </nav>
 
