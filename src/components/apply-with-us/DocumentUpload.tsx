@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,7 +21,9 @@ import {
   XCircle,
   Eye,
   Download,
-  ChevronRight
+  ChevronRight,
+  Plus,
+  Trash2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -43,9 +44,65 @@ interface DocumentItem {
   extraFields?: React.ReactNode;
 }
 
+interface TranscriptEntry {
+  id: string;
+  degreeType: string;
+  fieldOfStudy: string;
+  startDate: string;
+  graduationDate: string;
+  universityName: string;
+  gpa: string;
+  uploadedFile?: File;
+}
+
 const DocumentUpload = () => {
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
   const [formData, setFormData] = useState<{ [key: string]: any }>({});
+  const [transcriptEntries, setTranscriptEntries] = useState<TranscriptEntry[]>([
+    {
+      id: '1',
+      degreeType: '',
+      fieldOfStudy: '',
+      startDate: '',
+      graduationDate: '',
+      universityName: '',
+      gpa: '',
+    }
+  ]);
+
+  const addTranscriptEntry = () => {
+    const newEntry: TranscriptEntry = {
+      id: Date.now().toString(),
+      degreeType: '',
+      fieldOfStudy: '',
+      startDate: '',
+      graduationDate: '',
+      universityName: '',
+      gpa: '',
+    };
+    setTranscriptEntries([...transcriptEntries, newEntry]);
+  };
+
+  const removeTranscriptEntry = (id: string) => {
+    if (transcriptEntries.length > 1) {
+      setTranscriptEntries(transcriptEntries.filter(entry => entry.id !== id));
+    }
+  };
+
+  const updateTranscriptEntry = (id: string, field: keyof TranscriptEntry, value: string) => {
+    setTranscriptEntries(transcriptEntries.map(entry => 
+      entry.id === id ? { ...entry, [field]: value } : entry
+    ));
+  };
+
+  const handleTranscriptFileUpload = (entryId: string, files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    
+    const file = files[0];
+    setTranscriptEntries(transcriptEntries.map(entry => 
+      entry.id === entryId ? { ...entry, uploadedFile: file } : entry
+    ));
+  };
 
   const documents: DocumentItem[] = [
     {
@@ -110,31 +167,149 @@ const DocumentUpload = () => {
       )
     },
     {
-      id: "transcript-bachelor",
-      title: "Transcript – Bachelor",
-      description: "Upload your official bachelor's degree transcripts.",
+      id: "transcript",
+      title: "Transcript",
+      description: "Upload your official degree transcripts (Bachelor, Master, etc.).",
       icon: <GraduationCap className="h-5 w-5" />,
       status: "missing",
       required: true,
       fileType: "PDF",
       extraFields: (
-        <div className="grid grid-cols-2 gap-4 mt-4">
-          <div>
-            <Label htmlFor="bachelor-gpa">GPA</Label>
-            <Input 
-              id="bachelor-gpa"
-              placeholder="3.8/4.0"
-              className="mt-2"
-            />
+        <div className="space-y-6 mt-4">
+          <div className="flex items-center justify-between">
+            <Label className="text-lg font-semibold">Academic Records</Label>
+            <Button 
+              type="button" 
+              variant="outline" 
+              size="sm"
+              onClick={addTranscriptEntry}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Add More
+            </Button>
           </div>
-          <div>
-            <Label htmlFor="bachelor-major">Major</Label>
-            <Input 
-              id="bachelor-major"
-              placeholder="Computer Science"
-              className="mt-2"
-            />
-          </div>
+          
+          {transcriptEntries.map((entry, index) => (
+            <div key={entry.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="font-medium">Academic Record {index + 1}</h4>
+                {transcriptEntries.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeTranscriptEntry(entry.id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor={`degree-type-${entry.id}`}>Degree Type</Label>
+                  <Select onValueChange={(value) => updateTranscriptEntry(entry.id, 'degreeType', value)}>
+                    <SelectTrigger className="mt-2">
+                      <SelectValue placeholder="Select degree type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="bachelor">Bachelor's</SelectItem>
+                      <SelectItem value="master">Master's</SelectItem>
+                      <SelectItem value="phd">PhD</SelectItem>
+                      <SelectItem value="associate">Associate</SelectItem>
+                      <SelectItem value="diploma">Diploma</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div>
+                  <Label htmlFor={`field-study-${entry.id}`}>Field of Study</Label>
+                  <Input 
+                    id={`field-study-${entry.id}`}
+                    placeholder="Computer Science, Economics, etc."
+                    className="mt-2"
+                    value={entry.fieldOfStudy}
+                    onChange={(e) => updateTranscriptEntry(entry.id, 'fieldOfStudy', e.target.value)}
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor={`start-date-${entry.id}`}>Start Date</Label>
+                  <Input 
+                    id={`start-date-${entry.id}`}
+                    type="date"
+                    className="mt-2"
+                    value={entry.startDate}
+                    onChange={(e) => updateTranscriptEntry(entry.id, 'startDate', e.target.value)}
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor={`graduation-date-${entry.id}`}>Graduation Date</Label>
+                  <Input 
+                    id={`graduation-date-${entry.id}`}
+                    type="date"
+                    className="mt-2"
+                    value={entry.graduationDate}
+                    onChange={(e) => updateTranscriptEntry(entry.id, 'graduationDate', e.target.value)}
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor={`university-${entry.id}`}>University Name</Label>
+                  <Input 
+                    id={`university-${entry.id}`}
+                    placeholder="University of California, Berkeley"
+                    className="mt-2"
+                    value={entry.universityName}
+                    onChange={(e) => updateTranscriptEntry(entry.id, 'universityName', e.target.value)}
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor={`gpa-${entry.id}`}>GPA</Label>
+                  <Input 
+                    id={`gpa-${entry.id}`}
+                    placeholder="3.8/4.0"
+                    className="mt-2"
+                    value={entry.gpa}
+                    onChange={(e) => updateTranscriptEntry(entry.id, 'gpa', e.target.value)}
+                  />
+                </div>
+              </div>
+              
+              {/* Upload area for this transcript */}
+              <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center">
+                <div className="space-y-2">
+                  <Upload className="h-6 w-6 text-gray-400 mx-auto" />
+                  <p className="text-sm font-medium">Upload Transcript</p>
+                  <p className="text-xs text-gray-500">PDF files only</p>
+                  <input
+                    type="file"
+                    className="hidden"
+                    id={`transcript-file-${entry.id}`}
+                    onChange={(e) => handleTranscriptFileUpload(entry.id, e.target.files)}
+                    accept=".pdf"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => document.getElementById(`transcript-file-${entry.id}`)?.click()}
+                  >
+                    {entry.uploadedFile ? 'Replace File' : 'Select File'}
+                  </Button>
+                  {entry.uploadedFile && (
+                    <p className="text-xs text-green-600 dark:text-green-400 mt-2">
+                      {entry.uploadedFile.name}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )
     },
@@ -247,35 +422,6 @@ const DocumentUpload = () => {
             <Input 
               id="std-date"
               type="date"
-              className="mt-2"
-            />
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "transcript-master",
-      title: "Transcript – Master",
-      description: "Upload your official master's degree transcripts (if applicable).",
-      icon: <GraduationCap className="h-5 w-5" />,
-      status: "missing",
-      required: false,
-      fileType: "PDF",
-      extraFields: (
-        <div className="grid grid-cols-2 gap-4 mt-4">
-          <div>
-            <Label htmlFor="master-university">University Name</Label>
-            <Input 
-              id="master-university"
-              placeholder="Stanford University"
-              className="mt-2"
-            />
-          </div>
-          <div>
-            <Label htmlFor="master-gpa">GPA</Label>
-            <Input 
-              id="master-gpa"
-              placeholder="3.9/4.0"
               className="mt-2"
             />
           </div>
@@ -469,9 +615,9 @@ const DocumentUpload = () => {
         <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-900/30 rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">Overall Progress</span>
-            <span className="text-sm">2/10 completed</span>
+            <span className="text-sm">2/9 completed</span>
           </div>
-          <Progress value={20} className="h-2" />
+          <Progress value={22} className="h-2" />
         </div>
       </div>
 
@@ -509,52 +655,54 @@ const DocumentUpload = () => {
             
             <AccordionContent className="px-6 pb-6">
               <div className="space-y-4">
-                {/* Upload Area */}
-                <div className={cn(
-                  "border-2 border-dashed rounded-lg p-6 text-center transition-colors",
-                  uploadProgress[doc.id] !== undefined ? 
-                    "border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/10" :
-                    "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
-                )}>
-                  {uploadProgress[doc.id] !== undefined ? (
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-center">
-                        <Upload className="h-8 w-8 text-blue-500" />
+                {/* Upload Area - Only show for non-transcript documents */}
+                {doc.id !== "transcript" && (
+                  <div className={cn(
+                    "border-2 border-dashed rounded-lg p-6 text-center transition-colors",
+                    uploadProgress[doc.id] !== undefined ? 
+                      "border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/10" :
+                      "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                  )}>
+                    {uploadProgress[doc.id] !== undefined ? (
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-center">
+                          <Upload className="h-8 w-8 text-blue-500" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">Uploading...</p>
+                          <Progress value={uploadProgress[doc.id]} className="h-2 mt-2" />
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium">Uploading...</p>
-                        <Progress value={uploadProgress[doc.id]} className="h-2 mt-2" />
+                    ) : (
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-center">
+                          <Upload className="h-8 w-8 text-gray-400" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">Drop files here or click to upload</p>
+                          <p className="text-xs text-gray-500">Supported formats: {doc.fileType}</p>
+                        </div>
+                        <input
+                          type="file"
+                          className="hidden"
+                          id={`file-${doc.id}`}
+                          onChange={(e) => handleFileUpload(doc.id, e.target.files)}
+                          accept={doc.fileType?.includes('PDF') ? '.pdf' : '*'}
+                        />
+                        <Button
+                          variant="outline"
+                          onClick={() => document.getElementById(`file-${doc.id}`)?.click()}
+                        >
+                          Select File
+                        </Button>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-center">
-                        <Upload className="h-8 w-8 text-gray-400" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">Drop files here or click to upload</p>
-                        <p className="text-xs text-gray-500">Supported formats: {doc.fileType}</p>
-                      </div>
-                      <input
-                        type="file"
-                        className="hidden"
-                        id={`file-${doc.id}`}
-                        onChange={(e) => handleFileUpload(doc.id, e.target.files)}
-                        accept={doc.fileType?.includes('PDF') ? '.pdf' : '*'}
-                      />
-                      <Button
-                        variant="outline"
-                        onClick={() => document.getElementById(`file-${doc.id}`)?.click()}
-                      >
-                        Select File
-                      </Button>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Extra Fields */}
                 {doc.extraFields && (
-                  <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                  <div className={doc.id !== "transcript" ? "border-t border-gray-200 dark:border-gray-700 pt-4" : ""}>
                     {doc.extraFields}
                   </div>
                 )}
