@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, FileText, BookOpen, Download, Send, Save } from "lucide-react";
+import { Loader2, FileText, BookOpen, Download, Send, Save, Target } from "lucide-react";
 import { DocumentType, FormField, useGenerationProcess } from "@/utils/GenerationUtils";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { calculateDocumentScore, getDocumentSections } from "@/utils/QualityAssessment";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import QualityFeedback from "./QualityFeedback";
 
 interface DocumentGeneratorProps {
   documentType: DocumentType;
@@ -33,7 +35,19 @@ const DocumentGenerator: React.FC<DocumentGeneratorProps> = ({ documentType, onC
   } = useGenerationProcess(documentType);
 
   const [showPreview, setShowPreview] = useState<boolean>(false);
-  const [previewType, setPreviewType] = useState<"rich" | "plain">("rich");
+  const [previewType, setPreviewType] = useState<"rich" | "plain" | "quality">("rich");
+  const [qualityScore, setQualityScore] = useState<any>(null);
+  const [documentSections, setDocumentSections] = useState<any[]>([]);
+
+  // Calculate quality score whenever document changes
+  useEffect(() => {
+    if (generatedDocument) {
+      const score = calculateDocumentScore(generatedDocument, documentType);
+      const sections = getDocumentSections(generatedDocument, documentType);
+      setQualityScore(score);
+      setDocumentSections(sections);
+    }
+  }, [generatedDocument, documentType]);
 
   // Generate initial document on first render
   useEffect(() => {
@@ -131,6 +145,18 @@ const DocumentGenerator: React.FC<DocumentGeneratorProps> = ({ documentType, onC
           })}
         </div>
       );
+    } else if (previewType === "quality") {
+      return (
+        <div className="p-6 max-h-[500px] overflow-y-auto">
+          {qualityScore && (
+            <QualityFeedback 
+              score={qualityScore} 
+              sections={documentSections}
+              documentType={documentType}
+            />
+          )}
+        </div>
+      );
     } else {
       // Plain text view
       return (
@@ -180,8 +206,21 @@ const DocumentGenerator: React.FC<DocumentGeneratorProps> = ({ documentType, onC
                   {documentType === 'sop' ? 'Statement of Purpose' : 'Academic CV'} Generator
                 </CardTitle>
               </div>
-              <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                Step {currentStepIndex + 1} of {totalSteps}
+              <div className="flex items-center gap-3">
+                {qualityScore && (
+                  <div className="flex items-center gap-2">
+                    <Target className="h-4 w-4 text-gray-500" />
+                    <span className={`font-bold ${
+                      qualityScore.overall >= 80 ? 'text-green-600' : 
+                      qualityScore.overall >= 60 ? 'text-yellow-600' : 'text-red-600'
+                    }`}>
+                      {qualityScore.overall}/100
+                    </span>
+                  </div>
+                )}
+                <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  Step {currentStepIndex + 1} of {totalSteps}
+                </div>
               </div>
             </div>
             <CardDescription>
@@ -204,9 +243,10 @@ const DocumentGenerator: React.FC<DocumentGeneratorProps> = ({ documentType, onC
                 transition={{ duration: 0.3 }}
               >
                 <div className="border-b border-gray-200 dark:border-gray-700">
-                  <Tabs defaultValue="rich" onValueChange={(value) => setPreviewType(value as "rich" | "plain")} className="w-full">
-                    <TabsList className="w-full grid grid-cols-2">
+                  <Tabs defaultValue="rich" onValueChange={(value) => setPreviewType(value as "rich" | "plain" | "quality")} className="w-full">
+                    <TabsList className="w-full grid grid-cols-3">
                       <TabsTrigger value="rich">Rich Preview</TabsTrigger>
+                      <TabsTrigger value="quality">Quality Analysis</TabsTrigger>
                       <TabsTrigger value="plain">Plain Text</TabsTrigger>
                     </TabsList>
                   </Tabs>
@@ -281,8 +321,21 @@ const DocumentGenerator: React.FC<DocumentGeneratorProps> = ({ documentType, onC
                   </div>
                   
                   <div className={`border rounded-lg ${isDarkMode ? 'border-gray-700 bg-gray-800/50' : 'border-gray-200 bg-gray-50'} p-4 relative h-[400px] overflow-y-auto`}>
-                    <div className="text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">
-                      Preview (Updates as you change input)
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Live Preview
+                      </div>
+                      {qualityScore && (
+                        <div className="flex items-center gap-2">
+                          <Target className="h-3 w-3" />
+                          <span className={`text-xs font-bold ${
+                            qualityScore.overall >= 80 ? 'text-green-600' : 
+                            qualityScore.overall >= 60 ? 'text-yellow-600' : 'text-red-600'
+                          }`}>
+                            {qualityScore.overall}/100
+                          </span>
+                        </div>
+                      )}
                     </div>
                     {isGenerating ? (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/5 dark:bg-white/5 backdrop-blur-sm rounded-lg">
