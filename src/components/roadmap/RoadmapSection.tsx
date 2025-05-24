@@ -241,6 +241,22 @@ const RoadmapSection = () => {
         >
           A smart, step-by-step guide that uses AI to help you reach your educational and career goals.
         </motion.p>
+
+        {/* Apply With Us Button - Centered in header area */}
+        <motion.div 
+          className="flex justify-center mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          viewport={{ once: true }}
+        >
+          <Button 
+            onClick={() => window.location.href = "/apply-with-us/profile"}
+            className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-8 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            Apply With Us
+          </Button>
+        </motion.div>
         
         {/* Roadmap Container */}
         <div className="w-full max-w-[1216px] mx-auto"> 
