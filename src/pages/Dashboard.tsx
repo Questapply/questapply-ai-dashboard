@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -116,17 +115,15 @@ const Dashboard = () => {
           />
         </div>
 
-        {/* Apply With Us Button - Centered above Find Professors section */}
-        {activeSection === "find-professors" && (
-          <div className="flex justify-center mt-8 mb-6">
-            <Button 
-              onClick={navigateToApplyWithUs}
-              className="bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white px-8 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
-            >
-              Apply With Us
-            </Button>
-          </div>
-        )}
+        {/* Apply With Us Button - Centered in header area */}
+        <div className="flex justify-center mt-8 mb-6">
+          <Button 
+            onClick={navigateToApplyWithUs}
+            className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-8 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            Apply With Us
+          </Button>
+        </div>
 
         {/* Main Content Area */}
         <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 animate-fade-in">
