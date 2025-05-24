@@ -21,9 +21,16 @@ import {
   CheckCircle,
   XCircle,
   Eye,
-  Download
+  Download,
+  ChevronRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface DocumentItem {
   id: string;
@@ -468,41 +475,40 @@ const DocumentUpload = () => {
         </div>
       </div>
 
-      <div className="space-y-6">
+      <Accordion type="single" collapsible className="space-y-4">
         {documents.map((doc) => (
-          <motion.div
-            key={doc.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+          <AccordionItem 
+            key={doc.id} 
+            value={doc.id}
+            className="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800"
           >
-            <Card className="border border-gray-200 dark:border-gray-700">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className={cn(
-                      "p-2 rounded-lg",
-                      doc.status === "uploaded" ? "bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400" :
-                      doc.status === "reviewing" ? "bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" :
-                      "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
-                    )}>
-                      {doc.icon}
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">{doc.title}</CardTitle>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                        {doc.description}
-                      </p>
-                    </div>
+            <AccordionTrigger className="px-6 py-4 hover:no-underline">
+              <div className="flex items-center justify-between w-full mr-4">
+                <div className="flex items-center gap-4">
+                  <div className={cn(
+                    "p-2 rounded-lg",
+                    doc.status === "uploaded" ? "bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400" :
+                    doc.status === "reviewing" ? "bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400" :
+                    "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                  )}>
+                    {doc.icon}
                   </div>
-                  <div className="flex items-center gap-3">
-                    {getStatusIcon(doc.status)}
-                    {getStatusBadge(doc.status, doc.required)}
+                  <div className="text-left">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{doc.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                      {doc.description}
+                    </p>
                   </div>
                 </div>
-              </CardHeader>
-              
-              <CardContent className="space-y-4">
+                <div className="flex items-center gap-3">
+                  {getStatusIcon(doc.status)}
+                  {getStatusBadge(doc.status, doc.required)}
+                </div>
+              </div>
+            </AccordionTrigger>
+            
+            <AccordionContent className="px-6 pb-6">
+              <div className="space-y-4">
                 {/* Upload Area */}
                 <div className={cn(
                   "border-2 border-dashed rounded-lg p-6 text-center transition-colors",
@@ -569,11 +575,11 @@ const DocumentUpload = () => {
                     </Button>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-          </motion.div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
         ))}
-      </div>
+      </Accordion>
 
       {/* Save Progress Button */}
       <div className="flex justify-end pt-6">
