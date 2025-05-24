@@ -119,9 +119,17 @@ const ProfileLayout = () => {
         <div className="w-full max-w-4xl">
           {/* Progress Bar */}
           <div className="mb-10 px-8 md:px-16">
-            <div className="flex justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <div className="flex flex-col gap-2 mb-4">
+              <span className="text-lg font-semibold text-gray-900 dark:text-white">
                 Profile Completion
+              </span>
+              <span className="text-sm text-gray-600 dark:text-gray-300">
+                Complete your profile to get personalized university recommendations
+              </span>
+            </div>
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Progress
               </span>
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {Math.round(progress)}%
