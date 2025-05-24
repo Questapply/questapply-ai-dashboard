@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -5,11 +6,17 @@ import { Sparkles, CheckCircle, Clock, FileText, Upload, Users, Send, Trophy, Gr
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import DocumentUpload from "@/components/apply-with-us/DocumentUpload";
-import ProgramSelected from "@/components/apply-with-us/ProgramSelected";
-import CreatedDocuments from "@/components/apply-with-us/CreatedDocuments";
-import ListProfessors from "@/components/apply-with-us/ListProfessors";
-import PrepareApplication from "@/components/apply-with-us/PrepareApplication";
+import {
+  DocumentUpload,
+  ProgramSelected,
+  CreatedDocuments,
+  ListProfessors,
+  PrepareApplication,
+  Submission,
+  Decision,
+  PostDecisionRequirements,
+  EnrollmentConfirmation
+} from "@/components/apply-with-us";
 
 const ApplyWithUsDashboard = () => {
   const location = useLocation();
@@ -111,7 +118,11 @@ const ApplyWithUsDashboard = () => {
   };
 
   const handleStepClick = (stepId: string) => {
-    setActiveBeforeStep(stepId);
+    if (activeRoadmapTab === "before") {
+      setActiveBeforeStep(stepId);
+    } else {
+      setActiveBeforeStep(stepId);
+    }
   };
 
   return (
@@ -237,34 +248,66 @@ const ApplyWithUsDashboard = () => {
         </div>
 
         {/* Dynamic Content Sections */}
-        {activeBeforeStep === "upload-docs" && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-            <DocumentUpload />
-          </div>
+        {activeRoadmapTab === "before" && (
+          <>
+            {activeBeforeStep === "upload-docs" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <DocumentUpload />
+              </div>
+            )}
+
+            {activeBeforeStep === "select-programs" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <ProgramSelected />
+              </div>
+            )}
+
+            {activeBeforeStep === "create-docs" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <CreatedDocuments />
+              </div>
+            )}
+
+            {activeBeforeStep === "list-professors" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <ListProfessors />
+              </div>
+            )}
+
+            {activeBeforeStep === "prepare-app" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <PrepareApplication />
+              </div>
+            )}
+          </>
         )}
 
-        {activeBeforeStep === "select-programs" && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-            <ProgramSelected />
-          </div>
-        )}
+        {activeRoadmapTab === "after" && (
+          <>
+            {activeBeforeStep === "submission" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <Submission />
+              </div>
+            )}
 
-        {activeBeforeStep === "create-docs" && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-            <CreatedDocuments />
-          </div>
-        )}
+            {activeBeforeStep === "decision" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <Decision />
+              </div>
+            )}
 
-        {activeBeforeStep === "list-professors" && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-            <ListProfessors />
-          </div>
-        )}
+            {activeBeforeStep === "post-decision" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <PostDecisionRequirements />
+              </div>
+            )}
 
-        {activeBeforeStep === "prepare-app" && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-            <PrepareApplication />
-          </div>
+            {activeBeforeStep === "enrollment" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <EnrollmentConfirmation />
+              </div>
+            )}
+          </>
         )}
       </div>
     </DashboardLayout>
