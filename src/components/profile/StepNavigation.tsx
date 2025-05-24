@@ -42,15 +42,49 @@ const StepNavigation: React.FC<StepNavigationProps> = ({
     }
   };
 
+  // Function to split title into two lines
+  const formatTitle = (title: string) => {
+    const words = title.split(' ');
+    if (words.length <= 2) {
+      return { line1: title, line2: "" };
+    }
+    
+    // Split based on common patterns
+    switch (title) {
+      case "Citizenship & Residency":
+        return { line1: "Citizenship &", line2: "Residency" };
+      case "Study Abroad Goals":
+        return { line1: "Study Abroad", line2: "Goals" };
+      case "Language Proficiency":
+        return { line1: "Language", line2: "Proficiency" };
+      case "Standardized Tests":
+        return { line1: "Standardized", line2: "Tests" };
+      case "Application Priorities":
+        return { line1: "Application", line2: "Priorities" };
+      case "Financial Status":
+        return { line1: "Financial", line2: "Status" };
+      case "Number of Programs":
+        return { line1: "Number of", line2: "Programs" };
+      default:
+        // For other cases, split roughly in half
+        const midPoint = Math.ceil(words.length / 2);
+        return {
+          line1: words.slice(0, midPoint).join(' '),
+          line2: words.slice(midPoint).join(' ')
+        };
+    }
+  };
+
   return (
     <div className="hidden md:flex justify-between mb-8 px-6">
       {steps.map((step, index) => {
         const isPrevious = steps.findIndex(s => s.id === currentStep) > index;
         const isCurrent = step.id === currentStep;
         const stepProgress = (index / (steps.length - 1)) * 100;
+        const { line1, line2 } = formatTitle(step.title);
         
         return (
-          <div key={step.id} className="flex flex-col items-center">
+          <div key={step.id} className="flex flex-col items-center max-w-[120px]">
             {/* Step Icon */}
             <motion.div
               className={cn(
@@ -73,19 +107,35 @@ const StepNavigation: React.FC<StepNavigationProps> = ({
               {getIcon(step.icon)}
             </motion.div>
             
-            {/* Step Title */}
-            <span 
-              className={cn(
-                "text-xs font-medium text-center whitespace-nowrap",
-                isCurrent ? 
-                  "text-purple-600 dark:text-purple-400" : 
-                  isPrevious || progress >= stepProgress ? 
-                    "text-green-600 dark:text-green-400" : 
-                    "text-gray-500 dark:text-gray-400"
+            {/* Step Title - Two Lines */}
+            <div className="text-center">
+              <div 
+                className={cn(
+                  "text-xs font-medium leading-tight",
+                  isCurrent ? 
+                    "text-purple-600 dark:text-purple-400" : 
+                    isPrevious || progress >= stepProgress ? 
+                      "text-green-600 dark:text-green-400" : 
+                      "text-gray-500 dark:text-gray-400"
+                )}
+              >
+                {line1}
+              </div>
+              {line2 && (
+                <div 
+                  className={cn(
+                    "text-xs font-medium leading-tight",
+                    isCurrent ? 
+                      "text-purple-600 dark:text-purple-400" : 
+                      isPrevious || progress >= stepProgress ? 
+                        "text-green-600 dark:text-green-400" : 
+                        "text-gray-500 dark:text-gray-400"
+                  )}
+                >
+                  {line2}
+                </div>
               )}
-            >
-              {step.title}
-            </span>
+            </div>
           </div>
         );
       })}
