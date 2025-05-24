@@ -15,6 +15,7 @@ interface DashboardLayoutProps {
   toggleTheme: () => void;
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
+  customHeaderButton?: React.ReactNode;
 }
 
 const DashboardLayout = ({ 
@@ -22,7 +23,8 @@ const DashboardLayout = ({
   isDarkMode, 
   toggleTheme,
   sidebarOpen,
-  setSidebarOpen
+  setSidebarOpen,
+  customHeaderButton
 }: DashboardLayoutProps) => {
   const navigate = useNavigate();
   const [showFeedbackPrompt, setShowFeedbackPrompt] = useState(false);
@@ -70,14 +72,16 @@ const DashboardLayout = ({
               <QuestApplyLogo variant="full" size="md" />
             </div>
 
-            {/* Centered Apply With Us Button */}
+            {/* Centered Custom Button or Apply With Us Button */}
             <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
-              <Button 
-                onClick={handleApplyWithUs}
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
-              >
-                Apply With Us
-              </Button>
+              {customHeaderButton || (
+                <Button 
+                  onClick={handleApplyWithUs}
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  Apply With Us
+                </Button>
+              )}
             </div>
             
             <div className="flex items-center gap-4">
@@ -100,14 +104,16 @@ const DashboardLayout = ({
             </div>
           </div>
 
-          {/* Mobile Apply With Us Button */}
+          {/* Mobile Custom Button or Apply With Us Button */}
           <div className="md:hidden mt-4 flex justify-center">
-            <Button 
-              onClick={handleApplyWithUs}
-              className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
-            >
-              Apply With Us
-            </Button>
+            {customHeaderButton || (
+              <Button 
+                onClick={handleApplyWithUs}
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
+              >
+                Apply With Us
+              </Button>
+            )}
           </div>
         </nav>
 

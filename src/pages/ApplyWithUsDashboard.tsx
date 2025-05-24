@@ -111,6 +111,14 @@ const ApplyWithUsDashboard = () => {
       toggleTheme={toggleTheme}
       sidebarOpen={sidebarOpen}
       setSidebarOpen={setSidebarOpen}
+      customHeaderButton={
+        <Button 
+          onClick={handleApplyYourself}
+          className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
+        >
+          Apply Yourself
+        </Button>
+      }
     >
       <div className="w-full max-w-full">
         {/* Welcome Section - Moved to top and made more visually appealing */}
@@ -124,43 +132,17 @@ const ApplyWithUsDashboard = () => {
                 <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
                   Based on your profile information and selected plan, we've customized this dashboard to help you with your application journey. Follow the roadmap below to track your progress.
                 </p>
-                
-                {/* Plan Badge */}
-                <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-green-500 to-teal-600 text-white shadow-md mb-6">
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  <span className="font-medium">
+              </div>
+              
+              {/* Plan Badge - Moved to replace original Apply Yourself button position */}
+              <div className="flex-shrink-0 ml-6">
+                <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-teal-600 text-white shadow-md">
+                  <Sparkles className="h-5 w-5 mr-3" />
+                  <span className="font-medium text-lg">
                     {planDetails.name} Plan: {planDetails.description}
                   </span>
                 </div>
               </div>
-              
-              {/* Apply Yourself Button - Moved to replace original Apply With Us button position */}
-              <div className="flex-shrink-0 ml-6">
-                <Button 
-                  onClick={handleApplyYourself}
-                  className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-8 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300 text-lg"
-                >
-                  Apply Yourself
-                </Button>
-              </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Button variant="outline" className="h-auto py-4 flex-col items-center justify-center space-y-2 border-2 hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20">
-                <span className="font-semibold">Start Application</span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">Begin your university applications</span>
-              </Button>
-              
-              <Button variant="outline" className="h-auto py-4 flex-col items-center justify-center space-y-2 border-2 hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20">
-                <span className="font-semibold">Upload Documents</span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">Add your academic documents</span>
-              </Button>
-              
-              <Button variant="outline" className="h-auto py-4 flex-col items-center justify-center space-y-2 border-2 hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20">
-                <span className="font-semibold">Schedule Call</span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">Book a consultation session</span>
-              </Button>
             </div>
           </div>
         </div>
@@ -202,23 +184,22 @@ const ApplyWithUsDashboard = () => {
           
           {/* Single horizontal line of roadmap steps */}
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-            <div className="flex justify-between items-center space-x-2 overflow-x-auto pb-2">
+            <div className={`grid ${activeRoadmapTab === "before" ? "grid-cols-5" : "grid-cols-4"} gap-2`}>
               {roadmapSteps[activeRoadmapTab].map((step, stepIndex) => (
                 <Card 
                   key={step.id} 
-                  className="flex-shrink-0 w-48 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700"
+                  className="bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-700"
                 >
-                  <CardHeader className="pb-2">
-                    <CardTitle className="flex items-center justify-between text-sm">
+                  <CardHeader className="pb-2 px-3 pt-3">
+                    <CardTitle className="flex items-center justify-between text-xs">
                       <div className="flex items-center">
-                        <div className={`p-2 rounded-lg mr-2 ${
+                        <div className={`p-1.5 rounded-lg mr-2 ${
                           step.status === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' :
                           step.status === 'in-progress' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' :
                           'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
                         }`}>
                           {step.icon}
                         </div>
-                        <span className="text-gray-900 dark:text-white text-xs font-medium">{step.title}</span>
                       </div>
                       <div className={`w-2 h-2 rounded-full ${
                         step.status === 'completed' ? 'bg-green-500' :
@@ -226,9 +207,14 @@ const ApplyWithUsDashboard = () => {
                         'bg-gray-300 dark:bg-gray-600'
                       }`} />
                     </CardTitle>
+                    <div className="text-gray-900 dark:text-white text-sm font-medium leading-tight">
+                      {step.title}
+                    </div>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-xs text-gray-600 dark:text-gray-300">
+                  <CardContent className="pt-0 px-3 pb-3">
+                    <p className={`text-xs text-gray-600 dark:text-gray-300 leading-tight ${
+                      activeRoadmapTab === "after" ? "text-sm" : ""
+                    }`}>
                       {step.description}
                     </p>
                   </CardContent>
