@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -7,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DocumentUpload from "@/components/apply-with-us/DocumentUpload";
+import ProgramSelected from "@/components/apply-with-us/ProgramSelected";
+import CreatedDocuments from "@/components/apply-with-us/CreatedDocuments";
+import ListProfessors from "@/components/apply-with-us/ListProfessors";
+import PrepareApplication from "@/components/apply-with-us/PrepareApplication";
 
 const ApplyWithUsDashboard = () => {
   const location = useLocation();
@@ -108,12 +111,7 @@ const ApplyWithUsDashboard = () => {
   };
 
   const handleStepClick = (stepId: string) => {
-    if (stepId === "upload-docs") {
-      setActiveBeforeStep(stepId);
-    } else {
-      setActiveBeforeStep(null);
-      // Handle other steps here as needed
-    }
+    setActiveBeforeStep(stepId);
   };
 
   return (
@@ -132,7 +130,7 @@ const ApplyWithUsDashboard = () => {
       }
     >
       <div className="w-full max-w-full">
-        {/* Welcome Section - Moved to top and made more visually appealing */}
+        {/* Welcome Section */}
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl shadow-lg overflow-hidden mb-8">
           <div className="p-8">
             <div className="flex justify-between items-start mb-6">
@@ -145,7 +143,7 @@ const ApplyWithUsDashboard = () => {
                 </p>
               </div>
               
-              {/* Plan Badge - Moved to replace original Apply Yourself button position */}
+              {/* Plan Badge */}
               <div className="flex-shrink-0 ml-6">
                 <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-teal-600 text-white shadow-md">
                   <Sparkles className="h-5 w-5 mr-3" />
@@ -238,10 +236,34 @@ const ApplyWithUsDashboard = () => {
           </div>
         </div>
 
-        {/* Document Upload Section */}
+        {/* Dynamic Content Sections */}
         {activeBeforeStep === "upload-docs" && (
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
             <DocumentUpload />
+          </div>
+        )}
+
+        {activeBeforeStep === "select-programs" && (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+            <ProgramSelected />
+          </div>
+        )}
+
+        {activeBeforeStep === "create-docs" && (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+            <CreatedDocuments />
+          </div>
+        )}
+
+        {activeBeforeStep === "list-professors" && (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+            <ListProfessors />
+          </div>
+        )}
+
+        {activeBeforeStep === "prepare-app" && (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+            <PrepareApplication />
           </div>
         )}
       </div>
