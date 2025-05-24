@@ -15,7 +15,10 @@ import {
   Submission,
   Decision,
   PostDecisionRequirements,
-  EnrollmentConfirmation
+  EnrollmentConfirmation,
+  VisaProcessing,
+  PreDeparturePreparation,
+  ArrivalIntegration
 } from "@/components/apply-with-us";
 
 const ApplyWithUsDashboard = () => {
@@ -113,7 +116,10 @@ const ApplyWithUsDashboard = () => {
       { id: "submission", title: "Submission", icon: <Send className="h-4 w-4" />, status: "pending", description: "Submit applications to universities" },
       { id: "decision", title: "Decision", icon: <Trophy className="h-4 w-4" />, status: "pending", description: "Receive admission decisions" },
       { id: "post-decision", title: "Post-Decision Requirements", icon: <FileText className="h-4 w-4" />, status: "pending", description: "Complete any additional requirements" },
-      { id: "enrollment", title: "Enrollment Confirmation", icon: <GraduationCap className="h-4 w-4" />, status: "pending", description: "Confirm your enrollment and prepare for departure" }
+      { id: "enrollment", title: "Enrollment Confirmation", icon: <GraduationCap className="h-4 w-4" />, status: "pending", description: "Confirm your enrollment and prepare for departure" },
+      { id: "visa-processing", title: "Visa Processing", icon: <FileText className="h-4 w-4" />, status: "pending", description: "Complete visa application and interview process" },
+      { id: "pre-departure", title: "Pre-Departure Preparation", icon: <FileText className="h-4 w-4" />, status: "pending", description: "Prepare for your departure with comprehensive planning" },
+      { id: "arrival-integration", title: "Arrival & Integration", icon: <GraduationCap className="h-4 w-4" />, status: "pending", description: "Seamlessly integrate into your new environment" }
     ]
   };
 
@@ -204,7 +210,7 @@ const ApplyWithUsDashboard = () => {
           
           {/* Single horizontal line of roadmap steps */}
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-            <div className={`grid ${activeRoadmapTab === "before" ? "grid-cols-5" : "grid-cols-4"} gap-2`}>
+            <div className={`grid ${activeRoadmapTab === "before" ? "grid-cols-5" : "grid-cols-7"} gap-2`}>
               {roadmapSteps[activeRoadmapTab].map((step, stepIndex) => (
                 <Card 
                   key={step.id} 
@@ -236,7 +242,7 @@ const ApplyWithUsDashboard = () => {
                   </CardHeader>
                   <CardContent className="pt-0 px-3 pb-3">
                     <p className={`text-xs text-gray-600 dark:text-gray-300 leading-tight ${
-                      activeRoadmapTab === "after" ? "text-sm" : ""
+                      activeRoadmapTab === "after" ? "text-xs" : ""
                     }`}>
                       {step.description}
                     </p>
@@ -305,6 +311,24 @@ const ApplyWithUsDashboard = () => {
             {activeBeforeStep === "enrollment" && (
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
                 <EnrollmentConfirmation />
+              </div>
+            )}
+
+            {activeBeforeStep === "visa-processing" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <VisaProcessing />
+              </div>
+            )}
+
+            {activeBeforeStep === "pre-departure" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <PreDeparturePreparation />
+              </div>
+            )}
+
+            {activeBeforeStep === "arrival-integration" && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+                <ArrivalIntegration />
               </div>
             )}
           </>
